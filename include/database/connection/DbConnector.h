@@ -15,17 +15,11 @@ class DbConnector {
   static DbConnector *instance;
   DbConfig &dbConfig;
   std::queue<DbConnection *> pool;
-  DbConnector();
 
  public:
-  static DbConnector *getInstance(DbConfig &);
+  DbConnector(DbConfig &);
   virtual DbConnection *getConnection() const;
   virtual void releaseConnection() const;
-
-  DbConnector(const DbConnector &) = delete;
-  DbConnector(DbConnector &&) = delete;
-  DbConnector &operator=(const DbConnector &) = delete;
-  DbConnector &operator=(DbConnector &&) = delete;
   ~DbConnector();
 };
 

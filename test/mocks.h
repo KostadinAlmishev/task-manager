@@ -7,6 +7,7 @@
 
 #include <fstream>
 #include <string>
+#include <vector>
 
 #include <gmock/gmock.h>
 
@@ -22,8 +23,6 @@ class MockSubscriber : public Subscriber {
  public:
   MOCK_METHOD(void, update, (Entity & , DbCommand &), (override));
 };
-
-class MockEntity : public Entity {};
 
 class MockIfStream : public std::ifstream {
   MOCK_METHOD(bool, is_open, (), ());
@@ -53,6 +52,7 @@ class MockHistoryManager : public HistoryManager {
 class MockDbCommand : public DbCommand {
  public:
   MockDbCommand(DbConnector *connector) : DbCommand(connector) {}
+  MockDbCommand(const MockDbCommand& command) : DbCommand(command) {}
   MOCK_METHOD(void, execute, (), (const, override));
   MOCK_METHOD(void, saveBackUp, (), (override));
 };
@@ -68,11 +68,12 @@ class MockDbCommandFactory : public DbCommandFactory {
 
 class MockDbConnection : public DbConnection {
  public:
-  MOCK_METHOD(long, execute, (), ());
+  MOCK_METHOD(std::vector<std::string>* , execute, (), ());
 };
 
 class MockDbConnector : public DbConnector {
  public:
+  MockDbConnector(DbConfig &conf) : DbConnector (conf) {}
   MOCK_METHOD(DbConnection *, getConnection, (), (const, override));
   MOCK_METHOD(void, releaseConnection, (), (const, override));
 };

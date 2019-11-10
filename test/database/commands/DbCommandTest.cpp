@@ -7,27 +7,28 @@
 #include "../../mocks.h"
 
 TEST(delete_project_command_test, test_save_back_up) {
-  MockEntity mockEntity;
+  Entity entity;
+  std::vector<std::string> mockResult;
   MockDbConfig mockConf;
   MockDbConnection mockConnection;
-  MockDbConnector mockConnector;
-  DeleteProjectCommand command(mockConnector);
+  MockDbConnector mockConnector(mockConf);
+  DeleteProjectCommand command(&mockConnector);
 
-  ON_CALL(*mockConnector, getConnection()).WillByDefault(testing::Return(&mockConnection));
-  ON_CALL(mockConnection, execute()).WillByDefault(testing::Return(mockEntity));
+  ON_CALL(mockConnector, getConnection()).WillByDefault(testing::Return(&mockConnection));
+  ON_CALL(mockConnection, execute()).WillByDefault(testing::Return(&mockResult));
 
   command.saveBackUp();
 
-  ASSERT_EQ(mockEntity, command.getBackUp());
+  ASSERT_EQ(entity, command.getBackUp());
 }
 
 TEST(delete_project_command_test, test_execute) {
   MockDbConfig mockConf;
   MockDbConnection mockConnection;
-  MockDbConnector mockConnector;
-  DeleteProjectCommand command(mockConnector);
+  MockDbConnector mockConnector(mockConf);
+  DeleteProjectCommand command(&mockConnector);
 
-  ON_CALL(*mockConnector, getConnection()).WillByDefault(testing::Return(&mockConnection));
+  ON_CALL(mockConnector, getConnection()).WillByDefault(testing::Return(&mockConnection));
 
   command.execute();
 

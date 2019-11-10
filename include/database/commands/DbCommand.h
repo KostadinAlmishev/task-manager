@@ -15,10 +15,15 @@ class DbCommand {
 
  public:
   DbCommand(DbConnector *);
-  void undo() const;
-  Entity getBackUp() const;
+  DbCommand(const DbCommand&);
+
+  virtual void undo() const;
+  virtual Entity getBackUp() const;
   virtual void saveBackUp() = 0;
   virtual void execute() const = 0;
+
+  bool operator==(const DbCommand &rhs) const;
+
   virtual ~DbCommand() = default;
 };
 

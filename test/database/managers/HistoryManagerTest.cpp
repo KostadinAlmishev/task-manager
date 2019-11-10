@@ -8,10 +8,11 @@
 
 TEST(history_manager_test, test_push) {
   MockDbConfig mockConfig;
-  MockDbCommand mockCommand(DbConnector::getInstance(mockConfig));
+  MockDbConnector mockConnector(mockConfig);
+  MockDbCommand mockCommand(&mockConnector);
   MockDbCommandFactory mockFactory;
   HistoryManager history(mockFactory);
-  ON_CALL(mockFactory, createAddCommand(Entity())).WillByDefault(testing::Return(&mockCommand));
+  ON_CALL(mockFactory, createAddCommand(::testing::_)).WillByDefault(testing::Return(&mockCommand));
 
   history.push(mockCommand);
 
@@ -20,11 +21,12 @@ TEST(history_manager_test, test_push) {
 
 TEST(history_manager_test, test_pop) {
   MockDbConfig mockConfig;
-  MockDbCommand mockCommand(DbConnector::getInstance(mockConfig));
+  MockDbConnector mockConnector(mockConfig);
+  MockDbCommand mockCommand(&mockConnector);
   MockDbCommandFactory mockFactory;
   HistoryManager history(mockFactory);
 
-  ON_CALL(mockFactory, createGetCommand(-1, 0)).WillByDefault(testing::Return(&mockCommand));
+  ON_CALL(mockFactory, createGetCommand(::testing::_, ::testing::_)).WillByDefault(testing::Return(&mockCommand));
 
   history.pop();
 

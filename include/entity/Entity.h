@@ -10,7 +10,11 @@ class Entity {
   long _id;
 
  public:
+  Entity();
+  Entity(const Entity &);
   long getId() const noexcept;
   void setId() noexcept;
+
+  bool operator==(const Entity& rhs) const;
 };
 #endif //TASKMANAGER_INCLUDE_ENTITY_ENTITY_H_

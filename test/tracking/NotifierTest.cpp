@@ -32,12 +32,13 @@ TEST(notifier_test, notify_subscribers) {
   std::vector<Subscriber *> subscribers;
   MockSubscriber subscriber;
   MockDbConfig conf;
-  MockDbCommand command(DbConnector::getInstance(conf));
-  MockEntity entity;
+  MockDbConnector mockConnector(conf);
+  MockDbCommand command(&mockConnector);
+  Entity entity;
   subscribers.push_back(&subscriber);
   Notifier notifier(subscribers);
 
   notifier.notifyAll(entity, command);
 
-  EXPECT_CALL(subscriber, update(entity, command)).Times(1);
+  EXPECT_CALL(subscriber, update(::testing::Eq(entity), ::testing::Eq(command))).Times(1);
 }

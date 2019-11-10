@@ -10,6 +10,7 @@
 class Email : public Subscriber {
  private:
   std::string server;
+  //использовать curl
  public:
   void update(Entity, DbCommand) override;
   virtual Message createMessage(Entity, DbCommand) const;
