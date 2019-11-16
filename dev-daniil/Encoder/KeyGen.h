@@ -13,7 +13,7 @@ private:
     const uint64_t p;
     const uint64_t q;
 public:
-    KeyGen(ICrypto*, ICrypto*);
+    KeyGen(ICrypto&, ICrypto&);
 };
 
 
