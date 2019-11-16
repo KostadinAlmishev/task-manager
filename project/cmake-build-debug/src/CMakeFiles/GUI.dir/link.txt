@@ -1,0 +1,2 @@
+/usr/bin/ar qc libGUI.a  CMakeFiles/GUI.dir/Parser.cpp.o
+/usr/bin/ranlib libGUI.a
