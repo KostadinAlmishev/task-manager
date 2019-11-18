@@ -1,3 +1,4 @@
+<<<<<<< Updated upstream
 # Prerequisites
 *.d
 
@@ -30,3 +31,7 @@
 *.exe
 *.out
 *.app
+=======
+cmake-build-debug/
+.idea/
+>>>>>>> Stashed changes
