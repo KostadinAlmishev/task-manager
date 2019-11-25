@@ -48,10 +48,10 @@ RM = /snap/clion/92/bin/cmake/linux/bin/cmake -E remove -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /home/kotik/cpp_project/project
+CMAKE_SOURCE_DIR = /home/kotik/cpp_project/task-manager/project
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /home/kotik/cpp_project/project/cmake-build-debug
+CMAKE_BINARY_DIR = /home/kotik/cpp_project/task-manager/project/cmake-build-debug
 
 #=============================================================================
 # Targets provided globally by CMake.
@@ -70,8 +70,8 @@ install/strip/fast: preinstall/fast
 
 # Special rule for the target edit_cache
 edit_cache:
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "No interactive CMake dialog available..."
-	/snap/clion/92/bin/cmake/linux/bin/cmake -E echo No\ interactive\ CMake\ dialog\ available.
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Running CMake cache editor..."
+	/snap/clion/92/bin/cmake/linux/bin/ccmake -S$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR)
 .PHONY : edit_cache
 
 # Special rule for the target edit_cache
@@ -126,9 +126,9 @@ install/fast: preinstall/fast
 
 # The main all target
 all: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/kotik/cpp_project/project/cmake-build-debug/CMakeFiles /home/kotik/cpp_project/project/cmake-build-debug/CMakeFiles/progress.marks
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/kotik/cpp_project/task-manager/project/cmake-build-debug/CMakeFiles /home/kotik/cpp_project/task-manager/project/cmake-build-debug/CMakeFiles/progress.marks
 	$(MAKE) -f CMakeFiles/Makefile2 all
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/kotik/cpp_project/project/cmake-build-debug/CMakeFiles 0
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/kotik/cpp_project/task-manager/project/cmake-build-debug/CMakeFiles 0
 .PHONY : all
 
 # The main clean target
@@ -221,32 +221,140 @@ gtest/fast:
 	$(MAKE) -f googletest/googletest/CMakeFiles/gtest.dir/build.make googletest/googletest/CMakeFiles/gtest.dir/build
 .PHONY : gtest/fast
 
-main.o: main.cpp.o
+src/Display.o: src/Display.cpp.o
 
-.PHONY : main.o
+.PHONY : src/Display.o
 
 # target to build an object file
-main.cpp.o:
-	$(MAKE) -f CMakeFiles/task_manager.dir/build.make CMakeFiles/task_manager.dir/main.cpp.o
-.PHONY : main.cpp.o
+src/Display.cpp.o:
+	$(MAKE) -f CMakeFiles/task_manager.dir/build.make CMakeFiles/task_manager.dir/src/Display.cpp.o
+.PHONY : src/Display.cpp.o
 
-main.i: main.cpp.i
+src/Display.i: src/Display.cpp.i
 
-.PHONY : main.i
+.PHONY : src/Display.i
 
 # target to preprocess a source file
-main.cpp.i:
-	$(MAKE) -f CMakeFiles/task_manager.dir/build.make CMakeFiles/task_manager.dir/main.cpp.i
-.PHONY : main.cpp.i
+src/Display.cpp.i:
+	$(MAKE) -f CMakeFiles/task_manager.dir/build.make CMakeFiles/task_manager.dir/src/Display.cpp.i
+.PHONY : src/Display.cpp.i
 
-main.s: main.cpp.s
+src/Display.s: src/Display.cpp.s
 
-.PHONY : main.s
+.PHONY : src/Display.s
 
 # target to generate assembly for a file
-main.cpp.s:
-	$(MAKE) -f CMakeFiles/task_manager.dir/build.make CMakeFiles/task_manager.dir/main.cpp.s
-.PHONY : main.cpp.s
+src/Display.cpp.s:
+	$(MAKE) -f CMakeFiles/task_manager.dir/build.make CMakeFiles/task_manager.dir/src/Display.cpp.s
+.PHONY : src/Display.cpp.s
+
+src/Gui.o: src/Gui.cpp.o
+
+.PHONY : src/Gui.o
+
+# target to build an object file
+src/Gui.cpp.o:
+	$(MAKE) -f CMakeFiles/task_manager.dir/build.make CMakeFiles/task_manager.dir/src/Gui.cpp.o
+.PHONY : src/Gui.cpp.o
+
+src/Gui.i: src/Gui.cpp.i
+
+.PHONY : src/Gui.i
+
+# target to preprocess a source file
+src/Gui.cpp.i:
+	$(MAKE) -f CMakeFiles/task_manager.dir/build.make CMakeFiles/task_manager.dir/src/Gui.cpp.i
+.PHONY : src/Gui.cpp.i
+
+src/Gui.s: src/Gui.cpp.s
+
+.PHONY : src/Gui.s
+
+# target to generate assembly for a file
+src/Gui.cpp.s:
+	$(MAKE) -f CMakeFiles/task_manager.dir/build.make CMakeFiles/task_manager.dir/src/Gui.cpp.s
+.PHONY : src/Gui.cpp.s
+
+src/Parser.o: src/Parser.cpp.o
+
+.PHONY : src/Parser.o
+
+# target to build an object file
+src/Parser.cpp.o:
+	$(MAKE) -f CMakeFiles/task_manager.dir/build.make CMakeFiles/task_manager.dir/src/Parser.cpp.o
+.PHONY : src/Parser.cpp.o
+
+src/Parser.i: src/Parser.cpp.i
+
+.PHONY : src/Parser.i
+
+# target to preprocess a source file
+src/Parser.cpp.i:
+	$(MAKE) -f CMakeFiles/task_manager.dir/build.make CMakeFiles/task_manager.dir/src/Parser.cpp.i
+.PHONY : src/Parser.cpp.i
+
+src/Parser.s: src/Parser.cpp.s
+
+.PHONY : src/Parser.s
+
+# target to generate assembly for a file
+src/Parser.cpp.s:
+	$(MAKE) -f CMakeFiles/task_manager.dir/build.make CMakeFiles/task_manager.dir/src/Parser.cpp.s
+.PHONY : src/Parser.cpp.s
+
+src/ServiceConnector.o: src/ServiceConnector.cpp.o
+
+.PHONY : src/ServiceConnector.o
+
+# target to build an object file
+src/ServiceConnector.cpp.o:
+	$(MAKE) -f CMakeFiles/task_manager.dir/build.make CMakeFiles/task_manager.dir/src/ServiceConnector.cpp.o
+.PHONY : src/ServiceConnector.cpp.o
+
+src/ServiceConnector.i: src/ServiceConnector.cpp.i
+
+.PHONY : src/ServiceConnector.i
+
+# target to preprocess a source file
+src/ServiceConnector.cpp.i:
+	$(MAKE) -f CMakeFiles/task_manager.dir/build.make CMakeFiles/task_manager.dir/src/ServiceConnector.cpp.i
+.PHONY : src/ServiceConnector.cpp.i
+
+src/ServiceConnector.s: src/ServiceConnector.cpp.s
+
+.PHONY : src/ServiceConnector.s
+
+# target to generate assembly for a file
+src/ServiceConnector.cpp.s:
+	$(MAKE) -f CMakeFiles/task_manager.dir/build.make CMakeFiles/task_manager.dir/src/ServiceConnector.cpp.s
+.PHONY : src/ServiceConnector.cpp.s
+
+test/test.o: test/test.cpp.o
+
+.PHONY : test/test.o
+
+# target to build an object file
+test/test.cpp.o:
+	$(MAKE) -f CMakeFiles/task_manager.dir/build.make CMakeFiles/task_manager.dir/test/test.cpp.o
+.PHONY : test/test.cpp.o
+
+test/test.i: test/test.cpp.i
+
+.PHONY : test/test.i
+
+# target to preprocess a source file
+test/test.cpp.i:
+	$(MAKE) -f CMakeFiles/task_manager.dir/build.make CMakeFiles/task_manager.dir/test/test.cpp.i
+.PHONY : test/test.cpp.i
+
+test/test.s: test/test.cpp.s
+
+.PHONY : test/test.s
+
+# target to generate assembly for a file
+test/test.cpp.s:
+	$(MAKE) -f CMakeFiles/task_manager.dir/build.make CMakeFiles/task_manager.dir/test/test.cpp.s
+.PHONY : test/test.cpp.s
 
 # Help Target
 help:
@@ -265,9 +373,21 @@ help:
 	@echo "... gmock"
 	@echo "... gtest_main"
 	@echo "... gtest"
-	@echo "... main.o"
-	@echo "... main.i"
-	@echo "... main.s"
+	@echo "... src/Display.o"
+	@echo "... src/Display.i"
+	@echo "... src/Display.s"
+	@echo "... src/Gui.o"
+	@echo "... src/Gui.i"
+	@echo "... src/Gui.s"
+	@echo "... src/Parser.o"
+	@echo "... src/Parser.i"
+	@echo "... src/Parser.s"
+	@echo "... src/ServiceConnector.o"
+	@echo "... src/ServiceConnector.i"
+	@echo "... src/ServiceConnector.s"
+	@echo "... test/test.o"
+	@echo "... test/test.i"
+	@echo "... test/test.s"
 .PHONY : help
 
 

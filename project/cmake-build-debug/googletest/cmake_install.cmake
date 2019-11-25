@@ -1,4 +1,4 @@
-# Install script for directory: /home/kotik/cpp_project/project/googletest
+# Install script for directory: /home/kotik/cpp_project/task-manager/project/googletest
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)
@@ -39,7 +39,7 @@ endif()
 
 if(NOT CMAKE_INSTALL_LOCAL_ONLY)
   # Include the install script for each subdirectory.
-  include("/home/kotik/cpp_project/project/cmake-build-debug/googletest/googlemock/cmake_install.cmake")
+  include("/home/kotik/cpp_project/task-manager/project/cmake-build-debug/googletest/googlemock/cmake_install.cmake")
 
 endif()
 

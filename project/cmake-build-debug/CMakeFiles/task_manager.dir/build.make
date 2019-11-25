@@ -43,10 +43,10 @@ RM = /snap/clion/92/bin/cmake/linux/bin/cmake -E remove -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /home/kotik/cpp_project/project
+CMAKE_SOURCE_DIR = /home/kotik/cpp_project/task-manager/project
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /home/kotik/cpp_project/project/cmake-build-debug
+CMAKE_BINARY_DIR = /home/kotik/cpp_project/task-manager/project/cmake-build-debug
 
 # Include any dependencies generated for this target.
 include CMakeFiles/task_manager.dir/depend.make
@@ -57,27 +57,87 @@ include CMakeFiles/task_manager.dir/progress.make
 # Include the compile flags for this target's objects.
 include CMakeFiles/task_manager.dir/flags.make
 
-CMakeFiles/task_manager.dir/main.cpp.o: CMakeFiles/task_manager.dir/flags.make
-CMakeFiles/task_manager.dir/main.cpp.o: ../main.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/kotik/cpp_project/project/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object CMakeFiles/task_manager.dir/main.cpp.o"
-	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/task_manager.dir/main.cpp.o -c /home/kotik/cpp_project/project/main.cpp
+CMakeFiles/task_manager.dir/test/test.cpp.o: CMakeFiles/task_manager.dir/flags.make
+CMakeFiles/task_manager.dir/test/test.cpp.o: ../test/test.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/kotik/cpp_project/task-manager/project/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object CMakeFiles/task_manager.dir/test/test.cpp.o"
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/task_manager.dir/test/test.cpp.o -c /home/kotik/cpp_project/task-manager/project/test/test.cpp
 
-CMakeFiles/task_manager.dir/main.cpp.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/task_manager.dir/main.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/kotik/cpp_project/project/main.cpp > CMakeFiles/task_manager.dir/main.cpp.i
+CMakeFiles/task_manager.dir/test/test.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/task_manager.dir/test/test.cpp.i"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/kotik/cpp_project/task-manager/project/test/test.cpp > CMakeFiles/task_manager.dir/test/test.cpp.i
 
-CMakeFiles/task_manager.dir/main.cpp.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/task_manager.dir/main.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/kotik/cpp_project/project/main.cpp -o CMakeFiles/task_manager.dir/main.cpp.s
+CMakeFiles/task_manager.dir/test/test.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/task_manager.dir/test/test.cpp.s"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/kotik/cpp_project/task-manager/project/test/test.cpp -o CMakeFiles/task_manager.dir/test/test.cpp.s
+
+CMakeFiles/task_manager.dir/src/Display.cpp.o: CMakeFiles/task_manager.dir/flags.make
+CMakeFiles/task_manager.dir/src/Display.cpp.o: ../src/Display.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/kotik/cpp_project/task-manager/project/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building CXX object CMakeFiles/task_manager.dir/src/Display.cpp.o"
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/task_manager.dir/src/Display.cpp.o -c /home/kotik/cpp_project/task-manager/project/src/Display.cpp
+
+CMakeFiles/task_manager.dir/src/Display.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/task_manager.dir/src/Display.cpp.i"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/kotik/cpp_project/task-manager/project/src/Display.cpp > CMakeFiles/task_manager.dir/src/Display.cpp.i
+
+CMakeFiles/task_manager.dir/src/Display.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/task_manager.dir/src/Display.cpp.s"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/kotik/cpp_project/task-manager/project/src/Display.cpp -o CMakeFiles/task_manager.dir/src/Display.cpp.s
+
+CMakeFiles/task_manager.dir/src/Gui.cpp.o: CMakeFiles/task_manager.dir/flags.make
+CMakeFiles/task_manager.dir/src/Gui.cpp.o: ../src/Gui.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/kotik/cpp_project/task-manager/project/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building CXX object CMakeFiles/task_manager.dir/src/Gui.cpp.o"
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/task_manager.dir/src/Gui.cpp.o -c /home/kotik/cpp_project/task-manager/project/src/Gui.cpp
+
+CMakeFiles/task_manager.dir/src/Gui.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/task_manager.dir/src/Gui.cpp.i"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/kotik/cpp_project/task-manager/project/src/Gui.cpp > CMakeFiles/task_manager.dir/src/Gui.cpp.i
+
+CMakeFiles/task_manager.dir/src/Gui.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/task_manager.dir/src/Gui.cpp.s"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/kotik/cpp_project/task-manager/project/src/Gui.cpp -o CMakeFiles/task_manager.dir/src/Gui.cpp.s
+
+CMakeFiles/task_manager.dir/src/Parser.cpp.o: CMakeFiles/task_manager.dir/flags.make
+CMakeFiles/task_manager.dir/src/Parser.cpp.o: ../src/Parser.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/kotik/cpp_project/task-manager/project/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Building CXX object CMakeFiles/task_manager.dir/src/Parser.cpp.o"
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/task_manager.dir/src/Parser.cpp.o -c /home/kotik/cpp_project/task-manager/project/src/Parser.cpp
+
+CMakeFiles/task_manager.dir/src/Parser.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/task_manager.dir/src/Parser.cpp.i"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/kotik/cpp_project/task-manager/project/src/Parser.cpp > CMakeFiles/task_manager.dir/src/Parser.cpp.i
+
+CMakeFiles/task_manager.dir/src/Parser.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/task_manager.dir/src/Parser.cpp.s"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/kotik/cpp_project/task-manager/project/src/Parser.cpp -o CMakeFiles/task_manager.dir/src/Parser.cpp.s
+
+CMakeFiles/task_manager.dir/src/ServiceConnector.cpp.o: CMakeFiles/task_manager.dir/flags.make
+CMakeFiles/task_manager.dir/src/ServiceConnector.cpp.o: ../src/ServiceConnector.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/kotik/cpp_project/task-manager/project/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Building CXX object CMakeFiles/task_manager.dir/src/ServiceConnector.cpp.o"
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/task_manager.dir/src/ServiceConnector.cpp.o -c /home/kotik/cpp_project/task-manager/project/src/ServiceConnector.cpp
+
+CMakeFiles/task_manager.dir/src/ServiceConnector.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/task_manager.dir/src/ServiceConnector.cpp.i"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/kotik/cpp_project/task-manager/project/src/ServiceConnector.cpp > CMakeFiles/task_manager.dir/src/ServiceConnector.cpp.i
+
+CMakeFiles/task_manager.dir/src/ServiceConnector.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/task_manager.dir/src/ServiceConnector.cpp.s"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/kotik/cpp_project/task-manager/project/src/ServiceConnector.cpp -o CMakeFiles/task_manager.dir/src/ServiceConnector.cpp.s
 
 # Object files for target task_manager
 task_manager_OBJECTS = \
-"CMakeFiles/task_manager.dir/main.cpp.o"
+"CMakeFiles/task_manager.dir/test/test.cpp.o" \
+"CMakeFiles/task_manager.dir/src/Display.cpp.o" \
+"CMakeFiles/task_manager.dir/src/Gui.cpp.o" \
+"CMakeFiles/task_manager.dir/src/Parser.cpp.o" \
+"CMakeFiles/task_manager.dir/src/ServiceConnector.cpp.o"
 
 # External object files for target task_manager
 task_manager_EXTERNAL_OBJECTS =
 
-task_manager: CMakeFiles/task_manager.dir/main.cpp.o
+task_manager: CMakeFiles/task_manager.dir/test/test.cpp.o
+task_manager: CMakeFiles/task_manager.dir/src/Display.cpp.o
+task_manager: CMakeFiles/task_manager.dir/src/Gui.cpp.o
+task_manager: CMakeFiles/task_manager.dir/src/Parser.cpp.o
+task_manager: CMakeFiles/task_manager.dir/src/ServiceConnector.cpp.o
 task_manager: CMakeFiles/task_manager.dir/build.make
 task_manager: lib/libgtestd.a
 task_manager: lib/libgtest_maind.a
@@ -86,7 +146,7 @@ task_manager: lib/libgmock_maind.a
 task_manager: lib/libgmockd.a
 task_manager: lib/libgtestd.a
 task_manager: CMakeFiles/task_manager.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/kotik/cpp_project/project/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Linking CXX executable task_manager"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/kotik/cpp_project/task-manager/project/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_6) "Linking CXX executable task_manager"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/task_manager.dir/link.txt --verbose=$(VERBOSE)
 
 # Rule to build all files generated by this target.
@@ -99,6 +159,6 @@ CMakeFiles/task_manager.dir/clean:
 .PHONY : CMakeFiles/task_manager.dir/clean
 
 CMakeFiles/task_manager.dir/depend:
-	cd /home/kotik/cpp_project/project/cmake-build-debug && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/kotik/cpp_project/project /home/kotik/cpp_project/project /home/kotik/cpp_project/project/cmake-build-debug /home/kotik/cpp_project/project/cmake-build-debug /home/kotik/cpp_project/project/cmake-build-debug/CMakeFiles/task_manager.dir/DependInfo.cmake --color=$(COLOR)
+	cd /home/kotik/cpp_project/task-manager/project/cmake-build-debug && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/kotik/cpp_project/task-manager/project /home/kotik/cpp_project/task-manager/project /home/kotik/cpp_project/task-manager/project/cmake-build-debug /home/kotik/cpp_project/task-manager/project/cmake-build-debug /home/kotik/cpp_project/task-manager/project/cmake-build-debug/CMakeFiles/task_manager.dir/DependInfo.cmake --color=$(COLOR)
 .PHONY : CMakeFiles/task_manager.dir/depend
 

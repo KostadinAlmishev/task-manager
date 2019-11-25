@@ -40,4 +40,4 @@ googletest/googlemock/CMakeFiles/gmock_main.dir/src/gmock_main.cc.o
  ../googletest/googletest/include/gtest/internal/gtest-port.h
  ../googletest/googletest/include/gtest/internal/gtest-string.h
  ../googletest/googletest/include/gtest/internal/gtest-type-util.h
- /home/kotik/cpp_project/project/googletest/googlemock/src/gmock_main.cc
+ /home/kotik/cpp_project/task-manager/project/googletest/googlemock/src/gmock_main.cc

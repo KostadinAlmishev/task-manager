@@ -1,0 +1,1 @@
+/usr/bin/c++     CMakeFiles/task_manager.dir/main.cpp.o  -o task_manager lib/libgtest.a lib/libgtest_main.a lib/libgmock.a lib/libgmock_main.a lib/libgmock.a lib/libgtest.a -lpthread 

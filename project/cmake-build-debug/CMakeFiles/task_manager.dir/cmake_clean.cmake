@@ -1,5 +1,9 @@
 file(REMOVE_RECURSE
-  "CMakeFiles/task_manager.dir/main.cpp.o"
+  "CMakeFiles/task_manager.dir/src/Display.cpp.o"
+  "CMakeFiles/task_manager.dir/src/Gui.cpp.o"
+  "CMakeFiles/task_manager.dir/src/Parser.cpp.o"
+  "CMakeFiles/task_manager.dir/src/ServiceConnector.cpp.o"
+  "CMakeFiles/task_manager.dir/test/test.cpp.o"
   "task_manager"
   "task_manager.pdb"
 )
