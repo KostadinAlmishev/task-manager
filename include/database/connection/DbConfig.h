@@ -5,21 +5,24 @@
 #ifndef TASKMANAGER_INCLUDE_DATABASE_DBCONFIG_H_
 #define TASKMANAGER_INCLUDE_DATABASE_DBCONFIG_H_
 
+#include <mutex>
 #include <string>
-#include <fstream>
 
 class DbConfig {
  private:
-  std::istream &configFile;
-  std::string host;
-  int port;
-  std::string dbName;
-  std::string user;
-  std::string password;
-  int poolSize;
+  static const size_t PARAMETERS_NUMBER = 6;
+  std::mutex _mutex;
+  std::string _confFilePath;
+  std::string _host;
+  int _port;
+  std::string _dbName;
+  std::string _user;
+  std::string _password;
+  int _poolSize;
 
  public:
-  DbConfig(const std::istream&);
+  explicit DbConfig(std::string);
+  DbConfig(const DbConfig &);
   virtual void readConfigFromFile();
   virtual std::string getHost() const noexcept;
   virtual int getPort() const noexcept;
