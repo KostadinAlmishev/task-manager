@@ -1,4 +1,0 @@
-/snap/clion/92/bin/cmake/linux/bin/cmake -DCMAKE_BUILD_TYPE=Debug -G "CodeBlocks - Unix Makefiles" /home/kotik/cpp_project/task-manager/project
--- Configuring done
--- Generating done
--- Build files have been written to: /home/kotik/cpp_project/task-manager/project/cmake-build-debug
