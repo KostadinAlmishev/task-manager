@@ -10,7 +10,7 @@
 TEST(notifier_test, add_subscriber_test) {
   std::vector<Subscriber *> subscribers;
   MockSubscriber subscriber;
-  Notifier notifier(subscribers);
+  NotificationManager notifier(subscribers);
 
   notifier.subscribe(subscriber);
 
@@ -21,7 +21,7 @@ TEST(notifier_test, delete_subscriber_test) {
   std::vector<Subscriber *> subscribers;
   MockSubscriber subscriber;
   subscribers.push_back(&subscriber);
-  Notifier notifier(subscribers);
+  NotificationManager notifier(subscribers);
 
   notifier.unsubscribe(subscriber);
 
@@ -36,7 +36,7 @@ TEST(notifier_test, notify_subscribers) {
   MockDbCommand command(&mockConnector);
   Entity entity;
   subscribers.push_back(&subscriber);
-  Notifier notifier(subscribers);
+  NotificationManager notifier(subscribers);
 
   notifier.notifyAll(entity, command);
 

@@ -7,10 +7,17 @@
 
 class Message {
  private:
-  std::string subject;
-  std::string body;
+  std::string _from;
+  std::string _to;
+  std::string _subject;
+  std::string _body;
  public:
-  virtual std::string toString() const;
+  Message(std::string from, std::string to, std::string subject, std::string body);
+
+  std::string getFrom() const;
+  std::string getTo() const;
+  std::string getSubject() const;
+  std::string getBody() const;
 };
 
 #endif //TASKMANAGER_INCLUDE_TRACKING_MESSAGE_H_

@@ -16,7 +16,7 @@
 #include "database/factories/DbCommandFactory.h"
 #include "database/managers/HistoryManager.h"
 #include "entity/Entity.h"
-#include "tracking/Notifier.h"
+#include "managers/NotificationManager.h"
 #include "tracking/Subscriber.h"
 
 class MockSubscriber : public Subscriber {
@@ -34,9 +34,9 @@ class MockDbConfig : public DbConfig {
   MOCK_METHOD(int, getPoolSize, (), (const, override, noexcept));
 };
 
-class MockNotifier : public Notifier {
+class MockNotifier : public NotificationManager {
  public:
-  MockNotifier(std::vector<Subscriber *> & subs) : Notifier(subs) {};
+  MockNotifier(std::vector<Subscriber *> & subs) : NotificationManager(subs) {};
   MOCK_METHOD(void, notifyAll, (Entity &, DbCommand &), (const, override));
   MOCK_METHOD(void, subscribe, (Subscriber &), (const, override));
   MOCK_METHOD(void, unsubscribe, (Subscriber &), (const, override));

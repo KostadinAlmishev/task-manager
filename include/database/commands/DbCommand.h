@@ -8,23 +8,40 @@
 #include "entity/Entity.h"
 #include "database/connection/DbConnector.h"
 
-class DbCommand {
+/**
+ * @tparam Connection - тип подключения в зависимости от БД, например, для PostgreSql будет PGconn
+ * @tparam ResultSet - тип возвращаемого значения после выполнения запроса, например, для PostgreSql будет PGresult
+ */
+template<typename Connection, typename ResultSet>
+class DbCommand : public Entity {
  private:
-  DbConnector dbConnector;
-  Entity backUp;
+  DbConnector<Connection, ResultSet> &_dbConnector;
+  std::shared_ptr<Entity> _backUp;
 
  public:
-  DbCommand(DbConnector *);
-  DbCommand(const DbCommand&);
+  explicit DbCommand(const DbConnector<Connection, ResultSet> &) = default;
+  DbCommand(const DbCommand<Connection, ResultSet>&) = default;
 
-  virtual void undo() const;
-  virtual Entity getBackUp() const;
+  std::string toString() const override;
+
+  virtual std::shared_ptr<Entity> getBackUp() const;
   virtual void saveBackUp() = 0;
+  virtual void undo() const = 0;
   virtual void execute() const = 0;
 
-  bool operator==(const DbCommand &rhs) const;
+  bool operator==(const DbCommand &rhs) const = default;
 
-  virtual ~DbCommand() = default;
+  ~DbCommand() override = default;
 };
+
+template<typename Connection, typename ResultSet>
+std::shared_ptr<Entity> DbCommand<Connection, ResultSet>::getBackUp() const {
+  return _backUp;
+}
+
+template<typename Connection, typename ResultSet>
+std::string DbCommand<Connection, ResultSet>::toString() const {
+  return "DbCommand backUp: " + _backUp->toString();
+}
 
 #endif //TASKMANAGER_INCLUDE_DATABASE_DBCOMMAND_H_

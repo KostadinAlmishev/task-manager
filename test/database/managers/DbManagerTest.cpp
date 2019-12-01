@@ -3,7 +3,7 @@
 //
 
 #include "../../mocks.h"
-#include "database/managers/DbManager.h"
+#include "managers/DbManager.h"
 
 TEST(db_manager_test, test_execute_command) {
   std::vector<Subscriber *> subs;

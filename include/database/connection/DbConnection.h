@@ -41,17 +41,20 @@ DbConnection<Connection, ResultSet>::DbConnection(DbConfig &dbConfig,
 
 template<typename Connection, typename ResultSet>
 std::unique_ptr<Connection> DbConnection<Connection, ResultSet>::connect(DbConfig &dbConfig) const {
+  //use libpq
   return _connectCallback(dbConfig);
 }
 
 template<typename Connection, typename ResultSet>
 std::unique_ptr<ResultSet> DbConnection<Connection, ResultSet>::execute(Connection &connection,
                                                                         const std::string &query) const {
+  //use libpq
   return _executeCallback(connection, query);
 }
 
 template<typename Connection, typename ResultSet>
 void DbConnection<Connection, ResultSet>::free(std::unique_ptr<Connection> &&connection) const {
+  //use libpq
   _freeCallback(std::move(connection));
 }
 

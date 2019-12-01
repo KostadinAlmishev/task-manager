@@ -15,6 +15,10 @@ class Entity {
   long getId() const noexcept;
   void setId() noexcept;
 
+  virtual std::string toString() const = 0;
+
   bool operator==(const Entity& rhs) const;
+
+  virtual ~Entity() = default;
 };
 #endif //TASKMANAGER_INCLUDE_ENTITY_ENTITY_H_

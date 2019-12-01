@@ -10,7 +10,7 @@
 
 class Subscriber {
  public:
-  virtual void update(Entity &, DbCommand &) = 0;
+  virtual void update(const Entity &, const Entity &) = 0;
   virtual ~Subscriber() = default;
 };
 #endif //TASKMANAGER_INCLUDE_TRACKING_SUBSCRIBER_H_

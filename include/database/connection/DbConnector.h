@@ -43,8 +43,7 @@ DbConnector<Connection, ResultSet>::DbConnector(const DbConfig &dbConfig)
 template<typename Connection, typename ResultSet>
 void DbConnector<Connection,
                  ResultSet>::initializeConnectionPool(std::function<std::unique_ptr<Connection>(DbConfig &)> connectCallback,
-                                                      std::function<std::unique_ptr<ResultSet>(Connection &,
-                                                                                               std::string)> executeCallback,
+                                                      std::function<std::unique_ptr<ResultSet>(Connection &, std::string)> executeCallback,
                                                       std::function<void(std::unique_ptr<Connection> &&)> freeCallback) const {
   std::lock_guard<std::mutex> lock(_mutex);
   if (_pool.size() == _poolSize) {
@@ -52,7 +51,10 @@ void DbConnector<Connection,
   }
 
   for (size_t i = 0; i < _poolSize; ++i) {
-    _pool.push(std::make_unique<DbConnection<Connection, ResultSet>>(_dbConfig, connectCallback, executeCallback, freeCallback));
+    _pool.push(std::make_unique<DbConnection<Connection, ResultSet>>(_dbConfig,
+                                                                     connectCallback,
+                                                                     executeCallback,
+                                                                     freeCallback));
   }
 }
 
