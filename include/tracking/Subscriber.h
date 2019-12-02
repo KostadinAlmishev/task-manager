@@ -10,6 +10,8 @@
 
 class Subscriber {
  public:
+  Subscriber() = default;
+  Subscriber(const Subscriber &) = default;
   virtual void update(const Entity &, const Entity &) = 0;
   virtual ~Subscriber() = default;
 };

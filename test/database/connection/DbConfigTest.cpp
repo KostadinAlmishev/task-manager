@@ -7,7 +7,7 @@
 
 TEST(db_config_test, test_read_config) {
   std::string mockValues = "host=testHost\nport=0000\ndbName=testDb\nlogin=testLogin\npassword=testpass\npool=0";
-  std::stringstream mockStream(mockValues);
+  std::stringbuf mockStream(mockValues);
   DbConfig config(mockStream);
 
   config.readConfigFromFile();

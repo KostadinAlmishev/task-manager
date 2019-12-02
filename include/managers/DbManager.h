@@ -16,23 +16,23 @@
 template<typename Connection, typename ResultSet>
 class DbManager {
  private:
-  DbCommand<Connection, ResultSet> &_dbCommand;
+  std::shared_ptr<DbCommand<Connection, ResultSet>> _dbCommand;
  public:
-  virtual void setCommand(const DbCommand<Connection, ResultSet> &);
+  virtual void setCommand(std::shared_ptr<DbCommand<Connection, ResultSet>>);
   virtual void executeCommand() const;
   virtual ~DbManager() = default;
 };
 
 template<typename Connection, typename ResultSet>
-void DbManager<Connection, ResultSet>::setCommand(const DbCommand<Connection, ResultSet> &dbCommand) {
+void DbManager<Connection, ResultSet>::setCommand(std::shared_ptr<DbCommand<Connection, ResultSet>> dbCommand) {
   _dbCommand = dbCommand;
 }
 
 template<typename Connection, typename ResultSet>
 void DbManager<Connection, ResultSet>::executeCommand() const {
   //use threads
-  _dbCommand.saveBackUp();
-  _dbCommand.execute();
+  _dbCommand->saveBackUp();
+  _dbCommand->execute();
 }
 
 #endif //TASKMANAGER_INCLUDE_DATABASE_DBMANAGER_H_

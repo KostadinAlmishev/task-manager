@@ -8,7 +8,7 @@
 
 #include "database/connection/DbConfig.h"
 
-DbConfig::DbConfig(std::string confFilePath) : _confFilePath(std::move(confFilePath)),
+DbConfig::DbConfig(std::streambuf& confFile) : _confFile(&confFile),
                                                _host(""),
                                                _port(0),
                                                _dbName(""),
@@ -16,29 +16,20 @@ DbConfig::DbConfig(std::string confFilePath) : _confFilePath(std::move(confFileP
                                                _password(""),
                                                _poolSize(0) {}
 
-DbConfig::DbConfig(const DbConfig &dbConfig) : _confFilePath(dbConfig._confFilePath),
-                                               _host(dbConfig._host),
-                                               _port(dbConfig._port),
-                                               _dbName(dbConfig._dbName),
-                                               _user(dbConfig._user),
-                                               _password(dbConfig._password),
-                                               _poolSize(dbConfig._poolSize) {}
-
 void DbConfig::readConfigFromFile() noexcept(false) {
   std::lock_guard<std::mutex> lock(_mutex);
-  std::ifstream confFile(_confFilePath);
 
-  if (!confFile.is_open()) {
-    throw std::ios_base::failure("Error when try to open db configuration file!");
-  }
+//  if (!_confFile.is_open()) {
+//    throw std::ios_base::failure("Error when try to open db configuration file!");
+//  }
 
   for (size_t i = 0; i < PARAMETERS_NUMBER; ++i) {
-    if (confFile.eof()) {
+    if (_confFile.eof()) {
       throw std::invalid_argument("Not enough parameters in configuration file!");
     }
 
     std::string confLine;
-    confFile >> confLine;
+    _confFile >> confLine;
 
     size_t delimiterPosition = confLine.find('=');
     if (delimiterPosition == std::string::npos) {

@@ -20,8 +20,8 @@ class NotificationManager {
   NotificationManager() = default;
   explicit NotificationManager(std::vector<std::shared_ptr<Subscriber>>);
   virtual void notifyAll(Entity &, Entity &) const;
-  virtual void subscribe(Subscriber &);
-  virtual void unsubscribe(Subscriber &);
+  virtual void subscribe(std::shared_ptr<Subscriber>);
+  virtual void unsubscribe(std::shared_ptr<Subscriber>);
   virtual ~NotificationManager() = default;
 };
 

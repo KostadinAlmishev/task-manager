@@ -20,19 +20,22 @@
 template<typename Connection, typename ResultSet>
 class DbConnector {
  private:
+  const DbConfig &_dbConfig;
   std::mutex _mutex;
   std::condition_variable _condition;
-  DbConfig _dbConfig;
   size_t _poolSize;
   std::queue<std::unique_ptr<DbConnection<Connection, ResultSet>>> _pool;
 
  public:
   explicit DbConnector(const DbConfig &);
-  virtual void initializeConnectionPool(std::function<std::unique_ptr<Connection>(DbConfig &)>,
+  virtual void initializeConnectionPool(std::function<std::unique_ptr<Connection>(const DbConfig &)>,
                                         std::function<std::unique_ptr<ResultSet>(Connection &, std::string)>,
-                                        std::function<void(std::unique_ptr<Connection> &&)>) const;
-  virtual std::unique_ptr<DbConnection<Connection, ResultSet>> getConnection() const;
-  virtual void releaseConnection(std::unique_ptr<DbConnection<Connection, ResultSet>> &&) const;
+                                        std::function<void(std::unique_ptr<Connection> &&)>);
+  virtual std::unique_ptr<DbConnection<Connection, ResultSet>> getConnection();
+  virtual void releaseConnection(std::unique_ptr<DbConnection<Connection, ResultSet>> &&);
+
+  DbConnector &operator=(const DbConnector &) = default;
+
   virtual ~DbConnector() = default;
 };
 
@@ -42,9 +45,10 @@ DbConnector<Connection, ResultSet>::DbConnector(const DbConfig &dbConfig)
 
 template<typename Connection, typename ResultSet>
 void DbConnector<Connection,
-                 ResultSet>::initializeConnectionPool(std::function<std::unique_ptr<Connection>(DbConfig &)> connectCallback,
-                                                      std::function<std::unique_ptr<ResultSet>(Connection &, std::string)> executeCallback,
-                                                      std::function<void(std::unique_ptr<Connection> &&)> freeCallback) const {
+                 ResultSet>::initializeConnectionPool(std::function<std::unique_ptr<Connection>(const DbConfig &)> connectCallback,
+                                                      std::function<std::unique_ptr<ResultSet>(Connection &,
+                                                                                               std::string)> executeCallback,
+                                                      std::function<void(std::unique_ptr<Connection> &&)> freeCallback) {
   std::lock_guard<std::mutex> lock(_mutex);
   if (_pool.size() == _poolSize) {
     return;
@@ -59,14 +63,14 @@ void DbConnector<Connection,
 }
 
 template<typename Connection, typename ResultSet>
-std::unique_ptr<DbConnection<Connection, ResultSet>> DbConnector<Connection, ResultSet>::getConnection() const {
+std::unique_ptr<DbConnection<Connection, ResultSet>> DbConnector<Connection, ResultSet>::getConnection() {
   std::unique_lock<std::mutex> lock(_mutex);
 
   while (_pool.empty()) {
     _condition.wait(lock);
   }
 
-  auto dbConnection = _pool.front();
+  auto dbConnection = std::move(_pool.front());
   _pool.pop();
 
   return dbConnection;
@@ -74,7 +78,7 @@ std::unique_ptr<DbConnection<Connection, ResultSet>> DbConnector<Connection, Res
 
 template<typename Connection, typename ResultSet>
 void DbConnector<Connection, ResultSet>::releaseConnection(std::unique_ptr<DbConnection<Connection,
-                                                                                        ResultSet>> &&dbConnection) const {
+                                                                                        ResultSet>> &&dbConnection) {
   std::unique_lock<std::mutex> lock(_mutex);
 
   if (_pool.size() < _poolSize) {

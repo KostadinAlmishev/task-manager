@@ -9,6 +9,8 @@
 #include <utility>
 #include <memory>
 
+#include "database/connection/DbConfig.h"
+
 /**
  * @tparam Connection - тип подключения в зависимости от БД, например, для PostgreSql будет PGconn
  * @tparam ResultSet - тип возвращаемого значения после выполнения запроса, например, для PostgreSql будет PGresult
@@ -16,22 +18,22 @@
 template<typename Connection, typename ResultSet>
 class DbConnection {
  private:
-  DbConfig &_dbConfig;
-  std::function<std::unique_ptr<Connection>(DbConfig &)> _connectCallback;
+  const DbConfig &_dbConfig;
+  std::function<std::unique_ptr<Connection>(const DbConfig &)> _connectCallback;
   std::function<std::unique_ptr<ResultSet>(Connection &, std::string)> _executeCallback;
   std::function<void(std::unique_ptr<Connection>)> _freeCallback;
  public:
-  DbConnection(DbConfig &, std::function<std::unique_ptr<Connection>(DbConfig &)>,
+  DbConnection(const DbConfig &, std::function<std::unique_ptr<Connection>(const DbConfig &)>,
                std::function<std::unique_ptr<ResultSet>(Connection &, std::string)>,
                std::function<void(std::unique_ptr<Connection> &&)>);
-  std::unique_ptr<Connection> connect(DbConfig &) const;
-  std::unique_ptr<ResultSet> execute(Connection &, const std::string &) const;
-  void free(std::unique_ptr<Connection> &&) const;
+  virtual std::unique_ptr<Connection> connect() const;
+  virtual std::unique_ptr<ResultSet> execute(Connection &, const std::string &) const;
+  virtual void free(std::unique_ptr<Connection> &&) const;
 };
 
 template<typename Connection, typename ResultSet>
-DbConnection<Connection, ResultSet>::DbConnection(DbConfig &dbConfig,
-                                                  std::function<std::unique_ptr<Connection>(DbConfig &)> connectCallback,
+DbConnection<Connection, ResultSet>::DbConnection(const DbConfig &dbConfig,
+                                                  std::function<std::unique_ptr<Connection>(const DbConfig &)> connectCallback,
                                                   std::function<std::unique_ptr<ResultSet>(Connection &, std::string)> executeCallback,
                                                   std::function<void(std::unique_ptr<Connection> &&)> freeCallback)
     : _dbConfig(dbConfig),
@@ -40,9 +42,9 @@ DbConnection<Connection, ResultSet>::DbConnection(DbConfig &dbConfig,
       _freeCallback(std::move(freeCallback)){}
 
 template<typename Connection, typename ResultSet>
-std::unique_ptr<Connection> DbConnection<Connection, ResultSet>::connect(DbConfig &dbConfig) const {
+std::unique_ptr<Connection> DbConnection<Connection, ResultSet>::connect() const {
   //use libpq
-  return _connectCallback(dbConfig);
+  return _connectCallback(_dbConfig);
 }
 
 template<typename Connection, typename ResultSet>

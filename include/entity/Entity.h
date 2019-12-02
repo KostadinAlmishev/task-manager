@@ -4,16 +4,18 @@
 
 #ifndef TASKMANAGER_INCLUDE_ENTITY_ENTITY_H_
 #define TASKMANAGER_INCLUDE_ENTITY_ENTITY_H_
+#include <string>
 
 class Entity {
  private:
   long _id;
 
  public:
-  Entity();
-  Entity(const Entity &);
+  Entity() = default;
+  explicit Entity(long id);
+  Entity(const Entity &) = default;
   long getId() const noexcept;
-  void setId() noexcept;
+  void setId(long id) noexcept;
 
   virtual std::string toString() const = 0;
 

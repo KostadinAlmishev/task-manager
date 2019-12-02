@@ -7,12 +7,14 @@
 
 #include <mutex>
 #include <string>
+#include <iostream>
 
 class DbConfig {
  private:
   static const size_t PARAMETERS_NUMBER = 6;
   std::mutex _mutex;
-  std::string _confFilePath;
+  //std::string _confFilePath;
+  std::istream _confFile;
   std::string _host;
   int _port;
   std::string _dbName;
@@ -21,8 +23,8 @@ class DbConfig {
   int _poolSize;
 
  public:
-  explicit DbConfig(std::string);
-  DbConfig(const DbConfig &);
+  //explicit DbConfig(std::string);
+  explicit DbConfig(std::streambuf&);
   virtual void readConfigFromFile();
   virtual std::string getHost() const noexcept;
   virtual int getPort() const noexcept;

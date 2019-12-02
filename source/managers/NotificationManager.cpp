@@ -4,6 +4,7 @@
 
 #include <utility>
 #include <algorithm>
+#include <memory>
 
 #include "managers/NotificationManager.h"
 
@@ -16,10 +17,10 @@ void NotificationManager::notifyAll(Entity &user, Entity &info) const {
   }
 }
 
-void NotificationManager::subscribe(Subscriber &subscriber) {
-  _subscribers.push_back(std::make_shared<Subscriber>(subscriber));
+void NotificationManager::subscribe(std::shared_ptr<Subscriber> subscriber) {
+  _subscribers.push_back(subscriber);
 }
 
-void NotificationManager::unsubscribe(Subscriber &subscriber) {
+void NotificationManager::unsubscribe(std::shared_ptr<Subscriber> subscriber) {
   _subscribers.erase(std::remove(_subscribers.begin(), _subscribers.end(), subscriber), _subscribers.end());
 }
