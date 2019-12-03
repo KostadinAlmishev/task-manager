@@ -12,7 +12,8 @@
 
 class Parser {
 private:
-
+    void clearStartSpaces(std::string &command) const;
+    std::string getFirstWord(const std::string &command) const;
 public:
     EntityContainer * parseProjectEntity(std::string command);
     EntityContainer * parseTaskEntity(std::string command);

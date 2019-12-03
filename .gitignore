@@ -32,8 +32,4 @@
 *.app
 
 cmake-build-debug/
-<<<<<<< HEAD
 .idea/
-=======
-.idea/
->>>>>>> 9d3fdbdc2109e812216ae3d0584239d9db86d26e

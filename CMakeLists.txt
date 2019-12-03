@@ -8,7 +8,7 @@ set(CMAKE_CXX_STANDARD 17)
 
 include_directories(${PROJECT_SOURCE_DIR}/includes/entities)
 include_directories(${PROJECT_SOURCE_DIR}/includes/gui)
-include_directories(${PROJECT_SOURCE_DIR}/indludes/taskManager)
+include_directories(${PROJECT_SOURCE_DIR}/includes/taskManager)
 
 file(GLOB_RECURSE
         CPPS "src/*.cpp")

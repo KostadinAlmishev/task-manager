@@ -17,14 +17,14 @@
 class Gui {
 private:
     Parser * parser;
-//    ServiceConnector * serviceConnector;
     Display * display;
 
     std::string readCommand();
     EntityContainer * parse(std::string);
     bool sendCommand(EntityContainer * entityContainer);
-    //    methods of getting info from back
+    void printBody(std::string body);
 public:
+    Gui();
     bool runGui();
 };
 

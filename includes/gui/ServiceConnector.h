@@ -8,23 +8,19 @@
 #include <iostream>
 #include "Services.h"
 #include "EntityContainer.h"
-
+#include "TaskManager.h"
 
 class ServiceConnector {
 private:
-    ProjectService *projectService;
-    TaskService *taskService;
-    UserService *userService;
-    GroupService *groupService;
+    TaskManager taskManager;
+    void getEntity(EntityContainer * entityContainer);
+    void sendEntity(EntityContainer * entityContainer);
+    void updateEntity(EntityContainer * entityContainer);
+    void deleteEntity(EntityContainer * entityContainer);
 public:
-    ServiceConnector(ProjectService *projectService,
-                     TaskService *taskService,
-                     UserService *userService,
-                     GroupService *groupService);
+    ServiceConnector();
 
-    void getEntityFromBack(EntityContainer *entityContainer);
 
-    void sendEntityToBack(EntityContainer *entityContainer);
 };
 
 #endif //TASK_MANAGER_SERVICECONNECTOR_H

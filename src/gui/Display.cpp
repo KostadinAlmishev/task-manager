@@ -15,7 +15,7 @@ Display::Display(int width, int height) {
 std::string Display::getCommandFromUser() {
     std::string str;
     std::cout << "Enter your command: ";
-    std::cin >> str;
+    std::getline(std::cin, str);
     return str;
 }
 void Display::printText(std::string body) {

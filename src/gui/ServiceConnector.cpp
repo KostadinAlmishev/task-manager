@@ -4,3 +4,12 @@
 
 #include <iostream>
 #include "ServiceConnector.h"
+
+
+ServiceConnector::ServiceConnector() {
+
+}
+
+void ServiceConnector::getEntity(EntityContainer * entityContainer) {
+
+}

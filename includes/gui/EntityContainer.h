@@ -10,15 +10,23 @@
 
 
 
+
 class EntityContainer {
 private:
 
 public:
-    // here will be meta data
+    enum mode {
+        MODE_SAVE,
+        MODE_UPDADE,
+        MODE_DELETE,
+        MODE_GET
+    };
+
+    EntityContainer() : isQuit(false) {}
+    bool isQuit;
+
 
     int mode;
-    Group * group;
-    std::vector<Group> * groupList;
     Project * project;
     std::vector<Project> * projectList;
     User * user;
