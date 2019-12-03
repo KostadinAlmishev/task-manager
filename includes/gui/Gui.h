@@ -5,15 +5,20 @@
 #ifndef TASK_MANAGER_GUI_H
 #define TASK_MANAGER_GUI_H
 
-//#include "Services.h"
 
 #include <iostream>
 #include "EntityContainer.h"
+#include "Display.h"
+#include "Parser.h"
+#include "Gui.h"
+
+
 
 class Gui {
 private:
-//    Parser * parser;
+    Parser * parser;
 //    ServiceConnector * serviceConnector;
+    Display * display;
 
     std::string readCommand();
     EntityContainer * parse(std::string);

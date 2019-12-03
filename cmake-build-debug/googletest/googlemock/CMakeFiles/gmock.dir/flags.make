@@ -6,5 +6,5 @@ CXX_FLAGS = -g   -Wall -Wshadow -Werror -Wno-error=dangling-else -DGTEST_HAS_PTH
 
 CXX_DEFINES = 
 
-CXX_INCLUDES = -I/home/kotik/cpp_project/task-manager/includes/entities -I/home/kotik/cpp_project/task-manager/includes/gui -I/home/kotik/cpp_project/task-manager/googletest/googlemock/include -I/home/kotik/cpp_project/task-manager/googletest/googlemock -isystem /home/kotik/cpp_project/task-manager/googletest/googletest/include -isystem /home/kotik/cpp_project/task-manager/googletest/googletest 
+CXX_INCLUDES = -I/home/kotik/cpp_project/task-manager/includes/entities -I/home/kotik/cpp_project/task-manager/includes/gui -I/home/kotik/cpp_project/task-manager/indludes/taskManager -I/home/kotik/cpp_project/task-manager/googletest/googlemock/include -I/home/kotik/cpp_project/task-manager/googletest/googlemock -isystem /home/kotik/cpp_project/task-manager/googletest/googletest/include -isystem /home/kotik/cpp_project/task-manager/googletest/googletest 
 

@@ -12,6 +12,7 @@ set(CMAKE_CXX_COMPILER_ID "GNU")
 set(CMAKE_CXX_TARGET_INCLUDE_PATH
   "../includes/entities"
   "../includes/gui"
+  "../indludes/taskManager"
   "../googletest/googletest/include"
   "../googletest/googletest"
   )

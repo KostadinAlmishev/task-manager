@@ -1,0 +1,8 @@
+//
+// Created by kotik on 03.12.2019.
+//
+
+#ifndef TASK_MANAGER_TASKMANAGER_H
+#define TASK_MANAGER_TASKMANAGER_H
+
+#endif //TASK_MANAGER_TASKMANAGER_H

@@ -3,7 +3,7 @@
 //
 
 #include "Display.h"
-
+#include <iostream>
 
 Display * Display::p_instance = NULL;
 
@@ -11,12 +11,15 @@ Display::Display(int width, int height) {
     _width = width;
     _height = height;
 }
+
 std::string Display::getCommandFromUser() {
-    std::string str = "some text from user";
+    std::string str;
+    std::cout << "Enter your command: ";
+    std::cin >> str;
     return str;
 }
 void Display::printText(std::string body) {
-    std::cout << body;
+    std::cout << body << std::endl;
 }
 size_t Display::width() const {
     return _width;

@@ -221,6 +221,33 @@ gtest/fast:
 	$(MAKE) -f googletest/googletest/CMakeFiles/gtest.dir/build.make googletest/googletest/CMakeFiles/gtest.dir/build
 .PHONY : gtest/fast
 
+main.o: main.cpp.o
+
+.PHONY : main.o
+
+# target to build an object file
+main.cpp.o:
+	$(MAKE) -f CMakeFiles/task_manager.dir/build.make CMakeFiles/task_manager.dir/main.cpp.o
+.PHONY : main.cpp.o
+
+main.i: main.cpp.i
+
+.PHONY : main.i
+
+# target to preprocess a source file
+main.cpp.i:
+	$(MAKE) -f CMakeFiles/task_manager.dir/build.make CMakeFiles/task_manager.dir/main.cpp.i
+.PHONY : main.cpp.i
+
+main.s: main.cpp.s
+
+.PHONY : main.s
+
+# target to generate assembly for a file
+main.cpp.s:
+	$(MAKE) -f CMakeFiles/task_manager.dir/build.make CMakeFiles/task_manager.dir/main.cpp.s
+.PHONY : main.cpp.s
+
 src/gui/Display.o: src/gui/Display.cpp.o
 
 .PHONY : src/gui/Display.o
@@ -329,33 +356,6 @@ src/gui/ServiceConnector.cpp.s:
 	$(MAKE) -f CMakeFiles/task_manager.dir/build.make CMakeFiles/task_manager.dir/src/gui/ServiceConnector.cpp.s
 .PHONY : src/gui/ServiceConnector.cpp.s
 
-test/test.o: test/test.cpp.o
-
-.PHONY : test/test.o
-
-# target to build an object file
-test/test.cpp.o:
-	$(MAKE) -f CMakeFiles/task_manager.dir/build.make CMakeFiles/task_manager.dir/test/test.cpp.o
-.PHONY : test/test.cpp.o
-
-test/test.i: test/test.cpp.i
-
-.PHONY : test/test.i
-
-# target to preprocess a source file
-test/test.cpp.i:
-	$(MAKE) -f CMakeFiles/task_manager.dir/build.make CMakeFiles/task_manager.dir/test/test.cpp.i
-.PHONY : test/test.cpp.i
-
-test/test.s: test/test.cpp.s
-
-.PHONY : test/test.s
-
-# target to generate assembly for a file
-test/test.cpp.s:
-	$(MAKE) -f CMakeFiles/task_manager.dir/build.make CMakeFiles/task_manager.dir/test/test.cpp.s
-.PHONY : test/test.cpp.s
-
 # Help Target
 help:
 	@echo "The following are some of the valid targets for this Makefile:"
@@ -373,6 +373,9 @@ help:
 	@echo "... gmock"
 	@echo "... gtest_main"
 	@echo "... gtest"
+	@echo "... main.o"
+	@echo "... main.i"
+	@echo "... main.s"
 	@echo "... src/gui/Display.o"
 	@echo "... src/gui/Display.i"
 	@echo "... src/gui/Display.s"
@@ -385,9 +388,6 @@ help:
 	@echo "... src/gui/ServiceConnector.o"
 	@echo "... src/gui/ServiceConnector.i"
 	@echo "... src/gui/ServiceConnector.s"
-	@echo "... test/test.o"
-	@echo "... test/test.i"
-	@echo "... test/test.s"
 .PHONY : help
 
 

@@ -4,11 +4,11 @@ set(CMAKE_DEPENDS_LANGUAGES
   )
 # The set of files for implicit dependencies of each language:
 set(CMAKE_DEPENDS_CHECK_CXX
+  "/home/kotik/cpp_project/task-manager/main.cpp" "/home/kotik/cpp_project/task-manager/cmake-build-debug/CMakeFiles/task_manager.dir/main.cpp.o"
   "/home/kotik/cpp_project/task-manager/src/gui/Display.cpp" "/home/kotik/cpp_project/task-manager/cmake-build-debug/CMakeFiles/task_manager.dir/src/gui/Display.cpp.o"
   "/home/kotik/cpp_project/task-manager/src/gui/Gui.cpp" "/home/kotik/cpp_project/task-manager/cmake-build-debug/CMakeFiles/task_manager.dir/src/gui/Gui.cpp.o"
   "/home/kotik/cpp_project/task-manager/src/gui/Parser.cpp" "/home/kotik/cpp_project/task-manager/cmake-build-debug/CMakeFiles/task_manager.dir/src/gui/Parser.cpp.o"
   "/home/kotik/cpp_project/task-manager/src/gui/ServiceConnector.cpp" "/home/kotik/cpp_project/task-manager/cmake-build-debug/CMakeFiles/task_manager.dir/src/gui/ServiceConnector.cpp.o"
-  "/home/kotik/cpp_project/task-manager/test/test.cpp" "/home/kotik/cpp_project/task-manager/cmake-build-debug/CMakeFiles/task_manager.dir/test/test.cpp.o"
   )
 set(CMAKE_CXX_COMPILER_ID "GNU")
 
@@ -16,6 +16,7 @@ set(CMAKE_CXX_COMPILER_ID "GNU")
 set(CMAKE_CXX_TARGET_INCLUDE_PATH
   "../includes/entities"
   "../includes/gui"
+  "../indludes/taskManager"
   "../googletest/googletest/include"
   "../googletest/googlemock/include"
   "../googletest/googletest"

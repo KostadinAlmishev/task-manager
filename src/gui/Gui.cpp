@@ -5,5 +5,11 @@
 #include "Gui.h"
 
 bool Gui::runGui() {
+    bool isRunning = true;
+
+    while (isRunning) {
+
+    }
+
     return true;
 }

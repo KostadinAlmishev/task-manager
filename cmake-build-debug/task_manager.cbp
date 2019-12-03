@@ -46,6 +46,7 @@
 				<Compiler>
 					<Add directory="/home/kotik/cpp_project/task-manager/includes/entities"/>
 					<Add directory="/home/kotik/cpp_project/task-manager/includes/gui"/>
+					<Add directory="/home/kotik/cpp_project/task-manager/indludes/taskManager"/>
 					<Add directory="/home/kotik/cpp_project/task-manager/googletest/googletest/include"/>
 					<Add directory="/home/kotik/cpp_project/task-manager/googletest/googlemock/include"/>
 					<Add directory="/home/kotik/cpp_project/task-manager/googletest/googletest"/>
@@ -75,6 +76,7 @@
 				<Compiler>
 					<Add directory="/home/kotik/cpp_project/task-manager/includes/entities"/>
 					<Add directory="/home/kotik/cpp_project/task-manager/includes/gui"/>
+					<Add directory="/home/kotik/cpp_project/task-manager/indludes/taskManager"/>
 					<Add directory="/home/kotik/cpp_project/task-manager/googletest/googletest/include"/>
 					<Add directory="/home/kotik/cpp_project/task-manager/googletest/googlemock/include"/>
 					<Add directory="/home/kotik/cpp_project/task-manager/googletest/googletest"/>
@@ -144,6 +146,7 @@
 				<Compiler>
 					<Add directory="/home/kotik/cpp_project/task-manager/includes/entities"/>
 					<Add directory="/home/kotik/cpp_project/task-manager/includes/gui"/>
+					<Add directory="/home/kotik/cpp_project/task-manager/indludes/taskManager"/>
 					<Add directory="/home/kotik/cpp_project/task-manager/googletest/googlemock/include"/>
 					<Add directory="/home/kotik/cpp_project/task-manager/googletest/googlemock"/>
 					<Add directory="/home/kotik/cpp_project/task-manager/googletest/googletest/include"/>
@@ -173,6 +176,7 @@
 				<Compiler>
 					<Add directory="/home/kotik/cpp_project/task-manager/includes/entities"/>
 					<Add directory="/home/kotik/cpp_project/task-manager/includes/gui"/>
+					<Add directory="/home/kotik/cpp_project/task-manager/indludes/taskManager"/>
 					<Add directory="/home/kotik/cpp_project/task-manager/googletest/googlemock/include"/>
 					<Add directory="/home/kotik/cpp_project/task-manager/googletest/googlemock"/>
 					<Add directory="/home/kotik/cpp_project/task-manager/googletest/googletest/include"/>
@@ -202,6 +206,7 @@
 				<Compiler>
 					<Add directory="/home/kotik/cpp_project/task-manager/includes/entities"/>
 					<Add directory="/home/kotik/cpp_project/task-manager/includes/gui"/>
+					<Add directory="/home/kotik/cpp_project/task-manager/indludes/taskManager"/>
 					<Add directory="/home/kotik/cpp_project/task-manager/googletest/googlemock/include"/>
 					<Add directory="/home/kotik/cpp_project/task-manager/googletest/googlemock"/>
 					<Add directory="/home/kotik/cpp_project/task-manager/googletest/googletest/include"/>
@@ -231,6 +236,7 @@
 				<Compiler>
 					<Add directory="/home/kotik/cpp_project/task-manager/includes/entities"/>
 					<Add directory="/home/kotik/cpp_project/task-manager/includes/gui"/>
+					<Add directory="/home/kotik/cpp_project/task-manager/indludes/taskManager"/>
 					<Add directory="/home/kotik/cpp_project/task-manager/googletest/googlemock/include"/>
 					<Add directory="/home/kotik/cpp_project/task-manager/googletest/googlemock"/>
 					<Add directory="/home/kotik/cpp_project/task-manager/googletest/googletest/include"/>
@@ -260,6 +266,7 @@
 				<Compiler>
 					<Add directory="/home/kotik/cpp_project/task-manager/includes/entities"/>
 					<Add directory="/home/kotik/cpp_project/task-manager/includes/gui"/>
+					<Add directory="/home/kotik/cpp_project/task-manager/indludes/taskManager"/>
 					<Add directory="/home/kotik/cpp_project/task-manager/googletest/googletest/include"/>
 					<Add directory="/home/kotik/cpp_project/task-manager/googletest/googletest"/>
 					<Add directory="/usr/include/c++/9"/>
@@ -287,6 +294,7 @@
 				<Compiler>
 					<Add directory="/home/kotik/cpp_project/task-manager/includes/entities"/>
 					<Add directory="/home/kotik/cpp_project/task-manager/includes/gui"/>
+					<Add directory="/home/kotik/cpp_project/task-manager/indludes/taskManager"/>
 					<Add directory="/home/kotik/cpp_project/task-manager/googletest/googletest/include"/>
 					<Add directory="/home/kotik/cpp_project/task-manager/googletest/googletest"/>
 					<Add directory="/usr/include/c++/9"/>
@@ -314,6 +322,7 @@
 				<Compiler>
 					<Add directory="/home/kotik/cpp_project/task-manager/includes/entities"/>
 					<Add directory="/home/kotik/cpp_project/task-manager/includes/gui"/>
+					<Add directory="/home/kotik/cpp_project/task-manager/indludes/taskManager"/>
 					<Add directory="/home/kotik/cpp_project/task-manager/googletest/googletest/include"/>
 					<Add directory="/home/kotik/cpp_project/task-manager/googletest/googletest"/>
 					<Add directory="/usr/include/c++/9"/>
@@ -341,6 +350,7 @@
 				<Compiler>
 					<Add directory="/home/kotik/cpp_project/task-manager/includes/entities"/>
 					<Add directory="/home/kotik/cpp_project/task-manager/includes/gui"/>
+					<Add directory="/home/kotik/cpp_project/task-manager/indludes/taskManager"/>
 					<Add directory="/home/kotik/cpp_project/task-manager/googletest/googletest/include"/>
 					<Add directory="/home/kotik/cpp_project/task-manager/googletest/googletest"/>
 					<Add directory="/usr/include/c++/9"/>
@@ -372,6 +382,9 @@
 		<Unit filename="/home/kotik/cpp_project/task-manager/googletest/googletest/src/gtest_main.cc">
 			<Option target="gtest_main"/>
 		</Unit>
+		<Unit filename="/home/kotik/cpp_project/task-manager/main.cpp">
+			<Option target="task_manager"/>
+		</Unit>
 		<Unit filename="/home/kotik/cpp_project/task-manager/src/gui/Display.cpp">
 			<Option target="task_manager"/>
 		</Unit>
@@ -382,9 +395,6 @@
 			<Option target="task_manager"/>
 		</Unit>
 		<Unit filename="/home/kotik/cpp_project/task-manager/src/gui/ServiceConnector.cpp">
-			<Option target="task_manager"/>
-		</Unit>
-		<Unit filename="/home/kotik/cpp_project/task-manager/test/test.cpp">
 			<Option target="task_manager"/>
 		</Unit>
 		<Unit filename="/home/kotik/cpp_project/task-manager/CMakeLists.txt">
