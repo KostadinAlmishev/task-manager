@@ -1,0 +1,8 @@
+//
+// Created by daniil on 04.12.2019.
+//
+
+#ifndef TASK_MANAGER_USERSERVICE_H
+#define TASK_MANAGER_USERSERVICE_H
+
+#endif //TASK_MANAGER_USERSERVICE_H
