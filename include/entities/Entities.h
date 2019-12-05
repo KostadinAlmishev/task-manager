@@ -1,17 +1,17 @@
-//
-// Created by kotik on 24.11.2019.
-//
-
 #ifndef TASK_MANAGER_ENTITIES_H
 #define TASK_MANAGER_ENTITIES_H
 
 #include <iostream>
 #include <string>
 
+#define PR(a) std::cout << #a << " = " << a << std::endl;
+
+
 class Entity {
 private:
     long id;
 public:
+    Entity() : id(-1) {}
     long getId() const;
     void setId(long id);
 };
@@ -50,6 +50,7 @@ private:
     std::string name;
     std::string description;
 public:
+    Task() : creatorId(-1), projectId(-1) {}
     void setCreatorId(long creatorId);
     long getCreatorId() const;
     void setProjectId(long projectId);

@@ -1,36 +1,32 @@
-//
-// Created by kotik on 25.11.2019.
-//
-
 #ifndef TASK_MANAGER_DISPLAY_H
 #define TASK_MANAGER_DISPLAY_H
 
 #include <iostream>
+#include "Request.h"
 
 class Display {
 private:
-    size_t _width;
-    size_t _height;
-
-
     static Display * p_instance;
 
-    Display(int width, int height);
+    Display();
     Display(const Display& other) = delete;
     Display& operator=(const Display&) = delete;
 public:
 
-    static Display * instance(size_t width, size_t height) {
+    static Display * instance() {
         if(!p_instance) {
-            p_instance = new Display(width, height);
+            p_instance = new Display();
         }
         return p_instance;
     }
 
     std::string getCommandFromUser();
+    std::string getText();
+    bool isStrEmpty(std::string str);
+    long getLong();
     void printText(std::string body);
-    size_t width() const;
-    size_t height() const;
+    void printError(std::string body);
+    void printTask(std::shared_ptr<Task> task);
 };
 
 

@@ -8,30 +8,23 @@
 long Entity::getId() const {
     return id;
 }
-
 void Entity::setId(long id) {
     this->id = id;
 }
 
 
-
-
 std::string Project::getName() const {
     return name;
 }
-
 void Project::setName(std::string name) {
     this->name = name;
 }
-
 void Project::setDescription(std::string description) {
     this->description = description;
 }
-
 std::string Project::getDescription() const {
     return description;
 }
-
 
 
 
@@ -69,7 +62,7 @@ long Task::getProjectId() const {
     return projectId;
 }
 void Task::setName(std::string name) {
-    this->projectId = projectId;
+    this->name = name;
 }
 std::string Task::getName() const {
     return name;

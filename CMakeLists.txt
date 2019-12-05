@@ -6,12 +6,12 @@ set(CMAKE_CXX_STANDARD 17)
 #set(${INCLUDES_DIR} ${PROJECT_SOURCE_DIR}/includes)
 
 
-include_directories(${PROJECT_SOURCE_DIR}/includes/entities)
-include_directories(${PROJECT_SOURCE_DIR}/includes/gui)
-include_directories(${PROJECT_SOURCE_DIR}/includes/taskManager)
+include_directories(${PROJECT_SOURCE_DIR}/include/entities)
+include_directories(${PROJECT_SOURCE_DIR}/include/gui)
+include_directories(${PROJECT_SOURCE_DIR}/include/taskManager)
 
 file(GLOB_RECURSE
-        CPPS "src/*.cpp")
+        CPPS "source/*.cpp")
 
 #add_executable(${PROJECT_NAME} main.cpp ${CPPS})
 add_executable(${PROJECT_NAME} main.cpp ${CPPS})

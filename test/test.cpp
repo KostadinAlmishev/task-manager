@@ -9,7 +9,7 @@
 
 #include "Entities.h"
 #include "Services.h"
-#include "EntityContainer.h"
+#include "Request.h"
 #include "Gui.h"
 #include "Display.h"
 #include "ServiceConnector.h"
