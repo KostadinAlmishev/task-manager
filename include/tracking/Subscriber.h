@@ -7,12 +7,13 @@
 
 #include "entity/Entity.h"
 #include "database/commands/DbCommand.h"
+#include "entity/User.h"
 
 class Subscriber {
  public:
   Subscriber() = default;
   Subscriber(const Subscriber &) = default;
-  virtual void update(const Entity &, const Entity &) = 0;
+  virtual void update(const User &, const Entity &) = 0;
   virtual ~Subscriber() = default;
 };
 #endif //TASKMANAGER_INCLUDE_TRACKING_SUBSCRIBER_H_

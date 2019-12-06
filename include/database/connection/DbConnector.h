@@ -28,6 +28,9 @@ class DbConnector {
 
  public:
   explicit DbConnector(const DbConfig &);
+
+  std::string getDbName() const;
+
   virtual void initializeConnectionPool(std::function<std::unique_ptr<Connection>(const DbConfig &)>,
                                         std::function<std::unique_ptr<ResultSet>(Connection &, std::string)>,
                                         std::function<void(std::unique_ptr<Connection> &&)>);
@@ -42,6 +45,11 @@ class DbConnector {
 template<typename Connection, typename ResultSet>
 DbConnector<Connection, ResultSet>::DbConnector(const DbConfig &dbConfig)
     : _dbConfig(dbConfig), _poolSize(dbConfig.getPoolSize()) {}
+
+template<typename Connection, typename ResultSet>
+std::string DbConnector<Connection, ResultSet>::getDbName() const {
+  return _dbConfig.getDbName();
+}
 
 template<typename Connection, typename ResultSet>
 void DbConnector<Connection,

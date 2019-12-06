@@ -11,6 +11,7 @@
 #include "database/commands/DbCommand.h"
 #include "entity/Entity.h"
 #include "tracking/Subscriber.h"
+#include "entity/User.h"
 
 class NotificationManager {
  private:
@@ -19,7 +20,7 @@ class NotificationManager {
  public:
   NotificationManager() = default;
   explicit NotificationManager(std::vector<std::shared_ptr<Subscriber>>);
-  virtual void notifyAll(Entity &, Entity &) const;
+  virtual void notifyAll(User &, Entity &) const;
   virtual void subscribe(std::shared_ptr<Subscriber>);
   virtual void unsubscribe(std::shared_ptr<Subscriber>);
   virtual ~NotificationManager() = default;

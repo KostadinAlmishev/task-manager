@@ -6,15 +6,14 @@
 #include "tracking/Email.h"
 #include "entity/User.h"
 
-void Email::update(const Entity & user, const Entity & current) {
+void Email::update(const User & user, const Entity & current) {
   auto msg = createMessage(user, current);
   sendMessage(std::move(msg));
 }
 
-std::unique_ptr<Message> Email::createMessage(const Entity &user, const Entity &info) const {
-  User castUser = dynamic_cast<const User&> (user);
-  std::string to = castUser.getEmail();
-  std::string subject = "Changes by " + castUser.getName();
+std::unique_ptr<Message> Email::createMessage(const User &user, const Entity &info) const {
+  std::string to = user.getEmail();
+  std::string subject = "Changes by " + user.getName();
   std::string body = "Changes:\n" + info.toString();
 
   return std::make_unique<Message>(_user, to, subject, body);

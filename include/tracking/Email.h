@@ -7,8 +7,9 @@
 
 #include <memory>
 
-#include "tracking/Subscriber.h"
 #include "tracking/Message.h"
+#include "tracking/Subscriber.h"
+#include <entity/User.h>
 
 class Email : public Subscriber {
  private:
@@ -18,8 +19,8 @@ class Email : public Subscriber {
   std::string _password;
   std::function<bool(std::string, int, std::string, std::string, std::unique_ptr<Message> &&)> _sendCallback;
  public:
-  void update(const Entity &, const Entity &) override;
-  virtual std::unique_ptr<Message> createMessage(const Entity &, const Entity &) const;
+  void update(const User &, const Entity &) override;
+  virtual std::unique_ptr<Message> createMessage(const User &, const Entity &) const;
   virtual bool sendMessage(std::unique_ptr<Message> &&);
 };
 #endif //TASKMANAGER_INCLUDE_TRACKING_EMAIL_H_

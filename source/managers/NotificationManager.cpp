@@ -11,7 +11,7 @@
 NotificationManager::NotificationManager(std::vector<std::shared_ptr<Subscriber>> subscribers) :
     _subscribers(std::move(subscribers)) {}
 
-void NotificationManager::notifyAll(Entity &user, Entity &info) const {
+void NotificationManager::notifyAll(User &user, Entity &info) const {
   for (auto &it : _subscribers) {
     it->update(user, info);
   }

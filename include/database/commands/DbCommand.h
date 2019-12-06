@@ -14,41 +14,28 @@
  */
 template<typename Connection, typename ResultSet>
 class DbCommand : public Entity {
- private:
-  const DbConnector<Connection, ResultSet> &_dbConnector;
-  std::shared_ptr<Entity> _backUp;
+ protected:
+  DbConnector<Connection, ResultSet> &_dbConnector;
 
  public:
-  explicit DbCommand(const DbConnector<Connection, ResultSet> &);
+  explicit DbCommand(DbConnector<Connection, ResultSet> &);
   DbCommand(const DbCommand<Connection, ResultSet>&) = default;
 
   std::string toString() const override;
 
-  virtual std::shared_ptr<Entity> getBackUp() const;
   virtual void saveBackUp() = 0;
   virtual void undo() const = 0;
   virtual void execute() const = 0;
-
-  bool operator==(const DbCommand &rhs) const;
 
   ~DbCommand() override = default;
 };
 
 template<typename Connection, typename ResultSet>
-DbCommand<Connection, ResultSet>::DbCommand(const DbConnector<Connection, ResultSet> &dbConnector) : _dbConnector(dbConnector) {}
-
-template<typename Connection, typename ResultSet>
-std::shared_ptr<Entity> DbCommand<Connection, ResultSet>::getBackUp() const {
-  return _backUp;
-}
+DbCommand<Connection, ResultSet>::DbCommand(DbConnector<Connection, ResultSet> &dbConnector) : _dbConnector(dbConnector) {}
 
 template<typename Connection, typename ResultSet>
 std::string DbCommand<Connection, ResultSet>::toString() const {
-  return "DbCommand backUp: " + _backUp->toString();
-}
-template<typename Connection, typename ResultSet>
-bool DbCommand<Connection, ResultSet>::operator==(const DbCommand &rhs) const {
-  return _backUp == rhs._backUp;
+  return "DbCommand empty method";
 }
 
 #endif //TASKMANAGER_INCLUDE_DATABASE_DBCOMMAND_H_

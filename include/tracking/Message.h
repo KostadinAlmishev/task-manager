@@ -5,6 +5,8 @@
 #ifndef TASKMANAGER_INCLUDE_TRACKING_MESSAGE_H_
 #define TASKMANAGER_INCLUDE_TRACKING_MESSAGE_H_
 
+#include <string>
+
 class Message {
  private:
   std::string _from;
