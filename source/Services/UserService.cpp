@@ -1,6 +1,3 @@
-//
-// Created by daniil on 05.12.2019.
-//
 
 #include "Services/UserService.h"
 

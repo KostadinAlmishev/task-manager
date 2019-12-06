@@ -27,7 +27,7 @@ uint64_t ICrypto::binpow(uint64_t a, uint64_t e, uint64_t mod) {
     return e == 0 ? 1 : (e & 1U ? a * binpow(a, e - 1, mod) % mod : sqr(binpow(a, e / 2, mod)) % mod);
 }
 
-std::vector<uint8_t> ICrypto::process_bytes(const std::vector<uint8_t> data, bool encrypt) {
+std::vector<uint8_t> ICrypto::process_bytes(std::vector<uint8_t> data, bool encrypt) {
     std::vector<uint64_t> data_64(data.size());
     Key k;
     if(encrypt) k = publicKey;

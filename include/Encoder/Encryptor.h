@@ -9,6 +9,7 @@
 #include "ICrypto.h"
 
 class Encryptor: public ICrypto {
+
 public:
     Key GetPublicKey() override {
         return publicKey;

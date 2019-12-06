@@ -14,7 +14,8 @@ include_directories(
 
 
 file( GLOB_RECURSE SOURCE_FILES
-         source/*/*.cpp
+        source/*/*.cpp
+        source/*.cpp
         )
 add_executable(
         ${PROJECT_NAME}

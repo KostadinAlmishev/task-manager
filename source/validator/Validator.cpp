@@ -8,7 +8,8 @@
 bool Validator::CheckValidation(std::string inputPassword,  std::string EncodedPassword) {
 
         std::string tmp = passwordEncoder.Encode(inputPassword);
-        if( inputPassword != passwordEncoder.Decode(tmp)  ) {
+        auto tmp2 =  passwordEncoder.Decode(tmp);
+        if(! inputPassword.compare(tmp2) ) {
             std::cerr << "Not valid Encoder/Decoder, maybe not linked\n";
             return false;
         }
@@ -17,7 +18,7 @@ bool Validator::CheckValidation(std::string inputPassword,  std::string EncodedP
 
     auto decoded = passwordEncoder.Decode(EncodedPassword);
 
-    return decoded == inputPassword;
+    return decoded.compare(inputPassword);
 
 
 }

@@ -17,7 +17,7 @@ TEST(Encoder_test, key_gen_test){
 TEST(Encoder_test, test_decode_encode){
     Decryptor decryptor = Decryptor();
     Encryptor encryptor= Encryptor();
-    std::string test = "test";
+    std::string test = "fhdakjkjllk";
     KeyGen keyGen=KeyGen(decryptor, encryptor);
     auto tmp = encryptor.Execute(test);
 
@@ -28,6 +28,8 @@ TEST(Encoder_test, test_decode_encode){
 TEST(Validator_test, test){
     Validator validator;
     Encryptor encryptor;
+    Decryptor decryptor;
+    KeyGen keyGen(encryptor, decryptor);
     auto tmp = encryptor.Execute("test");
     EXPECT_TRUE( validator.CheckValidation("test", tmp));
 }
