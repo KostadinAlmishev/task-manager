@@ -12,6 +12,8 @@ class Key {
 public:
     uint64_t exp;
     uint64_t mod;
+    Key(uint64_t exp, uint64_t mod): exp(exp), mod(mod){;}
+    Key(){;}
 };
 
 

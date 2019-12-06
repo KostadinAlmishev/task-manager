@@ -9,8 +9,14 @@
 #include "Entity.h"
 
 class User : public Entity {
-private:
+protected:
     friend class UserService;
+    bool login;
+    std::string password;
+public:
+    std::string GetStatus() override ;
+    User(){;}
+    User(unsigned long int id, std::string name, std::string description, std::string password  );
 };
 
 

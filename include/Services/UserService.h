@@ -5,4 +5,34 @@
 #ifndef TASK_MANAGER_USERSERVICE_H
 #define TASK_MANAGER_USERSERVICE_H
 
-#endif //TASK_MANAGER_USERSERVICE_H
+#include <iostream>
+#include <set>
+#include "Entity/Entity.h"
+#include "validResponse.h"
+#include "validator/IValidator.h"
+#include "Entity/User.h"
+class UserService{
+private:
+    class UserFunctor{
+    public:
+        bool operator()( User left,  User right){
+            return left.GetName() < right.GetName();
+        }
+    };
+    std::set<User, UserFunctor > loginUsers;
+    Validator validator;
+
+public:
+     validResponse Login(Entity & usr, std::string password);
+     validResponse Logout(Entity & usr);
+
+     const std::set<User,   UserFunctor> & GetLoggedIn();
+     validResponse CheckPriveleges(Entity &usr, std::string command);
+     validResponse ChangePassword(Entity & usr, std::string currentPassword, std::string newPassword );
+};
+
+
+
+
+
+#endif //TASK_MANAGER_USERSERVICE_H::ve

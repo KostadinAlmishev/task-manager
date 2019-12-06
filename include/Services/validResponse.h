@@ -6,10 +6,15 @@
 #define TASK_MANAGER_VALIDRESPONSE_H
 
 #include <string>
+#include "Entity/Entity.h"
+
 
 struct validResponse{
     bool Valid;
+    Entity& entity;
+    std::string request;
     std::string ResponseERROR;
+    validResponse( Entity &ent ): entity(ent) {;}
 };
 
 

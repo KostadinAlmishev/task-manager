@@ -9,10 +9,12 @@
 
 class Decryptor : public ICrypto  {
 public:
-    virtual std::string Execute(std::string );
-    virtual Key GetPublicKey(){
+    std::string Execute(std::string ) override;
+    Key GetPublicKey() override {
         return publicKey;
     }
+    Decryptor(){;}
+
 };
 
 

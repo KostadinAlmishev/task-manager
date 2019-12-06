@@ -10,10 +10,10 @@
 
 class Encryptor: public ICrypto {
 public:
-    virtual Key GetPublicKey(){
+    Key GetPublicKey() override {
         return publicKey;
     }
-    virtual std::string Execute(std::string input);
+    std::string Execute(std::string input) override ;
 };
 
 

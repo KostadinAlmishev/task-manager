@@ -5,20 +5,24 @@
 #ifndef TASK_MANAGER_IVALIDATOR_H
 #define TASK_MANAGER_IVALIDATOR_H
 
-#include "PasswordEncoder.h"
+#include "include/Encoder/PasswordEncoder.h"
 #include "Entity/Entity.h"
+
 class IValidator{
-private:
-    PasswordEncoder *passwordEncoder = new PasswordEncoder();
+protected:
+    PasswordEncoder passwordEncoder ;
 public:
-    virtual  Entity* CheckValidation(std::string login, std::string password ) = 0 ;
+    virtual  bool CheckValidation(std::string inputPassword, std::string EncodedPassword ) = 0 ;
+    virtual std::string ReinstallPassword(std::string newPassword , std::string inputPassword, std::string EncodedPassword)= 0;
 };
 
 
 class Validator: public  IValidator{
 public:
 
-    //return NULL if not found
-    virtual Entity* CheckValidation(std::string login, std::string password);
+    //returns true if valid
+    bool  CheckValidation(std::string inputPassword, std::string EncodedPassword) override ;
+    std::string ReinstallPassword(std::string newPassword, std::string inputPassword,
+                                              std::string EncodedPassword) override;
 };
 #endif //TASK_MANAGER_IVALIDATOR_H

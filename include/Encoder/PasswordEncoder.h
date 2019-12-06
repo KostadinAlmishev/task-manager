@@ -9,17 +9,19 @@
 
 class IPasswordEncoder{
 protected:
-    ICrypto *encryptor = new Encryptor();
-    ICrypto *decryptor = new Decryptor();
-    KeyGen keyGen = KeyGen(*encryptor, *decryptor);
+    Encryptor  encryptor;
+    Decryptor  decryptor;
+    KeyGen keyGen = KeyGen(encryptor, decryptor);
 public:
+
+
     virtual std::string Decode(std::string) = 0;
     virtual std::string Encode(std::string) = 0;
 };
 class PasswordEncoder: public IPasswordEncoder{
 public:
-    virtual std::string Decode(std::string);
-    virtual std::string Encode(std::string);
+     std::string Decode(std::string) override ;
+     std::string Encode(std::string) override ;
 };
 
 #endif //TASK_MANAGER_PASSWORDENCODER_H

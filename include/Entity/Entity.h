@@ -16,7 +16,7 @@ protected:
 public:
     std::string GetName(){ return name;}
     std::string GetDescripton(){ return  description;}
-
+    virtual  std::string GetStatus()= 0;
     unsigned long int GetId(){ return  id;}
 
 };
