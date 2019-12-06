@@ -8,12 +8,11 @@ set(CMAKE_CXX_STANDARD 17)
 
 include_directories(${PROJECT_SOURCE_DIR}/include/entities)
 include_directories(${PROJECT_SOURCE_DIR}/include/gui)
-include_directories(${PROJECT_SOURCE_DIR}/include/taskManager)
+include_directories(${PROJECT_SOURCE_DIR}/include/controller)
 
 file(GLOB_RECURSE
         CPPS "source/*.cpp")
 
-#add_executable(${PROJECT_NAME} main.cpp ${CPPS})
 add_executable(${PROJECT_NAME} main.cpp ${CPPS})
 
 add_subdirectory(googletest)

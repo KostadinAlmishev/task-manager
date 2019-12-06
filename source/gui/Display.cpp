@@ -14,7 +14,7 @@ Display::Display() {
 std::string Display::getCommandFromUser() {
     std::string str;
     std::cout << std::endl << "Enter your command: ";
-    std::getline(std::cin, str);
+    str = getText();
     return str;
 }
 void Display::printText(std::string body) {
@@ -33,7 +33,12 @@ void Display::printTask(std::shared_ptr<Task> task) {
         << "   Project id: " << task->getProjectId() << std::endl;
 }
 
-
+void Display::printUser(std::shared_ptr<User> user) {
+    std::cout << "User \"" << user->getName() << "\"" << std::endl
+              << "Email: " << user->getEmail() << std::endl
+              << "Id: " << user->getId() << std::endl
+              << "Status: \"" << user->getStatus() << "\"" << std::endl;
+}
 
 std::string Display::getText() {
     std::string str;
@@ -64,3 +69,45 @@ bool Display::isStrEmpty(std::string str) {
     }
     return false;
 }
+
+void Display::getInformationTaskSave(std::shared_ptr<Task> task) {
+    printText("Project ID to which task will belong: ");
+    task->setProjectId(getLong());
+    printText("Name of a task: ");
+    task->setName(getText());
+    printText("Description: ");
+    task->setDescription(getText());
+}
+
+void Display::getInformationTaskUpdate(std::shared_ptr<Task> task) {
+    printText("New name of a task: ");
+    task->setName(getText());
+    printText("New description: ");
+    task->setDescription(getText());
+}
+
+void Display::getInformationUserSave(std::shared_ptr<User> user) {
+    printText("User name: ");
+    user->setName(getText());
+    printText("Email: ");
+    user->setEmail(getText());
+    printText("Password: ");
+    user->setPassword(getText());
+    user->setStatus("user");
+
+}
+
+void Display::getInformationUserUpdate(std::shared_ptr<User> user) {
+    printText("New password: ");
+    user->setPassword(getText());
+}
+
+void Display::getInformationProjectSave(std::shared_ptr<Project> project) {
+
+}
+
+void Display::getInformationProjectUpdate(std::shared_ptr<Project> project) {
+
+}
+
+

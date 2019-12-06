@@ -14,21 +14,21 @@
 #include "Parser.h"
 #include "Gui.h"
 #include "ServiceConnector.h"
+#include "State.h"
+
 
 class Gui {
 private:
     std::unique_ptr<Parser> parser;
     Display * display;
     std::unique_ptr<ServiceConnector> serviceConnector;
+    std::unique_ptr<State> state;
 
     std::string readCommand() const;
     void sendCommand(std::shared_ptr<Request> request, std::shared_ptr<Response> response);
     void modifyRequest(std::shared_ptr<Request> request);
     void readResponse(std::shared_ptr<Response> response);
-    void requestInformation(std::shared_ptr<Request> request);
-    void requestInformationTask(std::shared_ptr<Request> request);
-    void requestInformationUser(std::shared_ptr<Request> request);
-    void requestInformationProject(std::shared_ptr<Request> request);
+    void getInformation(std::shared_ptr<Request> request);
 public:
     Gui();
     bool runGui();

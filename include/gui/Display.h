@@ -2,7 +2,9 @@
 #define TASK_MANAGER_DISPLAY_H
 
 #include <iostream>
-#include "Request.h"
+#include <memory>
+
+#include "Entities.h"
 
 class Display {
 private:
@@ -20,13 +22,21 @@ public:
         return p_instance;
     }
 
+    bool isStrEmpty(std::string str);
+
     std::string getCommandFromUser();
     std::string getText();
-    bool isStrEmpty(std::string str);
     long getLong();
     void printText(std::string body);
     void printError(std::string body);
     void printTask(std::shared_ptr<Task> task);
+    void printUser(std::shared_ptr<User> user);
+    void getInformationTaskSave(std::shared_ptr<Task> task);
+    void getInformationTaskUpdate(std::shared_ptr<Task> task);
+    void getInformationUserSave(std::shared_ptr<User> user);
+    void getInformationUserUpdate(std::shared_ptr<User> user);
+    void getInformationProjectSave(std::shared_ptr<Project> project);
+    void getInformationProjectUpdate(std::shared_ptr<Project> project);
 };
 
 

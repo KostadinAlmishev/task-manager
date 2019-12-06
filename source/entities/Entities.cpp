@@ -47,6 +47,13 @@ std::string User::getEmail() const {
     return email;
 }
 
+void User::setStatus(std::string status) {
+    this->status = status;
+}
+
+std::string User::getStatus() const {
+    return status;
+}
 
 
 void Task::setCreatorId(long creatorId) {

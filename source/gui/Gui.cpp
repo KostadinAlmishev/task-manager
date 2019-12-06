@@ -7,6 +7,7 @@
 #include "ServiceConnector.h"
 #include "Response.h"
 #include "Request.h"
+#include "State.h"
 
 #include <iostream>
 #include <string>
@@ -17,6 +18,7 @@ Gui::Gui() {
     parser = std::make_unique<Parser>();
     display = Display::instance();
     serviceConnector = std::make_unique<ServiceConnector>();
+    state = std::make_unique<State>();
 }
 
 bool Gui::runGui() {
@@ -53,7 +55,7 @@ void Gui::sendCommand(std::shared_ptr<Request> request, std::shared_ptr<Response
 
 void Gui::modifyRequest(std::shared_ptr<Request> request) {
     if (request->mode == requestMode::UPDADE || request->mode == requestMode::SAVE) {
-        requestInformation(request);
+        getInformation(request);
     }
 }
 
@@ -61,65 +63,60 @@ void Gui::readResponse(std::shared_ptr<Response> response) {
     if (response->isError) {
         display->printError(response->errorBody);
     }
-    else if (response->code == responseCode::TASK) {
-        display->printTask(response->task);
+    else {
+        switch (response->code) {
+            case responseCode::TASK:
+                display->printTask(response->task);
+                break;
+            case responseCode::USER:
+                display->printUser(response->user);
+                break;
+            case responseCode::PROJECT:
+
+                break;
+        }
     }
 }
 
-void Gui::requestInformation(std::shared_ptr<Request> request) {
+void Gui::getInformation(std::shared_ptr<Request> request) {
     switch (request->code) {
         case requestCode::TASK:
-            requestInformationTask(request);
+            switch (request->mode) {
+                case requestMode::UPDADE: {
+                    display->getInformationTaskUpdate(request->task);
+                    break;
+                }
+                case requestMode::SAVE:
+                    display->getInformationTaskSave(request->task);
+                    break;
+            }
             break;
         case requestCode::PROJECT:
-            requestInformationProject(request);
+            switch (request->mode) {
+                case requestMode::UPDADE: {
+                    display->getInformationProjectUpdate(request->project);
+                    break;
+                }
+                case requestMode::SAVE:
+                    display->getInformationProjectSave(request->project);
+                    break;
+            }
             break;
         case requestCode::USER:
-            requestInformationUser(request);
+            switch (request->mode) {
+                case requestMode::UPDADE: {
+                    display->getInformationUserUpdate(request->user);
+                    break;
+                }
+                case requestMode::SAVE:
+                    display->getInformationUserSave(request->user);
+                    break;
+            }
             break;
     }
 }
 
-void Gui::requestInformationTask(std::shared_ptr<Request> request) {
-    switch (request->mode) {
-        case requestMode::SAVE:
-            display->printText("Project ID to which task will belong: ");
-            request->task->setProjectId(display->getLong());
-            display->printText("Name of a task: ");
-            request->task->setName(display->getText());
-            display->printText("Description: ");
-            request->task->setDescription(display->getText());
-            break;
-        case requestMode::UPDADE:
-            display->printText("New name of a task: ");
-            request->task->setName(display->getText());
-            display->printText("New description: ");
-            request->task->setDescription(display->getText());
-            break;
-    }
-}
 
-void Gui::requestInformationUser(std::shared_ptr<Request> request) {
-    switch (request->mode) {
-        case requestMode::SAVE:
-
-            break;
-        case requestMode::UPDADE:
-
-            break;
-    }
-}
-
-void Gui::requestInformationProject(std::shared_ptr<Request> request) {
-    switch (request->mode) {
-        case requestMode::SAVE:
-
-            break;
-        case requestMode::UPDADE:
-
-            break;
-    }
-}
 
 
 

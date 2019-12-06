@@ -35,6 +35,7 @@ private:
     std::string name;
     std::string password;
     std::string email;
+    std::string status;
 public:
     void setName(std::string name);
     std::string getName() const;
@@ -42,7 +43,11 @@ public:
     std::string getPassword() const;
     void setEmail(std::string email);
     std::string getEmail() const;
+    void setStatus(std::string status);
+    std::string getStatus() const;
 };
+
+
 class Task : public Entity {
 private:
     long creatorId;

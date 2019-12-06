@@ -19,10 +19,10 @@ public:
 
 class Parser {
 private:
-    void parseProjectEntity(std::string command, std::shared_ptr<Request> request, std::shared_ptr<ParseError> parseError);
-    void parseTaskEntity(std::string command, std::shared_ptr<Request> request, std::shared_ptr<ParseError> parseError);
-    void parseUserEntity(std::string command, std::shared_ptr<Request> request, std::shared_ptr<ParseError> parseError);
-    void parseGroupEntity(std::string command, std::shared_ptr<Request> request, std::shared_ptr<ParseError> parseError);
+    void parseProject(std::string command, std::shared_ptr<Request> request, std::shared_ptr<ParseError> parseError);
+    void parseTask(std::string command, std::shared_ptr<Request> request, std::shared_ptr<ParseError> parseError);
+    void parseUser(std::string command, std::shared_ptr<Request> request, std::shared_ptr<ParseError> parseError);
+    void parseGroup(std::string command, std::shared_ptr<Request> request, std::shared_ptr<ParseError> parseError);
 public:
     void clearStartSpaces(std::string &command) const;
     void clearEndSpaces(std::string &command) const;

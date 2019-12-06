@@ -5,12 +5,12 @@
 #include <memory>
 
 #include "Request.h"
-#include "TaskManager.h"
+#include "Controller.h"
 #include "Response.h"
 
 class ServiceConnector {
 private:
-    TaskManager taskManager;
+    std::shared_ptr<Controller> controller;
 public:
     ServiceConnector();
     void sendCommand(std::shared_ptr<Request> request, std::shared_ptr<Response> response);

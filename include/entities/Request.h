@@ -20,6 +20,7 @@ enum class requestMode {
 
 enum class requestCode {
     _EMPTY,
+    AUTHORIZATION,
     TASK,
     PROJECT,
     USER,

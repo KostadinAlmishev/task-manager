@@ -39,10 +39,10 @@ std::string Parser::getWordByPos(const std::string &command, int pos) const {
 }
 
 
-void Parser::parseProjectEntity(std::string command, std::shared_ptr<Request> request, std::shared_ptr<ParseError> parseError) {
+void Parser::parseProject(std::string command, std::shared_ptr<Request> request, std::shared_ptr<ParseError> parseError) {
 
 }
-void Parser::parseTaskEntity(std::string command, std::shared_ptr<Request> request, std::shared_ptr<ParseError> parseError) {
+void Parser::parseTask(std::string command, std::shared_ptr<Request> request, std::shared_ptr<ParseError> parseError) {
     std::string second = getWordByPos(command, 1);
     std::string third = getWordByPos(command, 2);
     request->task = std::make_shared<Task>();
@@ -89,24 +89,85 @@ void Parser::parseTaskEntity(std::string command, std::shared_ptr<Request> reque
         parseError->errorBody = "invalid command";
     }
 }
-void Parser::parseUserEntity(std::string command, std::shared_ptr<Request> request, std::shared_ptr<ParseError> parseError) {
+void Parser::parseUser(std::string command, std::shared_ptr<Request> request, std::shared_ptr<ParseError> parseError) {
+    std::string second = getWordByPos(command, 1);
+    std::string third = getWordByPos(command, 2);
+    request->user = std::make_shared<User>();
+    request->code = requestCode::USER;
 
+    if (second == "get-by-id" && !third.empty()) {
+        try {
+            request->user->setId(std::stoi(third));
+        }
+        catch (const std::exception& ex) {
+            parseError->isError = true;
+            parseError->errorBody = "invalid id";
+        }
+        request->mode = requestMode::GET;
+        request->findBy = requestFindBy::ID;
+    }
+    else if (second == "get-by-name" && !third.empty()) {
+        PR("good");
+        request->user->setName(third);
+        request->mode = requestMode::GET;
+        request->findBy = requestFindBy::NAME;
+    }
+    else if (second == "new" && third.empty()) {
+        request->mode = requestMode::SAVE;
+    }
+    else if (second == "delete-by-id" && !third.empty()) {
+        try {
+            request->user->setId(std::stoi(third));
+        }
+        catch (const std::exception& ex) {
+            parseError->isError = true;
+            parseError->errorBody = "invalid id";
+        }
+        request->mode = requestMode::DELETE;
+        request->findBy = requestFindBy::ID;
+    }
+    else if (second == "delete-by-name" && !third.empty()) {
+        request->user->setName(third);
+        request->mode = requestMode::DELETE;
+        request->findBy = requestFindBy::NAME;
+    }
+    else if (second == "update-by-id" && !third.empty()) {
+        try {
+            request->user->setId(std::stoi(third));
+        }
+        catch (const std::exception& ex) {
+            parseError->isError = true;
+            parseError->errorBody = "invalid id";
+        }
+        request->mode = requestMode::UPDADE;
+        request->findBy = requestFindBy::ID;
+    }
+    else if (second == "update-by-name" && !third.empty()) {
+        request->user->setName(third);
+        request->mode = requestMode::UPDADE;
+        request->findBy = requestFindBy::NAME;
+    }
+    else {
+        parseError->isError = true;
+        parseError->errorBody = "invalid command";
+    }
 }
-void Parser::parseGroupEntity(std::string command, std::shared_ptr<Request> request, std::shared_ptr<ParseError> parseError) {
+void Parser::parseGroup(std::string command, std::shared_ptr<Request> request, std::shared_ptr<ParseError> parseError) {
 
 }
 void Parser::parse(std::string command, std::shared_ptr<Request> request, std::shared_ptr<ParseError> parseError) {
     std::string first = getWordByPos(command, 0);
     if (first == "quit") parseError->isQuit = true;
     else if (first == "project") {
-        request->code = requestCode::PROJECT;
+//        request->code = requestCode::PROJECT;
     }
     else if (first == "task") {
         request->code = requestCode::TASK;
-        parseTaskEntity(command, request, parseError);
+        parseTask(command, request, parseError);
     }
     else if (first == "user") {
         request->code = requestCode::USER;
+        parseUser(command, request, parseError);
     }
     else {
         parseError->isError = true;
