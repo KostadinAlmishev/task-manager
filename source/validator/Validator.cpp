@@ -2,7 +2,7 @@
 // Created by daniil on 16.11.2019.
 //
 #include "include/validator/IValidator.h"
-#include "Entity/User.h"
+#include "entitys/User.h"
 
 
 bool Validator::CheckValidation(std::string inputPassword,  std::string EncodedPassword) {
@@ -10,7 +10,7 @@ bool Validator::CheckValidation(std::string inputPassword,  std::string EncodedP
         std::string tmp = passwordEncoder.Encode(inputPassword);
         auto tmp2 =  passwordEncoder.Decode(tmp);
         if(! inputPassword.compare(tmp2) ) {
-            std::cerr << "Not valid Encoder/Decoder, maybe not linked\n";
+            std::cerr << "Not valid encoder/Decoder, maybe not linked\n";
             return false;
         }
 

@@ -2,10 +2,10 @@
 // Created by daniil on 16.11.2019.
 //
 #include "gtest/gtest.h"
-#include "Encoder/Encoder.h"
+#include "encoder/Encoder.h"
 #include "validator/IValidator.h"
-#include "Entity/User.h"
-#include "Services/UserService.h"
+#include "entitys/User.h"
+#include "services/UserService.h"
 TEST(Encoder_test, key_gen_test){
     Decryptor decryptor;
     Encryptor encryptor;

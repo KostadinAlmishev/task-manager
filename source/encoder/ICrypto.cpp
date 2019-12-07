@@ -1,7 +1,7 @@
 //
 // Created by daniil on 05.12.2019.
 //
-#include "Encoder/ICrypto.h"
+#include "encoder/ICrypto.h"
 
 std::vector<uint64_t> ICrypto::resize(const std::vector<uint64_t> &data, uint8_t in_size, uint8_t out_size) {
     std::vector<uint64_t> res;

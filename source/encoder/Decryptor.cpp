@@ -2,7 +2,7 @@
 // Created by daniil on 09.11.2019.
 //
 
-#include "include/Encoder/Decryptor.h"
+#include "include/encoder/Decryptor.h"
 std::string Decryptor::Execute(std::string input){
     std::vector<uint8_t > temp;
     for( auto i =0;input[i]!='\0'; i++)

@@ -2,7 +2,7 @@
 // Created by daniil on 09.11.2019.
 //
 
-#include "include/Encoder/PasswordEncoder.h"
+#include "include/encoder/PasswordEncoder.h"
 std::string PasswordEncoder::Decode(std::string input) {
     return decryptor.Execute(input);
 }

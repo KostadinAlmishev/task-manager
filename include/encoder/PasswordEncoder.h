@@ -5,7 +5,7 @@
 #ifndef TASK_MANAGER_PASSWORDENCODER_H
 #define TASK_MANAGER_PASSWORDENCODER_H
 
-#include "include/Encoder/Encoder.h"
+#include "include/encoder/Encoder.h"
 
 class IPasswordEncoder{
 protected:
