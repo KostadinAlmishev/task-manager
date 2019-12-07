@@ -15,7 +15,7 @@
 #include "database/connection/DbConnector.h"
 #include "database/factories/DbCommandFactory.h"
 #include "managers/HistoryManager.h"
-#include "entity/Entity.h"
+#include "entities/Entity.h"
 #include "managers/NotificationManager.h"
 #include "tracking/Subscriber.h"
 
