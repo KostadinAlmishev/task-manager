@@ -10,7 +10,7 @@
 #include <mutex>
 #include <condition_variable>
 
-#include "DbConfig.h"
+#include "database/config/DbConfig.h"
 #include "DbConnection.h"
 
 /**

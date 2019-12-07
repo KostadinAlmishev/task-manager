@@ -9,7 +9,7 @@
 #include <utility>
 #include <memory>
 
-#include "database/connection/DbConfig.h"
+#include "database/config/DbConfig.h"
 
 /**
  * @tparam Connection - тип подключения в зависимости от БД, например, для PostgreSql будет PGconn
