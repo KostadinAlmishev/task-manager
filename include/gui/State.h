@@ -4,7 +4,11 @@
 #include <iostream>
 #include <memory>
 
-#include "Entities.h"
+#include "Entity.h"
+#include "Task.h"
+#include "User.h"
+#include "Project.h"
+
 
 class State {
 private:

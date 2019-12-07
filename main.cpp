@@ -7,7 +7,7 @@
 #include "Gui.h"
 #include "Parser.h"
 #include "ServiceConnector.h"
-#include "Entities.h"
+#include "Entity.h"
 
 
 int main(int argc, char *argv[])

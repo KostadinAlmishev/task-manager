@@ -11,7 +11,11 @@
 #include <iostream>
 #include <vector>
 
-#include "Entities.h"
+#include "Entity.h"
+#include "Task.h"
+#include "User.h"
+#include "Project.h"
+
 
 
 

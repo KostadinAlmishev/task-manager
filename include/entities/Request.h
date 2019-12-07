@@ -8,19 +8,24 @@
 #include <vector>
 #include <memory>
 
-#include "Entities.h"
+#include "Entity.h"
+#include "Task.h"
+#include "User.h"
+#include "Project.h"
+
 
 enum class requestMode {
     _EMPTY,
     SAVE,
     UPDADE,
     DELETE,
-    GET
+    GET,
+    AUTHORIZATION,
+    DEAUTHORIZATION,
 };
 
 enum class requestCode {
     _EMPTY,
-    AUTHORIZATION,
     TASK,
     PROJECT,
     USER,
@@ -34,6 +39,7 @@ enum class requestFindBy {
     ID,
     NAME,
 };
+
 
 class Request {
 private:

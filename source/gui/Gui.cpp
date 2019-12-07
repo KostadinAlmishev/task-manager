@@ -23,7 +23,7 @@ Gui::Gui() {
 
 bool Gui::runGui() {
     while (true) {
-        std::string command = readCommand();;
+        std::string command = state->isAuthorized() ? readCommand() : "sign-in";
         auto request = std::make_shared<Request>();
         auto parseError = std::make_shared<ParseError>();
         parser->parse(command, request, parseError);
@@ -35,11 +35,10 @@ bool Gui::runGui() {
             display->printError(parseError->errorBody);
             continue;
         }
-
-        modifyRequest(request);
+        modifyRequest(request, state);
         auto response = std::make_shared<Response>();
         sendCommand(request, response);
-        readResponse(response);
+        readResponse(response, state);
     }
 
     return true;
@@ -53,13 +52,21 @@ void Gui::sendCommand(std::shared_ptr<Request> request, std::shared_ptr<Response
     serviceConnector->sendCommand(request, response);
 }
 
-void Gui::modifyRequest(std::shared_ptr<Request> request) {
-    if (request->mode == requestMode::UPDADE || request->mode == requestMode::SAVE) {
-        getInformation(request);
+void Gui::modifyRequest(std::shared_ptr<Request> request, std::unique_ptr<State> &state) {
+    switch (request->mode) {
+        case requestMode::UPDADE:
+            getInformation(request);
+            break;
+        case requestMode::SAVE:
+            getInformation(request);
+            break;
+        case requestMode::AUTHORIZATION:
+            display->getPasswordAndName(request->user);
+            break;
     }
 }
 
-void Gui::readResponse(std::shared_ptr<Response> response) {
+void Gui::readResponse(std::shared_ptr<Response> response, std::unique_ptr<State> &state) {
     if (response->isError) {
         display->printError(response->errorBody);
     }
@@ -74,6 +81,10 @@ void Gui::readResponse(std::shared_ptr<Response> response) {
             case responseCode::PROJECT:
 
                 break;
+            case responseCode::SUCCESSFULL_AUTHORIZATION:
+                state->authorize(response->user);
+                break;
+
         }
     }
 }

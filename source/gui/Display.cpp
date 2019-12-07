@@ -3,6 +3,10 @@
 //
 
 #include "Display.h"
+#include "Task.h"
+#include "User.h"
+#include "Project.h"
+
 #include <iostream>
 
 Display * Display::p_instance = NULL;
@@ -108,6 +112,16 @@ void Display::getInformationProjectSave(std::shared_ptr<Project> project) {
 
 void Display::getInformationProjectUpdate(std::shared_ptr<Project> project) {
 
+}
+
+void Display::getPasswordAndName(std::shared_ptr<User> user) {
+    printText("User name: ");
+    user->setName(getText());
+    printText("Password: ");
+    std::string str = getText();
+    printText("Password again: ");
+    if (getText() == str) user->setPassword(str);
+    user->setStatus("user");
 }
 
 

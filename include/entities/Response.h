@@ -4,10 +4,15 @@
 #include <vector>
 #include <memory>
 
-#include "Entities.h"
+#include "Entity.h"
+#include "Task.h"
+#include "User.h"
+#include "Project.h"
+
 
 enum class responseCode {
     _EMPTY,
+    SUCCESSFULL_AUTHORIZATION,
     TASK,
     PROJECT,
     USER,

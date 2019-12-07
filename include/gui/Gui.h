@@ -26,8 +26,8 @@ private:
 
     std::string readCommand() const;
     void sendCommand(std::shared_ptr<Request> request, std::shared_ptr<Response> response);
-    void modifyRequest(std::shared_ptr<Request> request);
-    void readResponse(std::shared_ptr<Response> response);
+    void modifyRequest(std::shared_ptr<Request> request, std::unique_ptr<State> &state);
+    void readResponse(std::shared_ptr<Response> response, std::unique_ptr<State> &state);
     void getInformation(std::shared_ptr<Request> request);
 public:
     Gui();

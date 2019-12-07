@@ -7,7 +7,7 @@
 #include <iostream>
 
 
-#include "Entities.h"
+#include "Entity.h"
 #include "Services.h"
 #include "Request.h"
 #include "Gui.h"

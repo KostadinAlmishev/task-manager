@@ -4,12 +4,15 @@
 #include <iostream>
 #include <memory>
 
-#include "Entities.h"
+#include "Entity.h"
+#include "Task.h"
+#include "User.h"
+#include "Project.h"
+
 
 class Display {
 private:
     static Display * p_instance;
-
     Display();
     Display(const Display& other) = delete;
     Display& operator=(const Display&) = delete;
@@ -37,6 +40,7 @@ public:
     void getInformationUserUpdate(std::shared_ptr<User> user);
     void getInformationProjectSave(std::shared_ptr<Project> project);
     void getInformationProjectUpdate(std::shared_ptr<Project> project);
+    void getPasswordAndName(std::shared_ptr<User> user);
 };
 
 

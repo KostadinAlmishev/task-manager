@@ -5,6 +5,7 @@
 #include "Parser.h"
 #include "Request.h"
 
+
 void Parser::clearStartSpaces(std::string &command) const {
     auto it = command.begin();
     while (*it == ' ') it++;
@@ -157,6 +158,7 @@ void Parser::parseGroup(std::string command, std::shared_ptr<Request> request, s
 }
 void Parser::parse(std::string command, std::shared_ptr<Request> request, std::shared_ptr<ParseError> parseError) {
     std::string first = getWordByPos(command, 0);
+    std::string second = getWordByPos(command, 1);
     if (first == "quit") parseError->isQuit = true;
     else if (first == "project") {
 //        request->code = requestCode::PROJECT;
@@ -168,6 +170,13 @@ void Parser::parse(std::string command, std::shared_ptr<Request> request, std::s
     else if (first == "user") {
         request->code = requestCode::USER;
         parseUser(command, request, parseError);
+    }
+    else if (first == "sign-out" && second.empty()) {
+        request->mode = requestMode::DEAUTHORIZATION;
+    }
+    else if (first == "sign-in" && second.empty()) {
+        request->user = std::make_shared<User>();
+        request->mode = requestMode::AUTHORIZATION;
     }
     else {
         parseError->isError = true;

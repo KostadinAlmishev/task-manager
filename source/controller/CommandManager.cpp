@@ -2,7 +2,10 @@
 #include <iostream>
 
 #include "CommandManager.h"
-#include "Entities.h"
+#include "Entity.h"
+#include "Task.h"
+#include "User.h"
+#include "Project.h"
 
 
 

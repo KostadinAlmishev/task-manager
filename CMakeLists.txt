@@ -1,14 +1,13 @@
-cmake_minimum_required(VERSION 3.12)
+cmake_minimum_required(VERSION 3.15)
 project(task_manager)
 
 set(CMAKE_CXX_STANDARD 17)
 
 #set(${INCLUDES_DIR} ${PROJECT_SOURCE_DIR}/includes)
 
-
+include_directories(${PROJECT_SOURCE_DIR}/include/controller)
 include_directories(${PROJECT_SOURCE_DIR}/include/entities)
 include_directories(${PROJECT_SOURCE_DIR}/include/gui)
-include_directories(${PROJECT_SOURCE_DIR}/include/controller)
 
 file(GLOB_RECURSE
         CPPS "source/*.cpp")

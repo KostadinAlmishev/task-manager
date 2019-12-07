@@ -1,5 +1,5 @@
 #include "Controller.h"
-#include "Entities.h"
+#include "Entity.h"
 #include "CommandManager.h"
 
 #include <memory>
@@ -23,7 +23,14 @@ void Controller::checkRequest(std::shared_ptr<Request> request, std::shared_ptr<
         case requestMode::UPDADE:
             updateEntity(request, response);
             break;
+        case requestMode::AUTHORIZATION:
+            checkAuthorization(request, response);
+            break;
+        case requestMode::DEAUTHORIZATION:
+
+            break;
     }
+
 }
 
 
@@ -49,7 +56,6 @@ void Controller::getEntity(std::shared_ptr<Request> request, std::shared_ptr<Res
                     break;
             }
             break;
-
 
         case requestCode::TASK:
             switch (request->findBy) {
@@ -185,6 +191,10 @@ void Controller::deleteEntity(std::shared_ptr<Request> request, std::shared_ptr<
 
             break;
     }
+}
+
+void Controller::checkAuthorization(std::shared_ptr<Request> request, std::shared_ptr<Response> response) {
+
 }
 
 

@@ -2,7 +2,11 @@
 #include <memory>
 
 #include "State.h"
-#include <Entities.h>
+#include "Entity.h"
+#include "Task.h"
+#include "User.h"
+#include "Project.h"
+
 
 State::State() : _isAuthorized(false) {
 
@@ -13,6 +17,7 @@ void State::authorize(std::shared_ptr<User> user) {
     _isAuthorized = true;
 }
 void State::deauthorize() {
+    this->user = nullptr;
     _isAuthorized = false;
 }
 bool State::isAuthorized() {
