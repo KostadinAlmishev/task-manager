@@ -2,10 +2,10 @@
 // Created by kotik on 25.11.2019.
 //
 
-#include "Display.h"
-#include "Task.h"
-#include "User.h"
-#include "Project.h"
+#include "gui/Display.h"
+#include "entities/Task.h"
+#include "entities/User.h"
+#include "entities/Project.h"
 
 #include <iostream>
 

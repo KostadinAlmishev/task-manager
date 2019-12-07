@@ -1,8 +1,9 @@
-#include "Controller.h"
-#include "Entity.h"
-#include "CommandManager.h"
-
 #include <memory>
+
+#include "controller/Controller.h"
+#include "controller/CommandManager.h"
+#include "entities/Request.h"
+#include "entities/Response.h"
 
 Controller::Controller() {
     commandManager = std::make_shared<CommandManager>();

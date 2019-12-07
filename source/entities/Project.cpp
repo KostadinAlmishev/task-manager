@@ -1,4 +1,4 @@
-#include "Project.h"
+#include "entities/Project.h"
 
 
 std::string Project::getName() const {

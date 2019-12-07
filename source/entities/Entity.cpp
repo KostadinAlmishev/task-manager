@@ -2,12 +2,12 @@
 // Created by kotik on 03.12.2019.
 //
 
-#include "Entity.h"
+#include "entities/Entity.h"
 
-long Entity::getId() const {
+long Entity::getId() const noexcept {
     return id;
 }
 
-void Entity::setId(long id) {
+void Entity::setId(long id) noexcept {
     this->id = id;
 }

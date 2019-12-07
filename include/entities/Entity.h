@@ -14,7 +14,7 @@ public:
 
     long getId() const noexcept;
     void setId(long id) noexcept;
-    virtual std::string toString() const = 0;
+    virtual std::string toString() const {return "";};
 
     bool operator==(const Entity& rhs) const;
 

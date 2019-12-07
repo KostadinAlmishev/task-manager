@@ -11,12 +11,13 @@
 #include "validResponse.h"
 #include "validator/IValidator.h"
 #include "entities/User.h"
+
 class UserService{
 private:
     class UserFunctor{
     public:
         bool operator()( User left,  User right){
-            return left.GetName() < right.GetName();
+            return left.getName() < right.getName();
         }
     };
     std::set<User, UserFunctor > loginUsers;

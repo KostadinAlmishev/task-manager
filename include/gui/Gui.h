@@ -8,8 +8,8 @@
 #include <memory>
 #include <iostream>
 
-#include "Request.h"
-#include "Response.h"
+#include "entities/Request.h"
+#include "entities/Response.h"
 #include "Display.h"
 #include "Parser.h"
 #include "Gui.h"

@@ -4,10 +4,8 @@
 #include <iostream>
 #include <memory>
 
-#include "Entity.h"
-#include "Task.h"
-#include "User.h"
-#include "Project.h"
+#include "entities/Entity.h"
+#include "entities/User.h"
 
 
 class State {

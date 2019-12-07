@@ -1,4 +1,4 @@
-#include "Task.h"
+#include "entities/Task.h"
 
 void Task::setCreatorId(long creatorId) {
     this->creatorId = creatorId;

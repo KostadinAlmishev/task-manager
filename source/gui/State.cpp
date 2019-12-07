@@ -1,11 +1,11 @@
 #include <iostream>
 #include <memory>
 
-#include "State.h"
-#include "Entity.h"
-#include "Task.h"
-#include "User.h"
-#include "Project.h"
+#include "gui/State.h"
+#include "entities/Entity.h"
+#include "entities/Task.h"
+#include "entities/User.h"
+#include "entities/Project.h"
 
 
 State::State() : _isAuthorized(false) {

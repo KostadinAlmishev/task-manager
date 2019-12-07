@@ -6,7 +6,6 @@
 #define TASK_MANAGER_KEYGEN_H
 
 
-#include <stdint-gcc.h>
 #include "ICrypto.h"
 class KeyGen {
 private:

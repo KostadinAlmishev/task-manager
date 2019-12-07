@@ -2,7 +2,7 @@
 // Created by daniil on 11.11.2019.
 //
 
-#include "include/encoder/Encryptor.h"
+#include "encoder/Encryptor.h"
 
 std::string Encryptor::Execute(std::string input) {
     std::vector<uint8_t > temp;

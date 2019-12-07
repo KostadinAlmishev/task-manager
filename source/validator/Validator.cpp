@@ -1,7 +1,7 @@
 //
 // Created by daniil on 16.11.2019.
 //
-#include "include/validator/IValidator.h"
+#include "validator/IValidator.h"
 #include "entities/User.h"
 
 

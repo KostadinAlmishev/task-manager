@@ -1,12 +1,11 @@
 #include <memory>
 #include <iostream>
 
-#include "CommandManager.h"
-#include "Entity.h"
-#include "Task.h"
-#include "User.h"
-#include "Project.h"
-
+#include "controller/CommandManager.h"
+#include "entities/Entity.h"
+#include "entities/Task.h"
+#include "entities/User.h"
+#include "entities/Project.h"
 
 
 CommandManager::CommandManager() {

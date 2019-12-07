@@ -2,12 +2,12 @@
 // Created by kotik on 25.11.2019.
 //
 
-#include "Gui.h"
-#include "Display.h"
-#include "ServiceConnector.h"
-#include "Response.h"
-#include "Request.h"
-#include "State.h"
+#include "gui/Gui.h"
+#include "gui/Display.h"
+#include "gui/ServiceConnector.h"
+#include "entities/Response.h"
+#include "entities/Request.h"
+#include "gui/State.h"
 
 #include <iostream>
 #include <string>

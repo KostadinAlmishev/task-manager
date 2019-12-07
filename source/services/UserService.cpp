@@ -7,14 +7,14 @@ validResponse UserService::Login(Entity &usr, std::string password) {
     response.entity = usr;
     User tmpUser= static_cast<User&>(usr);
 
-    if(validator.CheckValidation(password, tmpUser.password) ){
+    if(validator.CheckValidation(password, tmpUser.getPassword()) ){
         if(loginUsers.find(tmpUser)== loginUsers.end()) {
             response.Valid = true;
             loginUsers.insert(tmpUser);
         }
         else{
             response.Valid = false;
-            response.ResponseERROR = "User " + tmpUser.GetName()+ " already logged in";
+            response.ResponseERROR = "User " + tmpUser.getName()+ " already logged in";
         }
     }else{
         response.Valid = false;
