@@ -2,7 +2,7 @@
 // Created by daniil on 16.11.2019.
 //
 #include "include/validator/IValidator.h"
-#include "entitys/User.h"
+#include "entities/User.h"
 
 
 bool Validator::CheckValidation(std::string inputPassword,  std::string EncodedPassword) {

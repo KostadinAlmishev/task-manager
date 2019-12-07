@@ -4,7 +4,7 @@
 #include "gtest/gtest.h"
 #include "encoder/Encoder.h"
 #include "validator/IValidator.h"
-#include "entitys/User.h"
+#include "entities/User.h"
 #include "services/UserService.h"
 TEST(Encoder_test, key_gen_test){
     Decryptor decryptor;

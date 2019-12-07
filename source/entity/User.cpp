@@ -2,7 +2,7 @@
 // Created by daniil on 16.11.2019.
 //
 
-#include "include/entitys/User.h"
+#include "include/entities/User.h"
 
 User::User(unsigned long int id, std::string name, std::string description, std::string password) {
     this->name =name;

@@ -6,7 +6,7 @@
 #define TASK_MANAGER_IVALIDATOR_H
 
 #include "include/encoder/PasswordEncoder.h"
-#include "entitys/Entity.h"
+#include "entities/Entity.h"
 
 class IValidator{
 protected:

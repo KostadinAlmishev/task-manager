@@ -6,7 +6,7 @@
 #define TASK_MANAGER_VALIDRESPONSE_H
 
 #include <string>
-#include "entitys/Entity.h"
+#include "entities/Entity.h"
 
 
 struct validResponse{

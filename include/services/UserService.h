@@ -7,10 +7,10 @@
 
 #include <iostream>
 #include <set>
-#include "entitys/Entity.h"
+#include "entities/Entity.h"
 #include "validResponse.h"
 #include "validator/IValidator.h"
-#include "entitys/User.h"
+#include "entities/User.h"
 class UserService{
 private:
     class UserFunctor{
