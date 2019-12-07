@@ -9,7 +9,7 @@
 #include <string>
 
 #include "database/commands/DbCommand.h"
-#include "entity/Entity.h"
+#include "entities/Entity.h"
 
 template<typename Connection, typename ResultSet>
 class DbCommandFactory {

@@ -7,7 +7,7 @@
 
 #include <string>
 
-#include "entity/Entity.h"
+#include "entities/Entity.h"
 
 class User : public Entity {
  private:

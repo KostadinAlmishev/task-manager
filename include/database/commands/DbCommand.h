@@ -5,7 +5,7 @@
 #ifndef TASKMANAGER_INCLUDE_DATABASE_DBCOMMAND_H_
 #define TASKMANAGER_INCLUDE_DATABASE_DBCOMMAND_H_
 
-#include "entity/Entity.h"
+#include "entities/Entity.h"
 #include "database/connection/DbConnector.h"
 
 /**

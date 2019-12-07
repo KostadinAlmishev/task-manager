@@ -4,7 +4,8 @@
 
 #include <string>
 #include <utility>
-#include <entity/User.h>
+#include <entities/User.h>
+
 void User::setName(std::string name) {
   _name = std::move(name);
 }

@@ -6,7 +6,7 @@
 
 #include <gtest/gtest.h>
 
-#include "entity/User.h"
+#include "entities/User.h"
 #include "managers/HistoryManager.h"
 #include "../mocks.h"
 

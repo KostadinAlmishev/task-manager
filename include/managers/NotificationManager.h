@@ -9,9 +9,9 @@
 #include <memory>
 
 #include "database/commands/DbCommand.h"
-#include "entity/Entity.h"
+#include "entities/Entity.h"
 #include "tracking/Subscriber.h"
-#include "entity/User.h"
+#include "entities/User.h"
 
 class NotificationManager {
  private:

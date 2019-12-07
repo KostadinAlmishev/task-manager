@@ -5,7 +5,7 @@
 #ifndef TASKMANAGER_INCLUDE_ENTITY_PROJECT_H_
 #define TASKMANAGER_INCLUDE_ENTITY_PROJECT_H_
 
-#include "entity/Entity.h"
+#include "entities/Entity.h"
 
 class Project : public Entity {
 

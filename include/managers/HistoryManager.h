@@ -9,7 +9,7 @@
 #include <memory>
 #include <functional>
 
-#include "entity/Entity.h"
+#include "entities/Entity.h"
 
 class HistoryManager {
  private:

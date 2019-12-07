@@ -10,7 +10,7 @@
 #include <utility>
 
 #include "database/commands/DbCommand.h"
-#include "entity/User.h"
+#include "entities/User.h"
 
 /**
  * @tparam Connection - тип подключения в зависимости от БД, например, для PostgreSql будет PGconn

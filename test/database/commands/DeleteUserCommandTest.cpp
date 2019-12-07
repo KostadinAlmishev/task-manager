@@ -3,7 +3,7 @@
 //
 
 #include <gtest/gtest.h>
-#include <entity/User.h>
+#include <entities/User.h>
 
 #include "database/commands/user/DeleteUserCommand.h"
 #include "../../mocks.h"

@@ -9,7 +9,7 @@
 
 #include "tracking/Message.h"
 #include "tracking/Subscriber.h"
-#include <entity/User.h>
+#include <entities/User.h>
 
 class Email : public Subscriber {
  private:

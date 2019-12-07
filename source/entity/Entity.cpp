@@ -2,7 +2,7 @@
 // Created by Konstantin Pronin on 01.12.2019.
 //
 
-#include <entity/Entity.h>
+#include <entities/Entity.h>
 
 Entity::Entity(long id) : _id(id) {}
 

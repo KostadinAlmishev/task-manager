@@ -4,7 +4,7 @@
 
 
 #include "tracking/Email.h"
-#include "entity/User.h"
+#include "entities/User.h"
 
 void Email::update(const User & user, const Entity & current) {
   auto msg = createMessage(user, current);

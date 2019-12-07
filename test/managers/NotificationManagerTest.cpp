@@ -7,7 +7,7 @@
 #include <gtest/gtest.h>
 
 #include "../mocks.h"
-#include "entity/User.h"
+#include "entities/User.h"
 
 TEST(notifier_test, notify_subscribers) {
   auto *mock = new MockSubscriber();
