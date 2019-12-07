@@ -1,6 +1,5 @@
 #include "Task.h"
 
-
 void Task::setCreatorId(long creatorId) {
     this->creatorId = creatorId;
 }

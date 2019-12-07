@@ -4,9 +4,6 @@
 #include <iostream>
 #include <string>
 
-#define PR(a) std::cout << #a << " = " << a << std::endl;
-
-
 class Entity {
 private:
     long id;
@@ -15,14 +12,5 @@ public:
     long getId() const;
     void setId(long id);
 };
-
-
-
-
-
-
-
-
-
 
 #endif //TASK_MANAGER_ENTITY_H

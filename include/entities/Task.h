@@ -6,10 +6,6 @@
 #define TASK_MANAGER_TASK_H
 
 #include "Entity.h"
-#include "Task.h"
-#include "User.h"
-#include "Project.h"
-
 
 class Task : public Entity {
 private:

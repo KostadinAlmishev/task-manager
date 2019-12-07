@@ -6,10 +6,6 @@
 #define TASK_MANAGER_PROJECT_H
 
 #include "Entity.h"
-#include "Task.h"
-#include "User.h"
-#include "Project.h"
-
 
 class Project : public Entity {
 private:
@@ -21,7 +17,6 @@ public:
     void setName(std::string name);
     void setDescription(std::string description);
 };
-
 
 #endif //TASK_MANAGER_PROJECT_H
 
