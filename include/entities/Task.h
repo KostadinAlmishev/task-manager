@@ -1,7 +1,3 @@
-//
-// Created by kotik on 07.12.2019.
-//
-
 #ifndef TASK_MANAGER_TASK_H
 #define TASK_MANAGER_TASK_H
 

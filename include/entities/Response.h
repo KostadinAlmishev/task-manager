@@ -10,9 +10,14 @@
 #include "Project.h"
 
 
+enum class responseMode {
+    SUCCESSFULL_AUTHORIZATION,
+    SUCCESSFULL_DEAUTHORIZATION,
+    PRINT
+};
+
 enum class responseCode {
     _EMPTY,
-    SUCCESSFULL_AUTHORIZATION,
     TASK,
     PROJECT,
     USER,
@@ -28,6 +33,7 @@ private:
 public:
     Response() : isError(false),  code(responseCode::_EMPTY), errorBody("") {}
 
+    responseMode mode;
     responseCode code;
     bool isError;
     std::string errorBody;

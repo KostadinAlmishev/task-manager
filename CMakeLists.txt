@@ -5,14 +5,16 @@ set(CMAKE_CXX_STANDARD 17)
 
 #set(${INCLUDES_DIR} ${PROJECT_SOURCE_DIR}/includes)
 
-include_directories(${PROJECT_SOURCE_DIR}/include/controller)
-include_directories(${PROJECT_SOURCE_DIR}/include/entities)
-include_directories(${PROJECT_SOURCE_DIR}/include/gui)
+include_directories(${PROJECT_SOURCE_DIR}/include)
 
 file(GLOB_RECURSE
         CPPS "source/*.cpp")
+file(GLOB_RECURSE
+        TEST_CPPS "test/*.cpp")
 
-add_executable(${PROJECT_NAME} main.cpp ${CPPS})
+add_executable(${PROJECT_NAME}  main.cpp ${CPPS})
+#add_executable(${PROJECT_NAME}  test/test.cpp ${CPPS}  ${TEST_CPPS})
+
 
 add_subdirectory(googletest)
 

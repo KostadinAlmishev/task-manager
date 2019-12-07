@@ -4,9 +4,9 @@
 #include <iostream>
 #include <memory>
 
-#include "Request.h"
-#include "Controller.h"
-#include "Response.h"
+#include "entities/Request.h"
+#include "controller/Controller.h"
+#include "entities/Response.h"
 
 class ServiceConnector {
 private:

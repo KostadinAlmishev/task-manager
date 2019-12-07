@@ -4,13 +4,13 @@
 #include <vector>
 #include <memory>
 
-#include "Entity.h"
-#include "Task.h"
-#include "User.h"
-#include "Project.h"
+#include "entities/Entity.h"
+#include "entities/Task.h"
+#include "entities/User.h"
+#include "entities/Project.h"
+#include "entities/Request.h"
+#include "entities/Response.h"
 
-#include "Request.h"
-#include "Response.h"
 #include "CommandManager.h"
 
 
@@ -29,7 +29,7 @@ public:
     void updateEntity(std::shared_ptr<Request> request, std::shared_ptr<Response> response);
     void deleteEntity(std::shared_ptr<Request> request, std::shared_ptr<Response> response);
     void checkAuthorization(std::shared_ptr<Request> request, std::shared_ptr<Response> response);
-
+    void checkDeauthorization(std::shared_ptr<Request> request, std::shared_ptr<Response> response);
 };
 
 

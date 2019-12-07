@@ -2,8 +2,8 @@
 // Created by kotik on 25.11.2019.
 //
 
-#include "Parser.h"
-#include "Request.h"
+#include "gui/Parser.h"
+#include "entities/Request.h"
 
 
 void Parser::clearStartSpaces(std::string &command) const {
@@ -108,7 +108,6 @@ void Parser::parseUser(std::string command, std::shared_ptr<Request> request, st
         request->findBy = requestFindBy::ID;
     }
     else if (second == "get-by-name" && !third.empty()) {
-        PR("good");
         request->user->setName(third);
         request->mode = requestMode::GET;
         request->findBy = requestFindBy::NAME;

@@ -4,31 +4,6 @@
 
 #include "gtest/gtest.h"
 
-#include <iostream>
-
-
-#include "Entity.h"
-#include "Services.h"
-#include "Request.h"
-#include "Gui.h"
-#include "Display.h"
-#include "ServiceConnector.h"
-#include "Parser.h"
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 int main(int argc, char *argv[])
 {
     ::testing::InitGoogleTest(&argc, argv);

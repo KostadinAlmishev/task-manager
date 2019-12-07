@@ -2,10 +2,10 @@
 // Created by kotik on 25.11.2019.
 //
 
-#include "Display.h"
-#include "Task.h"
-#include "User.h"
-#include "Project.h"
+#include "gui/Display.h"
+#include "entities/Task.h"
+#include "entities/User.h"
+#include "entities/Project.h"
 
 #include <iostream>
 
@@ -115,6 +115,7 @@ void Display::getInformationProjectUpdate(std::shared_ptr<Project> project) {
 }
 
 void Display::getPasswordAndName(std::shared_ptr<User> user) {
+    printText("\n   Sign in\n");
     printText("User name: ");
     user->setName(getText());
     printText("Password: ");

@@ -2,12 +2,12 @@
 // Created by kotik on 25.11.2019.
 //
 
-#include "Gui.h"
-#include "Display.h"
-#include "ServiceConnector.h"
-#include "Response.h"
-#include "Request.h"
-#include "State.h"
+#include "gui/Gui.h"
+#include "gui/Display.h"
+#include "gui/ServiceConnector.h"
+#include "entities/Response.h"
+#include "entities/Request.h"
+#include "gui/State.h"
 
 #include <iostream>
 #include <string>
@@ -71,21 +71,29 @@ void Gui::readResponse(std::shared_ptr<Response> response, std::unique_ptr<State
         display->printError(response->errorBody);
     }
     else {
-        switch (response->code) {
-            case responseCode::TASK:
-                display->printTask(response->task);
-                break;
-            case responseCode::USER:
-                display->printUser(response->user);
-                break;
-            case responseCode::PROJECT:
-
-                break;
-            case responseCode::SUCCESSFULL_AUTHORIZATION:
+        switch (response->mode) {
+            case responseMode::SUCCESSFULL_AUTHORIZATION:
                 state->authorize(response->user);
                 break;
+            case responseMode::SUCCESSFULL_DEAUTHORIZATION:
+                state->deauthorize();
+                break;
+            case responseMode::PRINT: {
+                switch (response->code) {
+                    case responseCode::TASK:
+                        display->printTask(response->task);
+                        break;
+                    case responseCode::USER:
+                        display->printUser(response->user);
+                        break;
+                    case responseCode::PROJECT:
 
+                        break;
+                }
+                break;
+            }
         }
+
     }
 }
 

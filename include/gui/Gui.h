@@ -8,13 +8,13 @@
 #include <memory>
 #include <iostream>
 
-#include "Request.h"
-#include "Response.h"
-#include "Display.h"
-#include "Parser.h"
-#include "Gui.h"
-#include "ServiceConnector.h"
-#include "State.h"
+#include "entities/Request.h"
+#include "entities/Response.h"
+#include "gui/Display.h"
+#include "gui/Parser.h"
+#include "gui/Gui.h"
+#include "gui/ServiceConnector.h"
+#include "gui/State.h"
 
 
 class Gui {

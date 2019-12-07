@@ -1,7 +1,3 @@
-//
-// Created by kotik on 06.12.2019.
-//
-
 #ifndef TASK_MANAGER_COMMANDMANAGER_H
 #define TASK_MANAGER_COMMANDMANAGER_H
 
@@ -11,10 +7,10 @@
 #include <iostream>
 #include <vector>
 
-#include "Entity.h"
-#include "Task.h"
-#include "User.h"
-#include "Project.h"
+#include "entities/Entity.h"
+#include "entities/Task.h"
+#include "entities/User.h"
+#include "entities/Project.h"
 
 
 
