@@ -20,11 +20,11 @@ template<typename Connection, typename ResultSet>
 class DeleteUserCommand : public DbCommand<Connection, ResultSet> {
  private:
   std::shared_ptr<User> _user;
-  std::shared_ptr<User> _backUp;
-  std::function<User(ResultSet)> _parseCallback;
+  std::unique_ptr<User> _backUp;
+  std::function<std::unique_ptr<User>(ResultSet)> _parseCallback;
 
  public:
-  DeleteUserCommand(DbConnector<Connection, ResultSet> &, std::shared_ptr<User>, std::function<User(ResultSet)>);
+  DeleteUserCommand(DbConnector<Connection, ResultSet> &, std::shared_ptr<User>, std::function<std::unique_ptr<User>(ResultSet)>);
 
   void saveBackUp() override;
   void undo() const override;
@@ -36,7 +36,7 @@ class DeleteUserCommand : public DbCommand<Connection, ResultSet> {
 template<typename Connection, typename ResultSet>
 DeleteUserCommand<Connection, ResultSet>::DeleteUserCommand(DbConnector<Connection, ResultSet> &dbConnector,
                                                             std::shared_ptr<User> user,
-                                                            std::function<User(ResultSet)> parseCallback)
+                                                            std::function<std::unique_ptr<User>(ResultSet)> parseCallback)
     : DbCommand<Connection, ResultSet>(dbConnector), _user(std::move(user)), _parseCallback(std::move(parseCallback)) {}
 
 template<typename Connection, typename ResultSet>
@@ -44,11 +44,8 @@ void DeleteUserCommand<Connection, ResultSet>::saveBackUp() {
   std::string sql =
       "select * from \"" + this->_dbConnector.getDbName() + "\".\"USERS\" where \"NAME\" = \'" + _user->getName()
           + "\';";
-  auto dbConnection = this->_dbConnector.getConnection();
-  auto connection = dbConnection->connect();
-  auto result = dbConnection->execute(*connection, sql);
-  this->_backUp = _parseCallback(result);
-  dbConnection->free(connection);
+  auto result = this->executeQuery(sql);
+  this->_backUp = std::move(_parseCallback(result));
 }
 
 template<typename Connection, typename ResultSet>
@@ -58,20 +55,14 @@ void DeleteUserCommand<Connection, ResultSet>::undo() const {
           + _backUp->getName() + ","
           + _backUp->getPassword() + ","
           + _backUp->getEmail() + ");";
-  auto dbConnection = this->_dbConnector.getConnection();
-  auto connection = dbConnection->connect();
-  dbConnection->execute(*connection, sql);
-  dbConnection->free(std::move(connection));
+  this->executeQuery(sql);
 }
 
 template<typename Connection, typename ResultSet>
 void DeleteUserCommand<Connection, ResultSet>::execute() const {
   std::string sql =
       "delete from \"" + this->_dbConnector.getDbName() + "\".\"USERS\" where \"NAME\" = \'" + _user->getName() + "\';";
-  auto dbConnection = this->_dbConnector.getConnection();
-  auto connection = dbConnection->connect();
-  dbConnection->execute(*connection, sql);
-  dbConnection->free(std::move(connection));
+  this->executeQuery(sql);
 }
 
 #endif //TASKMANAGER_INCLUDE_DATABASE_COMMANDS_DELETEUSERCOMMAND_H_

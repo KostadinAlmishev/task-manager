@@ -9,7 +9,7 @@
 #include <utility>
 
 #include "database/commands/DbCommand.h"
-#include <entities/User.h>
+#include "entities/User.h"
 
 /**
  * @tparam Connection - тип подключения в зависимости от БД, например, для PostgreSql будет PGconn
@@ -20,10 +20,10 @@ class GetUserByNameCommand : public DbCommand<Connection, ResultSet> {
  private:
   std::string _name;
   std::shared_ptr<User> _user;
-  std::function<User(ResultSet)> _parseCallback;
+  std::function<std::unique_ptr<User>(ResultSet)> _parseCallback;
 
  public:
-  GetUserByNameCommand(std::string, std::shared_ptr<User>, std::function<User(ResultSet)>);
+  GetUserByNameCommand(std::string, std::shared_ptr<User>, std::function<std::unique_ptr<User>(ResultSet)>);
 
   void saveBackUp() override;
   void undo() const override;
@@ -35,8 +35,8 @@ class GetUserByNameCommand : public DbCommand<Connection, ResultSet> {
 template<typename Connection, typename ResultSet>
 GetUserByNameCommand<Connection, ResultSet>::GetUserByNameCommand(std::string name,
                                                               std::shared_ptr<User> user,
-                                                              std::function<User(ResultSet)> parseCallback)
-    : _name(name), _user(std::move(user)), _parseCallback(std::move(parseCallback)) {}
+                                                              std::function<std::unique_ptr<User>(ResultSet)> parseCallback)
+    : _name(std::move(name)), _user(std::move(user)), _parseCallback(std::move(parseCallback)) {}
 
 template<typename Connection, typename ResultSet>
 void GetUserByNameCommand<Connection, ResultSet>::saveBackUp() {}
@@ -49,12 +49,8 @@ void GetUserByNameCommand<Connection, ResultSet>::execute() const {
   std::string sql =
       "select * from \"" + this->_dbConnector.getDbName() + "\".\"USERS\" where \"NAME\" = \'" + _name
           + "\';";
-  auto dbConnection = this->_dbConnector.getConnection();
-  auto connection = dbConnection->connect();
-  auto result = dbConnection->execute(*connection, sql);
-  this->_backUp = _parseCallback(result);
-  dbConnection->free(connection);
+  auto result = this->executeQuery(sql);
+  *_user = *_parseCallback(result);
 }
-
 
 #endif //TASKMANAGER_INCLUDE_DATABASE_COMMANDS_USER_GETUSERBYNAMECOMMAND_H_

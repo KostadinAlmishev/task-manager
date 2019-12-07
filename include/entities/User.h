@@ -15,6 +15,7 @@ class User : public Entity {
   std::string _password;
   std::string _email;
  public:
+  User(const User &user) = default;
   void setName(std::string name);
   void setPassword(std::string password);
   void setEmail(std::string email);

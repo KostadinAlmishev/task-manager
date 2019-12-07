@@ -20,7 +20,7 @@ template<typename Connection, typename ResultSet>
 class AddUserCommand : public DbCommand<Connection, ResultSet> {
  private:
   std::shared_ptr<User> _user;
-  std::shared_ptr<User> _backUp;
+  std::unique_ptr<User> _backUp;
 
  public:
   AddUserCommand(DbConnector<Connection, ResultSet> &, std::shared_ptr<User>);
@@ -38,17 +38,14 @@ AddUserCommand<Connection, ResultSet>::AddUserCommand(DbConnector<Connection, Re
 
 template<typename Connection, typename ResultSet>
 void AddUserCommand<Connection, ResultSet>::saveBackUp() {
-  this->_backUp = _user;
+  this->_backUp = std::make_unique(*_user);
 }
 
 template<typename Connection, typename ResultSet>
 void AddUserCommand<Connection, ResultSet>::undo() const {
   std::string sql =
       "delete from \"" + this->_dbConnector.getDbName() + "\".\"USERS\" where \"NAME\" = \'" + _backUp->getName() + "\';";
-  auto dbConnection = this->_dbConnector.getConnection();
-  auto connection = dbConnection->connect();
-  dbConnection->execute(*connection, sql);
-  dbConnection->free(std::move(connection));
+  this->executeQuery(sql);
 }
 
 template<typename Connection, typename ResultSet>
@@ -58,9 +55,6 @@ void AddUserCommand<Connection, ResultSet>::execute() const {
         + _user->getName() + ","
         + _user->getPassword() + ","
         + _user->getEmail() + ");";
-  auto dbConnection = this->_dbConnector.getConnection();
-  auto connection = dbConnection->connect();
-  dbConnection->execute(*connection, sql);
-  dbConnection->free(std::move(connection));
+  this->executeQuery(sql);
 }
 #endif //TASKMANAGER_INCLUDE_DATABASE_COMMANDS_ADDUSERCOMMAND_H_
