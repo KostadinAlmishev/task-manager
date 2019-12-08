@@ -68,5 +68,4 @@ void ModifyUserCommand<Connection, ResultSet>::execute() const {
   this->executeQuery(sql);
 }
 
-
 #endif //TASKMANAGER_INCLUDE_DATABASE_COMMANDS_MODIFYUSERCOMMAND_H_
