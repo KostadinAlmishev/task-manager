@@ -23,7 +23,10 @@ class GetProjectByNameCommand : public DbCommand<Connection, ResultSet> {
   std::function<std::unique_ptr<Project>(ResultSet)> _parseCallback;
 
  public:
-  GetProjectByNameCommand(std::string, std::shared_ptr<Project>, std::function<std::shared_ptr<Project>(ResultSet)>);
+  GetProjectByNameCommand(DbConnector<Connection, ResultSet> &,
+                          std::string,
+                          std::shared_ptr<Project>,
+                          std::function<std::shared_ptr<Project>(ResultSet)>);
 
   void saveBackUp() override;
   void undo() const override;
@@ -33,10 +36,14 @@ class GetProjectByNameCommand : public DbCommand<Connection, ResultSet> {
 };
 
 template<typename Connection, typename ResultSet>
-GetProjectByNameCommand<Connection, ResultSet>::GetProjectByNameCommand(std::string name,
-                                                                  std::shared_ptr<Project> project,
-                                                                  std::function<std::shared_ptr<Project>(ResultSet)> parseCallback)
-    : _name(std::move(name)), _project(std::move(project)), _parseCallback(std::move(parseCallback)) {}
+GetProjectByNameCommand<Connection, ResultSet>::GetProjectByNameCommand(DbConnector<Connection, ResultSet> &dbConnector,
+                                                                        std::string name,
+                                                                        std::shared_ptr<Project> project,
+                                                                        std::function<std::shared_ptr<Project>(ResultSet)> parseCallback)
+    : DbCommand<Connection, ResultSet>(dbConnector),
+      _name(std::move(name)),
+      _project(std::move(project)),
+      _parseCallback(std::move(parseCallback)) {}
 
 template<typename Connection, typename ResultSet>
 void GetProjectByNameCommand<Connection, ResultSet>::saveBackUp() {}

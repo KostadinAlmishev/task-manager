@@ -13,12 +13,15 @@
 
 template<typename Connection, typename ResultSet>
 class DbCommandFactory {
+ protected:
+  DbConnector<Connection, ResultSet> &_dbConnector;
  public:
-  virtual std::unique_ptr<DbCommand<Connection, ResultSet>> createAddCommand(Entity) const = 0;
-  virtual std::unique_ptr<DbCommand<Connection, ResultSet>> createDeleteCommand(Entity) const = 0;
-  virtual std::unique_ptr<DbCommand<Connection, ResultSet>> createModifyCommand(Entity) const = 0;
-  virtual std::unique_ptr<DbCommand<Connection, ResultSet>> createGetCommand(long, long) const = 0;
-  virtual std::unique_ptr<DbCommand<Connection, ResultSet>> createGetCommand(std::string) const = 0;
+  explicit DbCommandFactory(DbConnector<Connection, ResultSet> &dbConnector) : _dbConnector(dbConnector) {}
+  virtual std::unique_ptr<DbCommand<Connection, ResultSet>> createAddCommand(std::shared_ptr<Entity>) const = 0;
+  virtual std::unique_ptr<DbCommand<Connection, ResultSet>> createDeleteCommand(std::shared_ptr<Entity>) const = 0;
+  virtual std::unique_ptr<DbCommand<Connection, ResultSet>> createModifyCommand(std::shared_ptr<Entity>) const = 0;
+  virtual std::unique_ptr<DbCommand<Connection, ResultSet>> createGetCommand(long, std::shared_ptr<Entity>, long) const = 0;
+  virtual std::unique_ptr<DbCommand<Connection, ResultSet>> createGetCommand(std::string, std::shared_ptr<Entity>) const = 0;
   virtual ~DbCommandFactory() = default;
 };
 

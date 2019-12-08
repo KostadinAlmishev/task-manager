@@ -23,7 +23,10 @@ class GetTaskByNameCommand : public DbCommand<Connection, ResultSet> {
   std::function<std::unique_ptr<Task>(ResultSet)> _parseCallback;
 
  public:
-  GetTaskByNameCommand(std::string, std::shared_ptr<Task>, std::function<std::unique_ptr<Task>(ResultSet)>);
+  GetTaskByNameCommand(DbConnector<Connection, ResultSet> &,
+                       std::string,
+                       std::shared_ptr<Task>,
+                       std::function<std::unique_ptr<Task>(ResultSet)>);
 
   void saveBackUp() override;
   void undo() const override;
@@ -33,10 +36,14 @@ class GetTaskByNameCommand : public DbCommand<Connection, ResultSet> {
 };
 
 template<typename Connection, typename ResultSet>
-GetTaskByNameCommand<Connection, ResultSet>::GetTaskByNameCommand(std::string name,
+GetTaskByNameCommand<Connection, ResultSet>::GetTaskByNameCommand(DbConnector<Connection, ResultSet> &dbConnector,
+                                                                  std::string name,
                                                                   std::shared_ptr<Task> task,
                                                                   std::function<std::unique_ptr<Task>(ResultSet)> parseCallback)
-    : _name(std::move(name)), _task(std::move(task)), _parseCallback(std::move(parseCallback)) {}
+    : DbCommand<Connection, ResultSet>(dbConnector),
+      _name(std::move(name)),
+      _task(std::move(task)),
+      _parseCallback(std::move(parseCallback)) {}
 
 template<typename Connection, typename ResultSet>
 void GetTaskByNameCommand<Connection, ResultSet>::saveBackUp() {}
