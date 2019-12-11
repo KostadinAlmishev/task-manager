@@ -2,7 +2,7 @@
 // Created by daniil on 09.11.2019.
 //
 
-#include "include/encoder/KeyGen.h"
+#include "encoder/KeyGen.h"
 
 KeyGen::KeyGen(ICrypto & left, ICrypto & right) {
     uint64_t  phi = (p-1)*(q-1);

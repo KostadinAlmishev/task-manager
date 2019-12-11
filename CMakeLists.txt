@@ -9,19 +9,19 @@ include_directories(cmake-build-debug)
 
 include_directories(
         include/.
-        tests/
+        test/
 )
 
 
 file( GLOB_RECURSE SOURCE_FILES
         source/*/*.cpp
         source/*.cpp
+        test/*/*.cpp
         )
 add_executable(
         ${PROJECT_NAME}
         ${SOURCE_FILES}
-        tests/main.cpp
-        tests/Tests.cpp
+        test/main.cpp
 )
 
 add_subdirectory(googletest)

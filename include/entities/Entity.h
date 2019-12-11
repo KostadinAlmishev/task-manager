@@ -6,20 +6,26 @@
 #define TASK_MANAGER_ENTITY_H
 
 
+#include <iostream>
 #include <string>
 
 class Entity {
-protected:
-    unsigned long int id;
-    std::string name="";
-    std::string description = "";
+private:
+    long id;
 public:
-    std::string GetName(){ return name;}
-    std::string GetDescripton(){ return  description;}
-    virtual  std::string GetStatus()= 0;
-    unsigned long int GetId(){ return  id;}
+    Entity() : id(-1) {}
+    explicit Entity(long id);
+    Entity(const Entity &) = default;
 
+    long getId() const noexcept;
+    void setId(long id) noexcept;
+    virtual std::string toString() const {return "";};
+
+    bool operator==(const Entity& rhs) const;
+
+    virtual ~Entity() = default;
 };
+
 
 
 #endif //TASK_MANAGER_ENTITY_H

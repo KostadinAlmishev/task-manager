@@ -8,10 +8,16 @@
 
 #include "Entity.h"
 
-class Project: public Entity {
-private:
-    friend class ProjectService;
-};
 
+class Project : public Entity {
+private:
+    std::string name;
+    std::string description;
+public:
+    std::string getName() const;
+    std::string getDescription() const;
+    void setName(std::string name);
+    void setDescription(std::string description);
+};
 
 #endif //TASK_MANAGER_PROJECT_H

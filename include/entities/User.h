@@ -8,16 +8,21 @@
 
 #include "Entity.h"
 
+
 class User : public Entity {
-protected:
-    friend class UserService;
-    bool login;
+private:
+    std::string name="";
     std::string password;
+    std::string email;
+    std::string status;
 public:
-    std::string GetStatus() override ;
-    User(){;}
-    User(unsigned long int id, std::string name, std::string description, std::string password  );
+    void setName(std::string name);
+    std::string getName() const;
+    void setPassword(std::string password);
+    std::string getPassword() const;
+    void setEmail(std::string email);
+    std::string getEmail() const;
+    void setStatus(std::string status);
+    std::string getStatus() const;
 };
-
-
 #endif //TASK_MANAGER_USER_H

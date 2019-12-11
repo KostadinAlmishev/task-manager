@@ -2,14 +2,36 @@
 // Created by daniil on 16.11.2019.
 //
 
-#include "include/entities/User.h"
+#include "entities/User.h"
 
-User::User(unsigned long int id, std::string name, std::string description, std::string password) {
-    this->name =name;
-    this->description =description;
-    this->password = password;
-    this->id = id;
+void User::setName(std::string name) {
+    this->name = name;
 }
-std::string User::GetStatus() {
-    return "";
+
+std::string User::getName() const {
+    return name;
+}
+
+void User::setPassword(std::string password) {
+    this->password = password;
+}
+
+std::string User::getPassword() const {
+    return password;
+}
+
+void User::setEmail(std::string email) {
+    this->email = email;
+}
+
+std::string User::getEmail() const {
+    return email;
+}
+
+void User::setStatus(std::string status) {
+    this->status = status;
+}
+
+std::string User::getStatus() const {
+    return status;
 }

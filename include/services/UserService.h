@@ -13,10 +13,11 @@
 #include "entities/User.h"
 class UserService{
 private:
+    PasswordEncoder passwordEncoder;
     class UserFunctor{
     public:
         bool operator()( User left,  User right){
-            return left.GetName() < right.GetName();
+            return left.getName() < right.getName();
         }
     };
     std::set<User, UserFunctor > loginUsers;
@@ -28,7 +29,8 @@ public:
 
      const std::set<User,   UserFunctor> & GetLoggedIn();
      validResponse CheckPriveleges(Entity &usr, std::string command);
-     validResponse ChangePassword(Entity & usr, std::string currentPassword, std::string newPassword );
+     validResponse ChangePassword(User & usr, std::string currentPassword, std::string newPassword );
+     validResponse SetNewUserPassword(User& usr, std::string password);
 };
 
 
