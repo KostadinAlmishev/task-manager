@@ -16,15 +16,14 @@
  * @tparam Connection - тип подключения в зависимости от БД, например, для PostgreSql будет PGconn
  * @tparam ResultSet - тип возвращаемого значения после выполнения запроса, например, для PostgreSql будет PGresult
  */
-template<typename Connection, typename ResultSet>
-class DeleteUserCommand : public DbCommand<Connection, ResultSet> {
+template<typename Connection, typename ResultSet, typename Callback>
+class DeleteUserCommand : public DbCommand<Connection, ResultSet, Callback> {
  private:
   std::shared_ptr<User> _user;
   std::unique_ptr<User> _backUp;
-  std::function<std::unique_ptr<User>(ResultSet)> _parseCallback;
 
  public:
-  DeleteUserCommand(DbConnector<Connection, ResultSet> &, std::shared_ptr<User>, std::function<std::unique_ptr<User>(ResultSet)>);
+  DeleteUserCommand(DbConnector<Connection, ResultSet, Callback> &, std::shared_ptr<User>);
 
   void saveBackUp() override;
   void undo() const override;
@@ -33,23 +32,24 @@ class DeleteUserCommand : public DbCommand<Connection, ResultSet> {
   ~DeleteUserCommand() = default;
 };
 
-template<typename Connection, typename ResultSet>
-DeleteUserCommand<Connection, ResultSet>::DeleteUserCommand(DbConnector<Connection, ResultSet> &dbConnector,
-                                                            std::shared_ptr<User> user,
-                                                            std::function<std::unique_ptr<User>(ResultSet)> parseCallback)
-    : DbCommand<Connection, ResultSet>(dbConnector), _user(std::move(user)), _parseCallback(std::move(parseCallback)) {}
+template<typename Connection, typename ResultSet, typename Callback>
+DeleteUserCommand<Connection, ResultSet, Callback>::DeleteUserCommand(DbConnector<Connection,
+                                                                                  ResultSet,
+                                                                                  Callback> &dbConnector,
+                                                                      std::shared_ptr<User> user)
+    : DbCommand<Connection, ResultSet, Callback>(dbConnector), _user(std::move(user)) {}
 
-template<typename Connection, typename ResultSet>
-void DeleteUserCommand<Connection, ResultSet>::saveBackUp() {
+template<typename Connection, typename ResultSet, typename Callback>
+void DeleteUserCommand<Connection, ResultSet, Callback>::saveBackUp() {
   std::string sql =
       "select * from \"" + this->_dbConnector.getDbName() + "\".\"USERS\" where \"NAME\" = \'" + _user->getName()
           + "\';";
   auto result = this->executeQuery(sql);
-  this->_backUp = std::move(_parseCallback(result));
+  _backUp = std::move(Callback::parseToUser(result));
 }
 
-template<typename Connection, typename ResultSet>
-void DeleteUserCommand<Connection, ResultSet>::undo() const {
+template<typename Connection, typename ResultSet, typename Callback>
+void DeleteUserCommand<Connection, ResultSet, Callback>::undo() const {
   std::string sql =
       "insert into \"" + this->_dbConnector.getDbName() + "\".\"USERS\" VALUES ("
           + _backUp->getName() + ","
@@ -58,8 +58,8 @@ void DeleteUserCommand<Connection, ResultSet>::undo() const {
   this->executeQuery(sql);
 }
 
-template<typename Connection, typename ResultSet>
-void DeleteUserCommand<Connection, ResultSet>::execute() const {
+template<typename Connection, typename ResultSet, typename Callback>
+void DeleteUserCommand<Connection, ResultSet, Callback>::execute() const {
   std::string sql =
       "delete from \"" + this->_dbConnector.getDbName() + "\".\"USERS\" where \"NAME\" = \'" + _user->getName() + "\';";
   this->executeQuery(sql);

@@ -12,14 +12,14 @@
  * @tparam Connection - тип подключения в зависимости от БД, например, для PostgreSql будет PGconn
  * @tparam ResultSet - тип возвращаемого значения после выполнения запроса, например, для PostgreSql будет PGresult
  */
-template<typename Connection, typename ResultSet>
+template<typename Connection, typename ResultSet, typename Callback>
 class DbCommand : public Entity {
  protected:
-  DbConnector<Connection, ResultSet> &_dbConnector;
+  DbConnector<Connection, ResultSet, Callback> &_dbConnector;
 
  public:
-  explicit DbCommand(DbConnector<Connection, ResultSet> &);
-  DbCommand(const DbCommand<Connection, ResultSet>&) = default;
+  explicit DbCommand(DbConnector<Connection, ResultSet, Callback> &);
+  DbCommand(const DbCommand<Connection, ResultSet, Callback> &) = default;
 
   std::string toString() const override;
   virtual ResultSet executeQuery(std::string) const;
@@ -31,16 +31,17 @@ class DbCommand : public Entity {
   ~DbCommand() override = default;
 };
 
-template<typename Connection, typename ResultSet>
-DbCommand<Connection, ResultSet>::DbCommand(DbConnector<Connection, ResultSet> &dbConnector) : _dbConnector(dbConnector) {}
+template<typename Connection, typename ResultSet, typename Callback>
+DbCommand<Connection, ResultSet, Callback>::DbCommand(DbConnector<Connection, ResultSet, Callback> &dbConnector)
+    : _dbConnector(dbConnector) {}
 
-template<typename Connection, typename ResultSet>
-std::string DbCommand<Connection, ResultSet>::toString() const {
+template<typename Connection, typename ResultSet, typename Callback>
+std::string DbCommand<Connection, ResultSet, Callback>::toString() const {
   return "DbCommand empty method";
 }
 
-template<typename Connection, typename ResultSet>
-ResultSet DbCommand<Connection, ResultSet>::executeQuery(std::string sql) const {
+template<typename Connection, typename ResultSet, typename Callback>
+ResultSet DbCommand<Connection, ResultSet, Callback>::executeQuery(std::string sql) const {
   auto dbConnection = _dbConnector.getConnection();
   auto connection = dbConnection->connect();
   auto result = dbConnection->execute(*connection, sql);

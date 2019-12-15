@@ -15,6 +15,7 @@ class Task : public Entity {
   std::string description;
  public:
   Task() : creatorId(-1), projectId(-1) {}
+  Task(const Task&) = default;
   void setCreatorId(long creatorId);
   long getCreatorId() const;
   void setProjectId(long projectId);

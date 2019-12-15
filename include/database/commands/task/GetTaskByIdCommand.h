@@ -15,18 +15,16 @@
  * @tparam Connection - тип подключения в зависимости от БД, например, для PostgreSql будет PGconn
  * @tparam ResultSet - тип возвращаемого значения после выполнения запроса, например, для PostgreSql будет PGresult
  */
-template<typename Connection, typename ResultSet>
-class GetTaskByIdCommand : public DbCommand<Connection, ResultSet> {
+template<typename Connection, typename ResultSet, typename Callback>
+class GetTaskByIdCommand : public DbCommand<Connection, ResultSet, Callback> {
  private:
   long _id;
   std::shared_ptr<Task> _task;
-  std::function<std::unique_ptr<Task>(ResultSet)> _parseCallback;
 
  public:
-  GetTaskByIdCommand(DbConnector<Connection, ResultSet> &,
+  GetTaskByIdCommand(DbConnector<Connection, ResultSet, Callback> &,
                      long,
-                     std::shared_ptr<Task>,
-                     std::function<std::unique_ptr<Task>(ResultSet)>);
+                     std::shared_ptr<Task>);
 
   void saveBackUp() override;
   void undo() const override;
@@ -35,28 +33,28 @@ class GetTaskByIdCommand : public DbCommand<Connection, ResultSet> {
   ~GetTaskByIdCommand() = default;
 };
 
-template<typename Connection, typename ResultSet>
-GetTaskByIdCommand<Connection, ResultSet>::GetTaskByIdCommand(DbConnector<Connection, ResultSet> &dbConnector,
-                                                              long id,
-                                                              std::shared_ptr<Task> task,
-                                                              std::function<std::unique_ptr<Task>(ResultSet)> parseCallback)
-    : DbCommand<Connection, ResultSet>(dbConnector),
+template<typename Connection, typename ResultSet, typename Callback>
+GetTaskByIdCommand<Connection, ResultSet, Callback>::GetTaskByIdCommand(DbConnector<Connection,
+                                                                                    ResultSet,
+                                                                                    Callback> &dbConnector,
+                                                                        long id,
+                                                                        std::shared_ptr<Task> task)
+    : DbCommand<Connection, ResultSet, Callback>(dbConnector),
       _id(id),
-      _task(std::move(task)),
-      _parseCallback(std::move(parseCallback)) {}
+      _task(std::move(task)) {}
 
-template<typename Connection, typename ResultSet>
-void GetTaskByIdCommand<Connection, ResultSet>::saveBackUp() {}
+template<typename Connection, typename ResultSet, typename Callback>
+void GetTaskByIdCommand<Connection, ResultSet, Callback>::saveBackUp() {}
 
-template<typename Connection, typename ResultSet>
-void GetTaskByIdCommand<Connection, ResultSet>::undo() const {}
+template<typename Connection, typename ResultSet, typename Callback>
+void GetTaskByIdCommand<Connection, ResultSet, Callback>::undo() const {}
 
-template<typename Connection, typename ResultSet>
-void GetTaskByIdCommand<Connection, ResultSet>::execute() const {
+template<typename Connection, typename ResultSet, typename Callback>
+void GetTaskByIdCommand<Connection, ResultSet, Callback>::execute() const {
   std::string sql =
       "select * from \"" + this->_dbConnector.getDbName() + "\".\"TASKS\" where \"ID\" = \'" + _id
           + "\';";
   auto result = this->executeQuery(sql);
-  *_task = *_parseCallback(result);
+  *_task = *Callback::parseToTask(result);
 }
 #endif //TASKMANAGER_INCLUDE_DATABASE_COMMANDS_TASK_GETTASKBYIDCOMMAND_H_

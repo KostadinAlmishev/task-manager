@@ -13,57 +13,71 @@
 #include "database/factories/DbCommandFactory.h"
 #include "entities/Project.h"
 
-template<typename Connection, typename ResultSet>
-class ProjectDbCommandFactory : public DbCommandFactory<Connection, ResultSet> {
- private:
-  std::function<std::unique_ptr<Project>(ResultSet)> _parseCallback;
+template<typename Connection, typename ResultSet, typename Callback>
+class ProjectDbCommandFactory : public DbCommandFactory<Connection, ResultSet, Callback> {
  public:
-  ProjectDbCommandFactory(DbConnector<Connection, ResultSet> &, std::function<std::unique_ptr<Project>(ResultSet)>);
-  std::unique_ptr<DbCommand<Connection, ResultSet>> createAddCommand(std::shared_ptr<Project>) const override;
-  std::unique_ptr<DbCommand<Connection, ResultSet>> createDeleteCommand(std::shared_ptr<Project>) const override;
-  std::unique_ptr<DbCommand<Connection, ResultSet>> createModifyCommand(std::shared_ptr<Project>) const override;
-  std::unique_ptr<DbCommand<Connection, ResultSet>> createGetCommand(long, std::shared_ptr<Project>, long) const override;
-  std::unique_ptr<DbCommand<Connection, ResultSet>> createGetCommand(std::string, std::shared_ptr<Project>) const override;
+  ProjectDbCommandFactory(DbConnector<Connection, ResultSet, Callback> &);
+  std::unique_ptr<DbCommand<Connection, ResultSet, Callback>> createAddCommand(std::shared_ptr<Project>) const override;
+  std::unique_ptr<DbCommand<Connection,
+                            ResultSet,
+                            Callback>> createDeleteCommand(std::shared_ptr<Project>) const override;
+  std::unique_ptr<DbCommand<Connection,
+                            ResultSet,
+                            Callback>> createModifyCommand(std::shared_ptr<Project>) const override;
+  std::unique_ptr<DbCommand<Connection, ResultSet, Callback>> createGetCommand(long,
+                                                                               std::shared_ptr<Project>,
+                                                                               long) const override;
+  std::unique_ptr<DbCommand<Connection, ResultSet, Callback>> createGetCommand(std::string,
+                                                                               std::shared_ptr<Project>) const override;
   ~ProjectDbCommandFactory() override = default;
 };
 
-template<typename Connection, typename ResultSet>
-ProjectDbCommandFactory<Connection, ResultSet>::ProjectDbCommandFactory(DbConnector<Connection, ResultSet> &dbConnector,
-                                                                  std::function<std::unique_ptr<Project>(ResultSet)> parseCallback)
-    : DbCommandFactory<Connection, ResultSet>(dbConnector), _parseCallback(parseCallback) {}
+template<typename Connection, typename ResultSet, typename Callback>
+ProjectDbCommandFactory<Connection, ResultSet, Callback>::ProjectDbCommandFactory(DbConnector<Connection,
+                                                                                              ResultSet,
+                                                                                              Callback> &dbConnector)
+    : DbCommandFactory<Connection, ResultSet, Callback>(dbConnector) {}
 
-template<typename Connection, typename ResultSet>
-std::unique_ptr<DbCommand<Connection, ResultSet>> ProjectDbCommandFactory<Connection,
-                                                                       ResultSet>::createAddCommand(std::shared_ptr<Project> project) const {
-  return std::make_unique<AddProjectCommand<Connection, ResultSet>>(this->_dbConnector, project);
-}
-
-template<typename Connection, typename ResultSet>
-std::unique_ptr<DbCommand<Connection, ResultSet>> ProjectDbCommandFactory<Connection,
-                                                                       ResultSet>::createDeleteCommand(std::shared_ptr<
+template<typename Connection, typename ResultSet, typename Callback>
+std::unique_ptr<DbCommand<Connection, ResultSet, Callback>> ProjectDbCommandFactory<Connection,
+                                                                                    ResultSet,
+                                                                                    Callback>::createAddCommand(std::shared_ptr<
     Project> project) const {
-  return std::make_unique<DeleteProjectCommand<Connection, ResultSet>>(this->_dbConnector, project, _parseCallback);
+  return std::make_unique<AddProjectCommand<Connection, ResultSet, Callback>>(this->_dbConnector, project);
 }
 
-template<typename Connection, typename ResultSet>
-std::unique_ptr<DbCommand<Connection, ResultSet>> ProjectDbCommandFactory<Connection,
-                                                                       ResultSet>::createModifyCommand(std::shared_ptr<
+template<typename Connection, typename ResultSet, typename Callback>
+std::unique_ptr<DbCommand<Connection, ResultSet, Callback>> ProjectDbCommandFactory<Connection,
+                                                                                    ResultSet,
+                                                                                    Callback>::createDeleteCommand(std::shared_ptr<
     Project> project) const {
-  return std::make_unique<ModifyProjectCommand<Connection, ResultSet>>(this->_dbConnector, project, _parseCallback);
+  return std::make_unique<DeleteProjectCommand<Connection, ResultSet, Callback>>(this->_dbConnector, project);
 }
 
-template<typename Connection, typename ResultSet>
-std::unique_ptr<DbCommand<Connection, ResultSet>> ProjectDbCommandFactory<Connection,
-                                                                       ResultSet>::createGetCommand(long id,
-                                                                                                    std::shared_ptr<Project> project,
-                                                                                                    long) const {
-  return std::make_unique<GetProjectByIdCommand<Connection, ResultSet>>(this->_dbConnector, id, project, _parseCallback);
+template<typename Connection, typename ResultSet, typename Callback>
+std::unique_ptr<DbCommand<Connection, ResultSet, Callback>> ProjectDbCommandFactory<Connection,
+                                                                                    ResultSet,
+                                                                                    Callback>::createModifyCommand(std::shared_ptr<
+    Project> project) const {
+  return std::make_unique<ModifyProjectCommand<Connection, ResultSet, Callback>>(this->_dbConnector, project);
 }
 
-template<typename Connection, typename ResultSet>
-std::unique_ptr<DbCommand<Connection, ResultSet>> ProjectDbCommandFactory<Connection,
-                                                                       ResultSet>::createGetCommand(std::string name,
-                                                                                                    std::shared_ptr<Project> project) const {
-  return std::make_unique<GetProjectByIdCommand<Connection, ResultSet>>(this->_dbConnector, name, project, _parseCallback);
+template<typename Connection, typename ResultSet, typename Callback>
+std::unique_ptr<DbCommand<Connection, ResultSet, Callback>> ProjectDbCommandFactory<Connection,
+                                                                                    ResultSet,
+                                                                                    Callback>::createGetCommand(long id,
+                                                                                                                std::shared_ptr<
+                                                                                                                    Project> project,
+                                                                                                                long) const {
+  return std::make_unique<GetProjectByIdCommand<Connection, ResultSet, Callback>>(this->_dbConnector, id, project);
+}
+
+template<typename Connection, typename ResultSet, typename Callback>
+std::unique_ptr<DbCommand<Connection, ResultSet, Callback>> ProjectDbCommandFactory<Connection,
+                                                                                    ResultSet,
+                                                                                    Callback>::createGetCommand(std::string name,
+                                                                                                                std::shared_ptr<
+                                                                                                                    Project> project) const {
+  return std::make_unique<GetProjectByIdCommand<Connection, ResultSet, Callback>>(this->_dbConnector, name, project);
 }
 #endif //TASKMANAGER_INCLUDE_DATABASE_FACTORIES_PROJECTDBCOMMANDFACTORY_H_

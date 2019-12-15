@@ -16,15 +16,14 @@
  * @tparam Connection - тип подключения в зависимости от БД, например, для PostgreSql будет PGconn
  * @tparam ResultSet - тип возвращаемого значения после выполнения запроса, например, для PostgreSql будет PGresult
  */
-template<typename Connection, typename ResultSet>
-class ModifyTaskCommand : public DbCommand<Connection, ResultSet> {
+template<typename Connection, typename ResultSet, typename Callback>
+class ModifyTaskCommand : public DbCommand<Connection, ResultSet, Callback> {
  private:
   std::shared_ptr<Task> _task;
   std::unique_ptr<Task> _backUp;
-  std::function<std::unique_ptr<Task>(ResultSet)> _parseCallback;
 
  public:
-  ModifyTaskCommand(DbConnector<Connection, ResultSet> &, std::shared_ptr<Task>, std::function<std::unique_ptr<Task>(ResultSet)>);
+  ModifyTaskCommand(DbConnector<Connection, ResultSet, Callback> &, std::shared_ptr<Task>);
 
   void saveBackUp() override;
   void undo() const override;
@@ -33,23 +32,24 @@ class ModifyTaskCommand : public DbCommand<Connection, ResultSet> {
   ~ModifyTaskCommand() = default;
 };
 
-template<typename Connection, typename ResultSet>
-ModifyTaskCommand<Connection, ResultSet>::ModifyTaskCommand(DbConnector<Connection, ResultSet> &dbConnector,
-                                                            std::shared_ptr<Task> task,
-                                                            std::function<std::unique_ptr<Task>(ResultSet)> parseCallback)
-    : DbCommand<Connection, ResultSet>(dbConnector), _task(std::move(task)), _parseCallback(std::move(parseCallback)) {}
+template<typename Connection, typename ResultSet, typename Callback>
+ModifyTaskCommand<Connection, ResultSet, Callback>::ModifyTaskCommand(DbConnector<Connection,
+                                                                                  ResultSet,
+                                                                                  Callback> &dbConnector,
+                                                                      std::shared_ptr<Task> task)
+    : DbCommand<Connection, ResultSet, Callback>(dbConnector), _task(std::move(task)) {}
 
-template<typename Connection, typename ResultSet>
-void ModifyTaskCommand<Connection, ResultSet>::saveBackUp() {
+template<typename Connection, typename ResultSet, typename Callback>
+void ModifyTaskCommand<Connection, ResultSet, Callback>::saveBackUp() {
   std::string sql =
       "select * from \"" + this->_dbConnector.getDbName() + "\".\"TASKS\" where \"NAME\" = \'" + _task->getName()
           + "\';";
   auto result = this->executeQuery(sql);
-  _backUp = _parseCallback(result);
+  _backUp = std::move(Callback::parseToTask(result));
 }
 
-template<typename Connection, typename ResultSet>
-void ModifyTaskCommand<Connection, ResultSet>::undo() const {
+template<typename Connection, typename ResultSet, typename Callback>
+void ModifyTaskCommand<Connection, ResultSet, Callback>::undo() const {
   std::string sql =
       "update \"" + this->_dbConnector.getDbName() + "\".\"TASKS\" set \"NAME\" = \'"
           + _backUp->getName() + "\', \"DESCRIPTION\" = \'"
@@ -59,8 +59,8 @@ void ModifyTaskCommand<Connection, ResultSet>::undo() const {
   this->executeQuery(sql);
 }
 
-template<typename Connection, typename ResultSet>
-void ModifyTaskCommand<Connection, ResultSet>::execute() const {
+template<typename Connection, typename ResultSet, typename Callback>
+void ModifyTaskCommand<Connection, ResultSet, Callback>::execute() const {
   std::string sql =
       "update \"" + this->_dbConnector.getDbName() + "\".\"TASKS\" set \"NAME\" = \'"
           + _task->getName() + "\', \"DESCRIPTION\" = \'"

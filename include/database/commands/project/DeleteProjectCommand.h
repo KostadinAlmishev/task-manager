@@ -16,15 +16,14 @@
  * @tparam Connection - тип подключения в зависимости от БД, например, для PostgreSql будет PGconn
  * @tparam ResultSet - тип возвращаемого значения после выполнения запроса, например, для PostgreSql будет PGresult
  */
-template<typename Connection, typename ResultSet>
-class DeleteProjectCommand : public DbCommand<Connection, ResultSet> {
+template<typename Connection, typename ResultSet, typename Callback>
+class DeleteProjectCommand : public DbCommand<Connection, ResultSet, Callback> {
  private:
   std::shared_ptr<Project> _project;
   std::unique_ptr<Project> _backUp;
-  std::function<std::unique_ptr<Project>(ResultSet)> _parseCallback;
 
  public:
-  DeleteProjectCommand(DbConnector<Connection, ResultSet> &, std::shared_ptr<Project>, std::function<std::unique_ptr<Project>(ResultSet)>);
+  DeleteProjectCommand(DbConnector<Connection, ResultSet, Callback> &, std::shared_ptr<Project>);
 
   void saveBackUp() override;
   void undo() const override;
@@ -33,23 +32,25 @@ class DeleteProjectCommand : public DbCommand<Connection, ResultSet> {
   ~DeleteProjectCommand() = default;
 };
 
-template<typename Connection, typename ResultSet>
-DeleteProjectCommand<Connection, ResultSet>::DeleteProjectCommand(DbConnector<Connection, ResultSet> &dbConnector,
-                                                            std::shared_ptr<Project> project,
-                                                            std::function<std::unique_ptr<Project>(ResultSet)> parseCallback)
-    : DbCommand<Connection, ResultSet>(dbConnector), _project(std::move(project)), _parseCallback(std::move(parseCallback)) {}
+template<typename Connection, typename ResultSet, typename Callback>
+DeleteProjectCommand<Connection, ResultSet, Callback>::DeleteProjectCommand(DbConnector<Connection,
+                                                                                        ResultSet,
+                                                                                        Callback> &dbConnector,
+                                                                            std::shared_ptr<Project> project)
+    : DbCommand<Connection, ResultSet, Callback>(dbConnector),
+      _project(std::move(project)) {}
 
-template<typename Connection, typename ResultSet>
-void DeleteProjectCommand<Connection, ResultSet>::saveBackUp() {
+template<typename Connection, typename ResultSet, typename Callback>
+void DeleteProjectCommand<Connection, ResultSet, Callback>::saveBackUp() {
   std::string sql =
       "select * from \"" + this->_dbConnector.getDbName() + "\".\"PROJECTS\" where \"NAME\" = \'" + _project->getName()
           + "\';";
   auto result = this->executeQuery(sql);
-  this->_backUp = std::move(_parseCallback(result));
+  _backUp = std::move(Callback::parseToProject(result));
 }
 
-template<typename Connection, typename ResultSet>
-void DeleteProjectCommand<Connection, ResultSet>::undo() const {
+template<typename Connection, typename ResultSet, typename Callback>
+void DeleteProjectCommand<Connection, ResultSet, Callback>::undo() const {
   std::string sql =
       "insert into \"" + this->_dbConnector.getDbName() + "\".\"PROJECTS\" VALUES ("
           + _backUp->getName() + ","
@@ -57,10 +58,11 @@ void DeleteProjectCommand<Connection, ResultSet>::undo() const {
   this->executeQuery(sql);
 }
 
-template<typename Connection, typename ResultSet>
-void DeleteProjectCommand<Connection, ResultSet>::execute() const {
+template<typename Connection, typename ResultSet, typename Callback>
+void DeleteProjectCommand<Connection, ResultSet, Callback>::execute() const {
   std::string sql =
-      "delete from \"" + this->_dbConnector.getDbName() + "\".\"PROJECTS\" where \"NAME\" = \'" + _project->getName() + "\';";
+      "delete from \"" + this->_dbConnector.getDbName() + "\".\"PROJECTS\" where \"NAME\" = \'" + _project->getName()
+          + "\';";
   this->executeQuery(sql);
 }
 

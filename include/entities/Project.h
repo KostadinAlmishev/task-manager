@@ -12,6 +12,7 @@ class Project : public Entity {
   std::string name;
   std::string description;
  public:
+  Project(const Project &) = default;
   std::string getName() const;
   std::string getDescription() const;
   void setName(std::string name);
