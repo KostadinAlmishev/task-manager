@@ -35,6 +35,7 @@ validResponse UserService::ChangePassword(User &usr, std::string currentPassword
         response.Valid= false;
         response.ResponseERROR = "wrong old password";
     }
+
     return response;
 }
 
@@ -42,14 +43,21 @@ const std::set<User, UserService::UserFunctor> & UserService::GetLoggedIn() {
     return loginUsers;
 }
 
-validResponse UserService::CheckPriveleges(Entity &usr, std::string command) {
-    validResponse responce(usr);
-    responce.request = command;
+validResponse UserService::CheckPriveleges(User &usr, std::string command) {
+    validResponse response(usr);
+    response.request = command;
+    if(loginUsers.find(usr) == loginUsers.end()){
+        response.Valid = false;
+        response.ResponseERROR = "user not logged in";
+    }
+    else if(Privelege::check(usr.getStatus(), command) ){
+        response.Valid =true;
+    }else{
+        response.Valid = false;
+        response.ResponseERROR = usr.getName() + " don't have permission";
+    }
 
-    //заглушка
-    Privel
-    //заглушка
-    return responce;
+    return response;
 }
 
 validResponse UserService::Logout(Entity &usr) {

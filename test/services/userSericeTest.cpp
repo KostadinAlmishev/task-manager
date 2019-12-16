@@ -45,6 +45,7 @@ TEST(UserService_test, Test_set_new_password){
     user.setName("test");
     auto randStr=  GenRandomString(50);
     UserService userService;
+   
     EXPECT_TRUE(userService.SetNewUserPassword(user, randStr).Valid);
     EXPECT_TRUE(userService.Login(user, randStr).Valid);
 }
@@ -58,3 +59,23 @@ TEST(UserService_test, Test_change_password){
     EXPECT_TRUE(userService.ChangePassword(user, randStr, "test").Valid);
 }
 
+TEST(UserService_test, Test_privileges){
+    User userA, userU;
+    userA.setStatus("admin");
+    userU.setStatus("user");
+    userA.setName("admin");
+    userU.setName("user");
+    auto tmp1 = GenRandomString(50);
+    auto tmp2 = GenRandomString(50);
+    UserService userService;
+    EXPECT_TRUE( userService.SetNewUserPassword(userA, tmp1).Valid);
+    EXPECT_TRUE(userService.SetNewUserPassword(userU, tmp2).Valid);
+    EXPECT_TRUE(userService.Login(userA, tmp1).Valid);
+    EXPECT_TRUE(userService.Login(userU, tmp2).Valid);
+    EXPECT_TRUE(userService.CheckPriveleges(userA, "testAdmin1").Valid);
+    EXPECT_TRUE(userService.CheckPriveleges(userA, "testAdmin2").Valid);
+    EXPECT_TRUE(userService.CheckPriveleges(userU, "testUser1").Valid);
+    EXPECT_TRUE(userService.CheckPriveleges(userU, "testUser1").Valid);
+    EXPECT_FALSE(userService.CheckPriveleges(userU, "testAdmin1").Valid);
+    EXPECT_FALSE(userService.CheckPriveleges(userU, "testAdmin2").Valid);
+}

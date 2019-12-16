@@ -24,5 +24,8 @@ public:
     std::string getEmail() const;
     void setStatus(std::string status);
     std::string getStatus() const;
+
+
+    bool operator==(const User& right){return this->getName() == right.getName();}
 };
 #endif //TASK_MANAGER_USER_H

@@ -11,6 +11,7 @@
 #include "validResponse.h"
 #include "validator/IValidator.h"
 #include "entities/User.h"
+
 class UserService{
 private:
     PasswordEncoder passwordEncoder;
@@ -28,9 +29,10 @@ public:
      validResponse Logout(Entity & usr);
 
      const std::set<User,   UserFunctor> & GetLoggedIn();
-     validResponse CheckPriveleges(Entity &usr, std::string command);
+     validResponse CheckPriveleges(User &usr, std::string command);
      validResponse ChangePassword(User & usr, std::string currentPassword, std::string newPassword );
      validResponse SetNewUserPassword(User& usr, std::string password);
+
 };
 
 
