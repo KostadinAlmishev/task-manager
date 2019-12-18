@@ -19,12 +19,12 @@ template<typename Connection, typename ResultSet, typename Callback>
 class GetUserByIdCommand : public DbCommand<Connection, ResultSet, Callback> {
  private:
   long _id;
-  std::shared_ptr<User> _user;
+  std::shared_ptr<Entity> &_user;
 
  public:
   GetUserByIdCommand(DbConnector<Connection, ResultSet, Callback> &,
                      long,
-                     std::shared_ptr<User>);
+                     std::shared_ptr<Entity> &);
 
   void saveBackUp() override;
   void undo() const override;
@@ -38,10 +38,10 @@ GetUserByIdCommand<Connection, ResultSet, Callback>::GetUserByIdCommand(DbConnec
                                                                                     ResultSet,
                                                                                     Callback> &dbConnector,
                                                                         long id,
-                                                                        std::shared_ptr<User> user)
+                                                                        std::shared_ptr<Entity> &user)
     : DbCommand<Connection, ResultSet, Callback>(dbConnector),
       _id(id),
-      _user(std::move(user)) {}
+      _user(user) {}
 
 template<typename Connection, typename ResultSet, typename Callback>
 void GetUserByIdCommand<Connection, ResultSet, Callback>::saveBackUp() {}
@@ -52,9 +52,9 @@ void GetUserByIdCommand<Connection, ResultSet, Callback>::undo() const {}
 template<typename Connection, typename ResultSet, typename Callback>
 void GetUserByIdCommand<Connection, ResultSet, Callback>::execute() const {
   std::string sql =
-      "select * from \"" + this->_dbConnector.getDbName() + "\".\"USERS\" where \"ID\" = \'" + _id
+      "select * from \"" + this->_dbConnector.getDbName() + "\".\"USERS\" where ID = \'" + std::to_string(_id)
           + "\';";
   auto result = this->executeQuery(sql);
-  *_user = *Callback::parseToUser(result);
+  _user = std::move(Callback::parseToUser(result));
 }
 #endif //TASKMANAGER_INCLUDE_DATABASE_COMMANDS_USER_GETUSERBYIDCOMMAND_H_

@@ -21,28 +21,28 @@ class DbConnection {
   const DbConfig &_dbConfig;
  public:
   explicit DbConnection(const DbConfig &);
-  virtual std::unique_ptr<Connection> connect() const;
-  virtual std::unique_ptr<ResultSet> execute(Connection &, const std::string &) const;
-  virtual void free(std::unique_ptr<Connection> &&) const;
+  virtual Connection *connect() const;
+  virtual ResultSet *execute(Connection *, const std::string &) const;
+  virtual void free(Connection *) const;
 };
 
 template<typename Connection, typename ResultSet, typename Callback>
 DbConnection<Connection, ResultSet, Callback>::DbConnection(const DbConfig &dbConfig) : _dbConfig(dbConfig) {}
 
 template<typename Connection, typename ResultSet, typename Callback>
-std::unique_ptr<Connection> DbConnection<Connection, ResultSet, Callback>::connect() const {
+Connection *DbConnection<Connection, ResultSet, Callback>::connect() const {
   return Callback::connect(_dbConfig);
 }
 
 template<typename Connection, typename ResultSet, typename Callback>
-std::unique_ptr<ResultSet> DbConnection<Connection, ResultSet, Callback>::execute(Connection &connection,
-                                                                                  const std::string &query) const {
+ResultSet *DbConnection<Connection, ResultSet, Callback>::execute(Connection *connection,
+                                                                  const std::string &query) const {
   return Callback::execute(connection, query);
 }
 
 template<typename Connection, typename ResultSet, typename Callback>
-void DbConnection<Connection, ResultSet, Callback>::free(std::unique_ptr<Connection> &&connection) const {
-  Callback::free(std::move(connection));
+void DbConnection<Connection, ResultSet, Callback>::free(Connection *connection) const {
+  Callback::free(connection);
 }
 
 #endif //TASKMANAGER_INCLUDE_DATABASE_DBCONNECTION_H_

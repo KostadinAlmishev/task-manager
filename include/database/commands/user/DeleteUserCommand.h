@@ -19,11 +19,11 @@
 template<typename Connection, typename ResultSet, typename Callback>
 class DeleteUserCommand : public DbCommand<Connection, ResultSet, Callback> {
  private:
-  std::shared_ptr<User> _user;
+  std::shared_ptr<Entity> _user;
   std::unique_ptr<User> _backUp;
 
  public:
-  DeleteUserCommand(DbConnector<Connection, ResultSet, Callback> &, std::shared_ptr<User>);
+  DeleteUserCommand(DbConnector<Connection, ResultSet, Callback> &, std::shared_ptr<Entity>);
 
   void saveBackUp() override;
   void undo() const override;
@@ -36,13 +36,16 @@ template<typename Connection, typename ResultSet, typename Callback>
 DeleteUserCommand<Connection, ResultSet, Callback>::DeleteUserCommand(DbConnector<Connection,
                                                                                   ResultSet,
                                                                                   Callback> &dbConnector,
-                                                                      std::shared_ptr<User> user)
+                                                                      std::shared_ptr<Entity> user)
     : DbCommand<Connection, ResultSet, Callback>(dbConnector), _user(std::move(user)) {}
 
 template<typename Connection, typename ResultSet, typename Callback>
 void DeleteUserCommand<Connection, ResultSet, Callback>::saveBackUp() {
+  std::vector<Descriptor> descriptors = _user->createDescriptors();
   std::string sql =
-      "select * from \"" + this->_dbConnector.getDbName() + "\".\"USERS\" where \"NAME\" = \'" + _user->getName()
+      "select * from \"" + this->_dbConnector.getDbName() + "\".\"USERS\" where "
+          + descriptors[1].field + " = \'"
+          + descriptors[1].value
           + "\';";
   auto result = this->executeQuery(sql);
   _backUp = std::move(Callback::parseToUser(result));
@@ -60,8 +63,12 @@ void DeleteUserCommand<Connection, ResultSet, Callback>::undo() const {
 
 template<typename Connection, typename ResultSet, typename Callback>
 void DeleteUserCommand<Connection, ResultSet, Callback>::execute() const {
+  std::vector<Descriptor> descriptors = _user->createDescriptors();
   std::string sql =
-      "delete from \"" + this->_dbConnector.getDbName() + "\".\"USERS\" where \"NAME\" = \'" + _user->getName() + "\';";
+      "delete from \"" + this->_dbConnector.getDbName() + "\".\"USERS\" where "
+          + descriptors[1].field + " = \'"
+          + descriptors[1].value
+          + "\';";
   this->executeQuery(sql);
 }
 

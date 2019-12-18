@@ -15,6 +15,7 @@ class User : public Entity {
   std::string _password;
   std::string _email;
  public:
+  User() = default;
   User(const User &user) = default;
   void setName(std::string name);
   void setPassword(std::string password);
@@ -23,6 +24,7 @@ class User : public Entity {
   std::string getPassword() const;
   std::string getEmail() const;
   std::string toString() const override;
+  std::vector<Descriptor> createDescriptors() const override;
 };
 
 #endif //TASKMANAGER_INCLUDE_ENTITY_USER_H_

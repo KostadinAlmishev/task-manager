@@ -24,6 +24,7 @@ class Task : public Entity {
   std::string getName() const;
   void setDescription(std::string description);
   std::string getDescription() const;
+  std::vector<Descriptor> createDescriptors() const override;
 };
 
 #endif //TASKMANAGER_INCLUDE_ENTITY_TASK_H_

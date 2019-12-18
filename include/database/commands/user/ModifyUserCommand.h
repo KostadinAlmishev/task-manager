@@ -19,11 +19,11 @@
 template<typename Connection, typename ResultSet, typename Callback>
 class ModifyUserCommand : public DbCommand<Connection, ResultSet, Callback> {
  private:
-  std::shared_ptr<User> _user;
+  std::shared_ptr<Entity> _user;
   std::unique_ptr<User> _backUp;
 
  public:
-  ModifyUserCommand(DbConnector<Connection, ResultSet, Callback> &, std::shared_ptr<User>);
+  ModifyUserCommand(DbConnector<Connection, ResultSet, Callback> &, std::shared_ptr<Entity>);
 
   void saveBackUp() override;
   void undo() const override;
@@ -36,13 +36,16 @@ template<typename Connection, typename ResultSet, typename Callback>
 ModifyUserCommand<Connection, ResultSet, Callback>::ModifyUserCommand(DbConnector<Connection,
                                                                                   ResultSet,
                                                                                   Callback> &dbConnector,
-                                                                      std::shared_ptr<User> user)
+                                                                      std::shared_ptr<Entity> user)
     : DbCommand<Connection, ResultSet, Callback>(dbConnector), _user(std::move(user)) {}
 
 template<typename Connection, typename ResultSet, typename Callback>
 void ModifyUserCommand<Connection, ResultSet, Callback>::saveBackUp() {
+  std::vector<Descriptor> descriptors = _user->createDescriptors();
   std::string sql =
-      "select * from \"" + this->_dbConnector.getDbName() + "\".\"USERS\" where \"NAME\" = \'" + _user->getName()
+      "select * from \"" + this->_dbConnector.getDbName() + "\".\"USERS\" where "
+          + descriptors[1].field + " = \'"
+          + descriptors[1].value
           + "\';";
   auto result = this->executeQuery(sql);
   _backUp = std::move(Callback::parseToUser(result));
@@ -50,21 +53,33 @@ void ModifyUserCommand<Connection, ResultSet, Callback>::saveBackUp() {
 
 template<typename Connection, typename ResultSet, typename Callback>
 void ModifyUserCommand<Connection, ResultSet, Callback>::undo() const {
+  std::vector<Descriptor> descriptors = _backUp->createDescriptors();
   std::string sql =
-      "update \"" + this->_dbConnector.getDbName() + "\".\"USERS\" set \"NAME\" = \'"
-          + _backUp->getName() + "\', \"PASSWORD\" = \'"
-          + _backUp->getPassword() + "\', \"EMAIL\" = \'"
-          + _backUp->getEmail() + "\';";
+      "update \"" + this->_dbConnector.getDbName() + "\".\"USERS\" set "
+          + descriptors[1].field + " = \'"
+          + descriptors[1].value + "\', "
+          + descriptors[2].field + " = \'"
+          + descriptors[2].value + "\', "
+          + descriptors[3].field + " = \'"
+          + descriptors[3].value + "\' where "
+          + descriptors[0].field + " = \'"
+          + descriptors[0].value + "\';";
   this->executeQuery(sql);
 }
 
 template<typename Connection, typename ResultSet, typename Callback>
 void ModifyUserCommand<Connection, ResultSet, Callback>::execute() const {
+  std::vector<Descriptor> descriptors = _user->createDescriptors();
   std::string sql =
-      "update \"" + this->_dbConnector.getDbName() + "\".\"USERS\" set \"NAME\" = \'"
-          + _user->getName() + "\', \"PASSWORD\" = \'"
-          + _user->getPassword() + "\', \"EMAIL\" = \'"
-          + _user->getEmail() + "\';";
+      "update \"" + this->_dbConnector.getDbName() + "\".\"USERS\" set "
+          + descriptors[1].field + " = \'"
+          + descriptors[1].value + "\', "
+          + descriptors[2].field + " = \'"
+          + descriptors[2].value + "\', "
+          + descriptors[3].field + " = \'"
+          + descriptors[3].value + "\' where "
+          + descriptors[0].field + " = \'"
+          + descriptors[0].value + "\';";
   this->executeQuery(sql);
 }
 

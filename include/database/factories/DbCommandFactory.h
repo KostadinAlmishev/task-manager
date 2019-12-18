@@ -20,8 +20,8 @@ class DbCommandFactory {
   virtual std::unique_ptr<DbCommand<Connection, ResultSet, Callback>> createAddCommand(std::shared_ptr<Entity>) const = 0;
   virtual std::unique_ptr<DbCommand<Connection, ResultSet, Callback>> createDeleteCommand(std::shared_ptr<Entity>) const = 0;
   virtual std::unique_ptr<DbCommand<Connection, ResultSet, Callback>> createModifyCommand(std::shared_ptr<Entity>) const = 0;
-  virtual std::unique_ptr<DbCommand<Connection, ResultSet, Callback>> createGetCommand(long, std::shared_ptr<Entity>, long) const = 0;
-  virtual std::unique_ptr<DbCommand<Connection, ResultSet, Callback>> createGetCommand(std::string, std::shared_ptr<Entity>) const = 0;
+  virtual std::unique_ptr<DbCommand<Connection, ResultSet, Callback>> createGetCommand(long, std::shared_ptr<Entity> &, long) const = 0;
+  virtual std::unique_ptr<DbCommand<Connection, ResultSet, Callback>> createGetCommand(std::string, std::shared_ptr<Entity> &) const = 0;
   virtual ~DbCommandFactory() = default;
 };
 

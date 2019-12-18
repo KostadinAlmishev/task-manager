@@ -17,6 +17,7 @@ class Project : public Entity {
   std::string getDescription() const;
   void setName(std::string name);
   void setDescription(std::string description);
+  std::vector<Descriptor> createDescriptors() const override;
 };
 
 #endif //TASKMANAGER_INCLUDE_ENTITY_PROJECT_H_

@@ -3,8 +3,11 @@
 //
 
 #include <string>
+#include <vector>
 #include <utility>
-#include <entities/User.h>
+
+#include "entities/Entity.h"
+#include "entities/User.h"
 
 void User::setName(std::string name) {
   _name = std::move(name);
@@ -26,4 +29,13 @@ std::string User::getEmail() const {
 }
 std::string User::toString() const {
   return "Name: " + _name + " Password: " + _password + " Email: " + _email;
+}
+
+std::vector<Descriptor> User::createDescriptors() const {
+  std::vector<Descriptor> descriptors;
+  descriptors.push_back({"ID", std::to_string(getId())});
+  descriptors.push_back({"NAME", getName()});
+  descriptors.push_back({"PASSWORD", getPassword()});
+  descriptors.push_back({"EMAIL", getEmail()});
+  return descriptors;
 }

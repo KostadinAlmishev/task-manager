@@ -19,12 +19,12 @@ template<typename Connection, typename ResultSet, typename Callback>
 class GetUserByNameCommand : public DbCommand<Connection, ResultSet, Callback> {
  private:
   std::string _name;
-  std::shared_ptr<User> _user;
+  std::shared_ptr<Entity> &_user;
 
  public:
   GetUserByNameCommand(DbConnector<Connection, ResultSet, Callback> &,
                        std::string,
-                       std::shared_ptr<User>);
+                       std::shared_ptr<Entity> &);
 
   void saveBackUp() override;
   void undo() const override;
@@ -38,10 +38,10 @@ GetUserByNameCommand<Connection, ResultSet, Callback>::GetUserByNameCommand(DbCo
                                                                                         ResultSet,
                                                                                         Callback> &dbConnector,
                                                                             std::string name,
-                                                                            std::shared_ptr<User> user)
+                                                                            std::shared_ptr<Entity> &user)
     : DbCommand<Connection, ResultSet, Callback>(dbConnector),
       _name(std::move(name)),
-      _user(std::move(user)) {}
+      _user(user) {}
 
 template<typename Connection, typename ResultSet, typename Callback>
 void GetUserByNameCommand<Connection, ResultSet, Callback>::saveBackUp() {}
@@ -52,10 +52,10 @@ void GetUserByNameCommand<Connection, ResultSet, Callback>::undo() const {}
 template<typename Connection, typename ResultSet, typename Callback>
 void GetUserByNameCommand<Connection, ResultSet, Callback>::execute() const {
   std::string sql =
-      "select * from \"" + this->_dbConnector.getDbName() + "\".\"USERS\" where \"NAME\" = \'" + _name
+      "select * from \"" + this->_dbConnector.getDbName() + "\".\"USERS\" where NAME = \'" + _name
           + "\';";
   auto result = this->executeQuery(sql);
-  *_user = *Callback::parseToUser(result);
+  _user = std::move(Callback::parseToUser(result));
 }
 
 #endif //TASKMANAGER_INCLUDE_DATABASE_COMMANDS_USER_GETUSERBYNAMECOMMAND_H_

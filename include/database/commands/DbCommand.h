@@ -22,7 +22,10 @@ class DbCommand : public Entity {
   DbCommand(const DbCommand<Connection, ResultSet, Callback> &) = default;
 
   std::string toString() const override;
-  virtual ResultSet executeQuery(std::string) const;
+  virtual ResultSet *executeQuery(std::string) const;
+
+  //stub
+  std::vector<Descriptor> createDescriptors() const override {return std::vector<Descriptor>();};
 
   virtual void saveBackUp() = 0;
   virtual void undo() const = 0;
@@ -41,11 +44,12 @@ std::string DbCommand<Connection, ResultSet, Callback>::toString() const {
 }
 
 template<typename Connection, typename ResultSet, typename Callback>
-ResultSet DbCommand<Connection, ResultSet, Callback>::executeQuery(std::string sql) const {
+ResultSet *DbCommand<Connection, ResultSet, Callback>::executeQuery(std::string sql) const {
   auto dbConnection = _dbConnector.getConnection();
   auto connection = dbConnection->connect();
-  auto result = dbConnection->execute(*connection, sql);
-  dbConnection->free(std::move(connection));
+  auto result = dbConnection->execute(connection, sql);
+  dbConnection->free(connection);
+  _dbConnector.releaseConnection(std::move(dbConnection));
   return result;
 }
 
