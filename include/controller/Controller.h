@@ -1,17 +1,17 @@
 #ifndef TASK_MANAGER_CONTROLLER_H
 #define TASK_MANAGER_CONTROLLER_H
 
-#include <vector>
 #include <memory>
+#include <vector>
 
+#include "CommandManager.h"
 #include "entities/Entity.h"
-#include "entities/Task.h"
-#include "entities/User.h"
 #include "entities/Project.h"
 #include "entities/Request.h"
 #include "entities/Response.h"
+#include "entities/Task.h"
+#include "entities/User.h"
 
-#include "CommandManager.h"
 
 
 

@@ -3,7 +3,6 @@ project(task_manager)
 
 set(CMAKE_CXX_STANDARD 17)
 
-#set(${INCLUDES_DIR} ${PROJECT_SOURCE_DIR}/includes)
 
 include_directories(${PROJECT_SOURCE_DIR}/include)
 
@@ -12,12 +11,10 @@ file(GLOB_RECURSE
 file(GLOB_RECURSE
         TEST_CPPS "test/*.cpp")
 
-add_executable(${PROJECT_NAME}  main.cpp ${CPPS})
-#add_executable(${PROJECT_NAME}  test/test.cpp ${CPPS}  ${TEST_CPPS})
+add_executable(${PROJECT_NAME}  ${CPPS} test/test.cpp ${TEST_CPPS})
 
 
 add_subdirectory(googletest)
-
 #include googletest/include dir
 include_directories(googletest/googletest/include)
 

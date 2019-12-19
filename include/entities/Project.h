@@ -6,9 +6,9 @@
 #define TASK_MANAGER_PROJECT_H
 
 #include "Entity.h"
+#include "Project.h"
 #include "Task.h"
 #include "User.h"
-#include "Project.h"
 
 
 class Project : public Entity {

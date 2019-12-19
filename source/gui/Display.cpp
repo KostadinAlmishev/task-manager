@@ -1,13 +1,10 @@
-//
-// Created by kotik on 25.11.2019.
-//
+#include <iostream>
 
 #include "gui/Display.h"
+#include "entities/Project.h"
 #include "entities/Task.h"
 #include "entities/User.h"
-#include "entities/Project.h"
 
-#include <iostream>
 
 Display * Display::p_instance = NULL;
 
@@ -48,7 +45,7 @@ std::string Display::getText() {
     std::string str;
     do {
         getline(std::cin, str);
-    } while (!isStrEmpty(str));
+    } while (!StrFunc::isEmpty(str));
     return str;
 }
 
@@ -66,13 +63,6 @@ long Display::getLong() {
     return num;
 }
 
-bool Display::isStrEmpty(std::string str) {
-    auto it = str.begin();
-    for (; it != str.end(); it++) {
-        if (*it != ' ' && *it != '\n') return true;
-    }
-    return false;
-}
 
 void Display::getInformationTaskSave(std::shared_ptr<Task> task) {
     printText("Project ID to which task will belong: ");

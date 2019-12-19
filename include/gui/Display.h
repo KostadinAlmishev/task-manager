@@ -5,9 +5,10 @@
 #include <memory>
 
 #include "entities/Entity.h"
+#include "entities/Project.h"
 #include "entities/Task.h"
 #include "entities/User.h"
-#include "entities/Project.h"
+#include "stringFunctions/StringFunctions.h"
 
 
 class Display {
@@ -25,7 +26,6 @@ public:
         return p_instance;
     }
 
-    bool isStrEmpty(std::string str);
 
     std::string getCommandFromUser();
     std::string getText();

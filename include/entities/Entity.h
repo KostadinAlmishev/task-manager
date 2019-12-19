@@ -4,7 +4,6 @@
 #include <iostream>
 #include <string>
 
-#define PR(a) std::cout << #a << " = " << a << std::endl;
 
 
 class Entity {

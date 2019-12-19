@@ -1,8 +1,10 @@
+#include <memory>
+
+
+#include "controller/CommandManager.h"
 #include "controller/Controller.h"
 #include "entities/Entity.h"
-#include "controller/CommandManager.h"
 
-#include <memory>
 
 Controller::Controller() {
     commandManager = std::make_shared<CommandManager>();
@@ -21,7 +23,7 @@ void Controller::checkRequest(std::shared_ptr<Request> request, std::shared_ptr<
         case requestMode::DELETE:
             deleteEntity(request, response);
             break;
-        case requestMode::UPDADE:
+        case requestMode::UPDATE:
             updateEntity(request, response);
             break;
         case requestMode::AUTHORIZATION:
@@ -31,7 +33,6 @@ void Controller::checkRequest(std::shared_ptr<Request> request, std::shared_ptr<
             checkDeauthorization(request, response);
             break;
     }
-
 }
 
 

@@ -1,19 +1,19 @@
 #ifndef TASK_MANAGER_REQUEST_H
 #define TASK_MANAGER_REQUEST_H
 
-#include <vector>
 #include <memory>
+#include <vector>
 
 #include "Entity.h"
+#include "Project.h"
 #include "Task.h"
 #include "User.h"
-#include "Project.h"
 
 
 enum class requestMode {
     _EMPTY,
     SAVE,
-    UPDADE,
+    UPDATE,
     DELETE,
     GET,
     AUTHORIZATION,
@@ -25,9 +25,6 @@ enum class requestCode {
     TASK,
     PROJECT,
     USER,
-    TASK_LIST,
-    PROJECT_LIST,
-    USER_LIST
 };
 
 enum class requestFindBy {

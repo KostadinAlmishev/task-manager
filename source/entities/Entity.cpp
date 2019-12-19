@@ -1,7 +1,3 @@
-//
-// Created by kotik on 03.12.2019.
-//
-
 #include "entities/Entity.h"
 
 

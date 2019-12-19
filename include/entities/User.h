@@ -2,9 +2,9 @@
 #define TASK_MANAGER_USER_H
 
 #include "Entity.h"
+#include "Project.h"
 #include "Task.h"
 #include "User.h"
-#include "Project.h"
 
 
 class User : public Entity {
