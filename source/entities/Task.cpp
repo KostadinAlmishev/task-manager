@@ -36,6 +36,11 @@ std::string Task::getDescription() const {
   return description;
 }
 
+std::string Task::toString() const {
+  return "Name: " + name + " Description: " + description + " ProjectId: " + std::to_string(projectId) + " CreatorId: "
+      + std::to_string(creatorId);
+}
+
 std::vector<Descriptor> Task::createDescriptors() const {
   std::vector<Descriptor> descriptors;
   descriptors.push_back({"ID", std::to_string(getId())});

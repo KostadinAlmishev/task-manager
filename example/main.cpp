@@ -4,11 +4,14 @@
 #include <iostream>
 #include <fstream>
 #include <memory>
+#include <CurlCallbacks.h>
 
 #include "database/connection/DbConnector.h"
 #include "database/factories/UserDbCommandFactory.h"
 #include "managers/DbManager.h"
 #include "PgCallbacks.h"
+#include "tracking/Email.h"
+
 
 void showDBExamples() {
   //example of execution db user commands
@@ -65,7 +68,25 @@ void showDBExamples() {
   dbProperties.close();
 }
 
+void showEmailExamples() {
+  //example of sending emails
+  std::string host = "smtp.yandex.ru";
+  unsigned int port = 465;
+  std::string login = "technopark-project-test@yandex.ru";
+  std::string password = "closed$PSWD";
+  std::shared_ptr<Subscriber> email = std::make_shared<Email<CurlCallbacks>>(host, port, login, password);
+  NotificationManager notificationManager;
+  notificationManager.subscribe(email);
+
+  auto user = std::make_shared<User>();
+  user->setName("test");
+  user->setPassword("test");
+  user->setEmail("sayfer97@yandex.ru");
+  notificationManager.notifyAll(*user, *user);
+}
+
 int main() {
   showDBExamples();
+  showEmailExamples();
   return 0;
 }

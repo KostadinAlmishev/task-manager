@@ -24,6 +24,7 @@ class Task : public Entity {
   std::string getName() const;
   void setDescription(std::string description);
   std::string getDescription() const;
+  std::string toString() const override;
   std::vector<Descriptor> createDescriptors() const override;
 };
 

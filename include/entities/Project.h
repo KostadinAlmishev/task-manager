@@ -12,11 +12,13 @@ class Project : public Entity {
   std::string name;
   std::string description;
  public:
+  Project() = default;
   Project(const Project &) = default;
   std::string getName() const;
   std::string getDescription() const;
   void setName(std::string name);
   void setDescription(std::string description);
+  std::string toString() const override;
   std::vector<Descriptor> createDescriptors() const override;
 };
 

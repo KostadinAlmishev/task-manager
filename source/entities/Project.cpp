@@ -20,6 +20,11 @@ std::string Project::getDescription() const {
   return description;
 }
 
+std::string Project::toString() const {
+  return "Name: " + name + " Description: " + description;
+}
+
+
 std::vector<Descriptor> Project::createDescriptors() const {
   std::vector<Descriptor> descriptors;
   descriptors.push_back({"ID", std::to_string(getId())});
