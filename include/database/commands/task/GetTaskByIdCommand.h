@@ -19,12 +19,12 @@ template<typename Connection, typename ResultSet, typename Callback>
 class GetTaskByIdCommand : public DbCommand<Connection, ResultSet, Callback> {
  private:
   long _id;
-  std::shared_ptr<Task> _task;
+  std::shared_ptr<Entity> &_task;
 
  public:
   GetTaskByIdCommand(DbConnector<Connection, ResultSet, Callback> &,
                      long,
-                     std::shared_ptr<Task>);
+                     std::shared_ptr<Entity> &);
 
   void saveBackUp() override;
   void undo() const override;
@@ -38,10 +38,10 @@ GetTaskByIdCommand<Connection, ResultSet, Callback>::GetTaskByIdCommand(DbConnec
                                                                                     ResultSet,
                                                                                     Callback> &dbConnector,
                                                                         long id,
-                                                                        std::shared_ptr<Task> task)
+                                                                        std::shared_ptr<Entity> &task)
     : DbCommand<Connection, ResultSet, Callback>(dbConnector),
       _id(id),
-      _task(std::move(task)) {}
+      _task(task) {}
 
 template<typename Connection, typename ResultSet, typename Callback>
 void GetTaskByIdCommand<Connection, ResultSet, Callback>::saveBackUp() {}
@@ -52,9 +52,9 @@ void GetTaskByIdCommand<Connection, ResultSet, Callback>::undo() const {}
 template<typename Connection, typename ResultSet, typename Callback>
 void GetTaskByIdCommand<Connection, ResultSet, Callback>::execute() const {
   std::string sql =
-      "select * from \"" + this->_dbConnector.getDbName() + "\".\"TASKS\" where \"ID\" = \'" + _id
+      "select * from \"" + this->_dbConnector.getDbName() + "\".\"TASKS\" where \"ID\" = \'" + std::to_string(_id)
           + "\';";
   auto result = this->executeQuery(sql);
-  *_task = *Callback::parseToTask(result);
+  _task = std::move(Callback::parseToTask(result));
 }
 #endif //TASKMANAGER_INCLUDE_DATABASE_COMMANDS_TASK_GETTASKBYIDCOMMAND_H_

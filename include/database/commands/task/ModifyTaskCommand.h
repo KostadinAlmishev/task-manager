@@ -19,11 +19,11 @@
 template<typename Connection, typename ResultSet, typename Callback>
 class ModifyTaskCommand : public DbCommand<Connection, ResultSet, Callback> {
  private:
-  std::shared_ptr<Task> _task;
+  std::shared_ptr<Entity> _task;
   std::unique_ptr<Task> _backUp;
 
  public:
-  ModifyTaskCommand(DbConnector<Connection, ResultSet, Callback> &, std::shared_ptr<Task>);
+  ModifyTaskCommand(DbConnector<Connection, ResultSet, Callback> &, std::shared_ptr<Entity>);
 
   void saveBackUp() override;
   void undo() const override;
@@ -36,13 +36,16 @@ template<typename Connection, typename ResultSet, typename Callback>
 ModifyTaskCommand<Connection, ResultSet, Callback>::ModifyTaskCommand(DbConnector<Connection,
                                                                                   ResultSet,
                                                                                   Callback> &dbConnector,
-                                                                      std::shared_ptr<Task> task)
+                                                                      std::shared_ptr<Entity> task)
     : DbCommand<Connection, ResultSet, Callback>(dbConnector), _task(std::move(task)) {}
 
 template<typename Connection, typename ResultSet, typename Callback>
 void ModifyTaskCommand<Connection, ResultSet, Callback>::saveBackUp() {
+  std::vector<Descriptor> descriptors = _task->createDescriptors();
   std::string sql =
-      "select * from \"" + this->_dbConnector.getDbName() + "\".\"TASKS\" where \"NAME\" = \'" + _task->getName()
+      "select * from \"" + this->_dbConnector.getDbName() + "\".\"TASKS\" where "
+          + descriptors[1].field + " = \'"
+          + descriptors[1].value
           + "\';";
   auto result = this->executeQuery(sql);
   _backUp = std::move(Callback::parseToTask(result));
@@ -50,23 +53,37 @@ void ModifyTaskCommand<Connection, ResultSet, Callback>::saveBackUp() {
 
 template<typename Connection, typename ResultSet, typename Callback>
 void ModifyTaskCommand<Connection, ResultSet, Callback>::undo() const {
+  std::vector<Descriptor> descriptors = _backUp->createDescriptors();
   std::string sql =
-      "update \"" + this->_dbConnector.getDbName() + "\".\"TASKS\" set \"NAME\" = \'"
-          + _backUp->getName() + "\', \"DESCRIPTION\" = \'"
-          + _backUp->getDescription() + "\', \"PROJECT\" = \'"
-          + _backUp->getProjectId() + "\', \"USER\" = \'"
-          + _backUp->getCreatorId() + "\';";
+      "update \"" + this->_dbConnector.getDbName() + "\".\"TASKS\" set "
+          + descriptors[1].field + " = \'"
+          + descriptors[1].value + "\', "
+          + descriptors[2].field + " = \'"
+          + descriptors[2].value + "\', "
+          + descriptors[3].field + " = \'"
+          + descriptors[3].value + "\', "
+          + descriptors[4].field + " = \'"
+          + descriptors[4].value + "\' where "
+          + descriptors[0].field + " = \'"
+          + descriptors[0].value + "\';";
   this->executeQuery(sql);
 }
 
 template<typename Connection, typename ResultSet, typename Callback>
 void ModifyTaskCommand<Connection, ResultSet, Callback>::execute() const {
+  std::vector<Descriptor> descriptors = _task->createDescriptors();
   std::string sql =
-      "update \"" + this->_dbConnector.getDbName() + "\".\"TASKS\" set \"NAME\" = \'"
-          + _task->getName() + "\', \"DESCRIPTION\" = \'"
-          + _task->getDescription() + "\', \"PROJECT\" = \'"
-          + _task->getProjectId() + "\', \"USER\" = \'"
-          + _task->getCreatorId() + "\';";
+      "update \"" + this->_dbConnector.getDbName() + "\".\"TASKS\" set "
+          + descriptors[1].field + " = \'"
+          + descriptors[1].value + "\', "
+          + descriptors[2].field + " = \'"
+          + descriptors[2].value + "\', "
+          + descriptors[3].field + " = \'"
+          + descriptors[3].value + "\', "
+          + descriptors[4].field + " = \'"
+          + descriptors[4].value + "\' where "
+          + descriptors[0].field + " = \'"
+          + descriptors[0].value + "\';";
   this->executeQuery(sql);
 }
 

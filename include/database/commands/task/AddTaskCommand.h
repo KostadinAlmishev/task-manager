@@ -19,11 +19,10 @@
 template<typename Connection, typename ResultSet, typename Callback>
 class AddTaskCommand : public DbCommand<Connection, ResultSet, Callback> {
  private:
-  std::shared_ptr<Task> _task;
-  std::unique_ptr<Task> _backUp;
+  std::shared_ptr<Entity> _task;
 
  public:
-  AddTaskCommand(DbConnector<Connection, ResultSet, Callback> &, std::shared_ptr<Task>);
+  AddTaskCommand(DbConnector<Connection, ResultSet, Callback> &, std::shared_ptr<Entity>);
 
   void saveBackUp() override;
   void undo() const override;
@@ -36,30 +35,36 @@ template<typename Connection, typename ResultSet, typename Callback>
 AddTaskCommand<Connection, ResultSet, Callback>::AddTaskCommand(DbConnector<Connection,
                                                                             ResultSet,
                                                                             Callback> &dbConnector,
-                                                                std::shared_ptr<Task> task)
+                                                                std::shared_ptr<Entity> task)
     : DbCommand<Connection, ResultSet, Callback>(dbConnector), _task(std::move(task)) {}
 
 template<typename Connection, typename ResultSet, typename Callback>
-void AddTaskCommand<Connection, ResultSet, Callback>::saveBackUp() {
-  _backUp = std::make_unique(*_task);
-}
+void AddTaskCommand<Connection, ResultSet, Callback>::saveBackUp() {}
 
 template<typename Connection, typename ResultSet, typename Callback>
 void AddTaskCommand<Connection, ResultSet, Callback>::undo() const {
+  std::vector<Descriptor> descriptors = _task->createDescriptors();
   std::string sql =
-      "delete from \"" + this->_dbConnector.getDbName() + "\".\"TASKS\" where \"NAME\" = \'" + _backUp->getName()
+      "delete from \"" + this->_dbConnector.getDbName() + "\".\"TASKS\" where \""
+          + descriptors[1].field + "\" = \'"
+          + descriptors[1].value
           + "\';";
   this->executeQuery(sql);
 }
 
 template<typename Connection, typename ResultSet, typename Callback>
 void AddTaskCommand<Connection, ResultSet, Callback>::execute() const {
+  std::vector<Descriptor> descriptors = _task->createDescriptors();
   std::string sql =
-      "insert into \"" + this->_dbConnector.getDbName() + "\".\"TASKS\" VALUES ("
-          + _task->getName() + ","
-          + _task->getDescription() + ","
-          + _task->getProjectId() + ","
-          + _task->getCreatorId() + ");";
+      "insert into \"" + this->_dbConnector.getDbName() + "\".\"TASKS\" ("
+          + descriptors[1].field + ", "
+          + descriptors[2].field + ", "
+          + descriptors[3].field + ", "
+          + descriptors[4].field + ") VALUES (\'"
+          + descriptors[1].value + "\',\'"
+          + descriptors[2].value + "\',\'"
+          + descriptors[3].value + "\',\'"
+          + descriptors[4].value + "\');";
   this->executeQuery(sql);
 }
 #endif //TASKMANAGER_INCLUDE_DATABASE_COMMANDS_TASK_ADDTASKCOMMAND_H_

@@ -19,12 +19,12 @@ template<typename Connection, typename ResultSet, typename Callback>
 class GetProjectByIdCommand : public DbCommand<Connection, ResultSet, Callback> {
  private:
   long _id;
-  std::shared_ptr<Project> _project;
+  std::shared_ptr<Entity> &_project;
 
  public:
   GetProjectByIdCommand(DbConnector<Connection, ResultSet, Callback> &,
                         long,
-                        std::shared_ptr<Project>);
+                        std::shared_ptr<Entity> &);
 
   void saveBackUp() override;
   void undo() const override;
@@ -36,10 +36,10 @@ class GetProjectByIdCommand : public DbCommand<Connection, ResultSet, Callback> 
 template<typename Connection, typename ResultSet, typename Callback>
 GetProjectByIdCommand<Connection, ResultSet, Callback>::GetProjectByIdCommand(DbConnector<Connection, ResultSet, Callback> &dbConnector,
                                                                     long id,
-                                                                    std::shared_ptr<Project> project)
+                                                                    std::shared_ptr<Entity> &project)
     : DbCommand<Connection, ResultSet, Callback>(dbConnector),
       _id(id),
-      _project(std::move(project)) {}
+      _project(project) {}
 
 template<typename Connection, typename ResultSet, typename Callback>
 void GetProjectByIdCommand<Connection, ResultSet, Callback>::saveBackUp() {}
@@ -50,9 +50,9 @@ void GetProjectByIdCommand<Connection, ResultSet, Callback>::undo() const {}
 template<typename Connection, typename ResultSet, typename Callback>
 void GetProjectByIdCommand<Connection, ResultSet, Callback>::execute() const {
   std::string sql =
-      "select * from \"" + this->_dbConnector.getDbName() + "\".\"PROJECTS\" where \"ID\" = \'" + _id
+      "select * from \"" + this->_dbConnector.getDbName() + "\".\"PROJECTS\" where \"ID\" = \'" + std::to_string(_id)
           + "\';";
   auto result = this->executeQuery(sql);
-  *_project = *Callback::parseToProject(result);
+  _project = std::move(Callback::parseToProject(result));
 }
 #endif //TASKMANAGER_INCLUDE_DATABASE_COMMANDS_PROJECT_GETPROJECTBYIDCOMMAND_H_

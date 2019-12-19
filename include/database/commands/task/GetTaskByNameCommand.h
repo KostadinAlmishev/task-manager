@@ -19,12 +19,12 @@ template<typename Connection, typename ResultSet, typename Callback>
 class GetTaskByNameCommand : public DbCommand<Connection, ResultSet, Callback> {
  private:
   std::string _name;
-  std::shared_ptr<Task> _task;
+  std::shared_ptr<Entity> &_task;
 
  public:
   GetTaskByNameCommand(DbConnector<Connection, ResultSet, Callback> &,
                        std::string,
-                       std::shared_ptr<Task>);
+                       std::shared_ptr<Entity> &);
 
   void saveBackUp() override;
   void undo() const override;
@@ -38,10 +38,10 @@ GetTaskByNameCommand<Connection, ResultSet, Callback>::GetTaskByNameCommand(DbCo
                                                                                         ResultSet,
                                                                                         Callback> &dbConnector,
                                                                             std::string name,
-                                                                            std::shared_ptr<Task> task)
+                                                                            std::shared_ptr<Entity> &task)
     : DbCommand<Connection, ResultSet, Callback>(dbConnector),
       _name(std::move(name)),
-      _task(std::move(task)) {}
+      _task(task) {}
 
 template<typename Connection, typename ResultSet, typename Callback>
 void GetTaskByNameCommand<Connection, ResultSet, Callback>::saveBackUp() {}
@@ -55,7 +55,7 @@ void GetTaskByNameCommand<Connection, ResultSet, Callback>::execute() const {
       "select * from \"" + this->_dbConnector.getDbName() + "\".\"TASKS\" where \"NAME\" = \'" + _name
           + "\';";
   auto result = this->executeQuery(sql);
-  *_task = *Callback::parseToTask(result);
+  _task = std::move(Callback::parseToTask(result));
 }
 
 #endif //TASKMANAGER_INCLUDE_DATABASE_COMMANDS_TASK_GETTASKBYNAMECOMMAND_H_

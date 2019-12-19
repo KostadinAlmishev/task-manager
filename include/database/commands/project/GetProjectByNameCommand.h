@@ -19,12 +19,12 @@ template<typename Connection, typename ResultSet, typename Callback>
 class GetProjectByNameCommand : public DbCommand<Connection, ResultSet, Callback> {
  private:
   std::string _name;
-  std::shared_ptr<Project> _project;
+  std::shared_ptr<Entity> &_project;
 
  public:
   GetProjectByNameCommand(DbConnector<Connection, ResultSet, Callback> &,
                           std::string,
-                          std::shared_ptr<Project>);
+                          std::shared_ptr<Entity> &);
 
   void saveBackUp() override;
   void undo() const override;
@@ -38,10 +38,10 @@ GetProjectByNameCommand<Connection, ResultSet, Callback>::GetProjectByNameComman
                                                                                               ResultSet,
                                                                                               Callback> &dbConnector,
                                                                                   std::string name,
-                                                                                  std::shared_ptr<Project> project)
+                                                                                  std::shared_ptr<Entity> &project)
     : DbCommand<Connection, ResultSet, Callback>(dbConnector),
       _name(std::move(name)),
-      _project(std::move(project)) {}
+      _project(project) {}
 
 template<typename Connection, typename ResultSet, typename Callback>
 void GetProjectByNameCommand<Connection, ResultSet, Callback>::saveBackUp() {}
@@ -55,7 +55,7 @@ void GetProjectByNameCommand<Connection, ResultSet, Callback>::execute() const {
       "select * from \"" + this->_dbConnector.getDbName() + "\".\"PROJECTS\" where \"NAME\" = \'" + _name
           + "\';";
   auto result = this->executeQuery(sql);
-  *_project = *Callback::parseToProject(result);
+  _project = std::move(Callback::parseToProject(result));
 }
 
 #endif //TASKMANAGER_INCLUDE_DATABASE_COMMANDS_PROJECT_GETPROJECTBYNAMECOMMAND_H_

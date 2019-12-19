@@ -38,5 +38,3 @@ target_link_libraries(TaskManager ${CURL_LIBRARIES})
 
 target_link_libraries(TaskManagerTest TaskManagerLib)
 target_link_libraries(TaskManagerTest ${GTEST_LIBRARIES})
-
-#enable_testing()

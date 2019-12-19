@@ -19,11 +19,11 @@
 template<typename Connection, typename ResultSet, typename Callback>
 class DeleteProjectCommand : public DbCommand<Connection, ResultSet, Callback> {
  private:
-  std::shared_ptr<Project> _project;
+  std::shared_ptr<Entity> _project;
   std::unique_ptr<Project> _backUp;
 
  public:
-  DeleteProjectCommand(DbConnector<Connection, ResultSet, Callback> &, std::shared_ptr<Project>);
+  DeleteProjectCommand(DbConnector<Connection, ResultSet, Callback> &, std::shared_ptr<Entity>);
 
   void saveBackUp() override;
   void undo() const override;
@@ -36,14 +36,17 @@ template<typename Connection, typename ResultSet, typename Callback>
 DeleteProjectCommand<Connection, ResultSet, Callback>::DeleteProjectCommand(DbConnector<Connection,
                                                                                         ResultSet,
                                                                                         Callback> &dbConnector,
-                                                                            std::shared_ptr<Project> project)
+                                                                            std::shared_ptr<Entity> project)
     : DbCommand<Connection, ResultSet, Callback>(dbConnector),
       _project(std::move(project)) {}
 
 template<typename Connection, typename ResultSet, typename Callback>
 void DeleteProjectCommand<Connection, ResultSet, Callback>::saveBackUp() {
+  std::vector<Descriptor> descriptors = _project->createDescriptors();
   std::string sql =
-      "select * from \"" + this->_dbConnector.getDbName() + "\".\"PROJECTS\" where \"NAME\" = \'" + _project->getName()
+      "select * from \"" + this->_dbConnector.getDbName() + "\".\"PROJECTS\" where "
+          + descriptors[1].field + " = \'"
+          + descriptors[1].value
           + "\';";
   auto result = this->executeQuery(sql);
   _backUp = std::move(Callback::parseToProject(result));
@@ -60,8 +63,11 @@ void DeleteProjectCommand<Connection, ResultSet, Callback>::undo() const {
 
 template<typename Connection, typename ResultSet, typename Callback>
 void DeleteProjectCommand<Connection, ResultSet, Callback>::execute() const {
+  std::vector<Descriptor> descriptors = _project->createDescriptors();
   std::string sql =
-      "delete from \"" + this->_dbConnector.getDbName() + "\".\"PROJECTS\" where \"NAME\" = \'" + _project->getName()
+      "delete from \"" + this->_dbConnector.getDbName() + "\".\"PROJECTS\" where "
+          + descriptors[1].field + " = \'"
+          + descriptors[1].value
           + "\';";
   this->executeQuery(sql);
 }
