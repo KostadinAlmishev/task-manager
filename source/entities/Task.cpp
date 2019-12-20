@@ -1,16 +1,16 @@
 #include "entities/Task.h"
 
 
-void Task::setCreatorId(long creatorId) {
+void Task::setCreatorId(int creatorId) {
     this->creatorId = creatorId;
 }
-long Task::getCreatorId() const {
+int Task::getCreatorId() const {
     return creatorId;
 }
-void Task::setProjectId(long projectId) {
+void Task::setProjectId(int projectId) {
     this->projectId = projectId;
 }
-long Task::getProjectId() const {
+int Task::getProjectId() const {
     return projectId;
 }
 void Task::setName(std::string name) {

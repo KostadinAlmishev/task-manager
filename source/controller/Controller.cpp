@@ -8,6 +8,7 @@
 
 Controller::Controller() {
     commandManager = std::make_shared<CommandManager>();
+    securityManager = std::make_shared<SecurityManager>();
 }
 
 
@@ -17,7 +18,7 @@ void Controller::checkRequest(std::shared_ptr<Request> request, std::shared_ptr<
             response->mode = responseMode::PRINT;
             getEntity(request, response);
             break;
-        case requestMode::SAVE:
+        case requestMode::NEW:
             addEntity(request, response);
             break;
         case requestMode::DELETE:
@@ -46,7 +47,7 @@ void Controller::getEntity(std::shared_ptr<Request> request, std::shared_ptr<Res
                     break;
                 }
                 case requestFindBy::NAME:
-                    auto user = commandManager->getUserByName(request->user->getName());
+                    auto user = commandManager->getUserByName(request->fbName);
                     if (user->getId() != -1) {
                         response->user = user;
                         response->code = responseCode::USER;
@@ -62,7 +63,7 @@ void Controller::getEntity(std::shared_ptr<Request> request, std::shared_ptr<Res
         case requestCode::TASK:
             switch (request->findBy) {
                 case requestFindBy::ID:{
-                    auto task = commandManager->getTaskById(request->task->getId());
+                    auto task = commandManager->getTaskById(request->fbId);
                     if (task->getId() != -1) {
                         response->task = task;
                         response->code = responseCode::TASK;
@@ -120,7 +121,7 @@ void Controller::updateEntity(std::shared_ptr<Request> request, std::shared_ptr<
                     break;
                 }
                 case requestFindBy::NAME:
-                    if (commandManager->updateUserByName(request->user, request->user->getName())) {}
+                    if (commandManager->updateUserByName(request->user, request->fbName)) {}
                     else {
                         response->isError = true;
                         response->errorBody = "there is no such name";
@@ -133,7 +134,7 @@ void Controller::updateEntity(std::shared_ptr<Request> request, std::shared_ptr<
         case requestCode::TASK:
             switch (request->findBy) {
                 case requestFindBy::ID:{
-                    if (commandManager->updateTaskById(request->task, request->task->getId())) {}
+                    if (commandManager->updateTaskById(request->task, request->fbId)) {}
                     else {
                         response->isError = true;
                         response->errorBody = "there is no such id";
@@ -162,7 +163,7 @@ void Controller::deleteEntity(std::shared_ptr<Request> request, std::shared_ptr<
                     break;
                 }
                 case requestFindBy::NAME:
-                    if(commandManager->deleteUserByName(request->user->getName())) {}
+                    if(commandManager->deleteUserByName(request->fbName)) {}
                     else {
                         response->isError = true;
                         response->errorBody = "there is no such name";
@@ -175,7 +176,7 @@ void Controller::deleteEntity(std::shared_ptr<Request> request, std::shared_ptr<
         case requestCode::TASK:
             switch (request->findBy) {
                 case requestFindBy::ID:{
-                    if(commandManager->deleteTaskById(request->task->getId())) {}
+                    if(commandManager->deleteTaskById(request->fbId)) {}
                     else {
                         response->isError = true;
                         response->errorBody = "there is no such id";

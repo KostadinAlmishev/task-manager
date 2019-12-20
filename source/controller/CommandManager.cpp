@@ -47,7 +47,7 @@ bool CommandManager::addTask(std::shared_ptr<Task> task) {
     return true;
 }
 
-std::shared_ptr<Task> CommandManager::getTaskById(long id) {
+std::shared_ptr<Task> CommandManager::getTaskById(int id) {
     if (id >= 0 && id < tasks.size()) {
         return tasks[id];
     }
@@ -58,7 +58,7 @@ std::shared_ptr<Task> CommandManager::getTaskById(long id) {
     }
 }
 
-bool CommandManager::updateTaskById(std::shared_ptr<Task> task, long id) {
+bool CommandManager::updateTaskById(std::shared_ptr<Task> task, int id) {
     if (id >= 0 && id < tasks.size()) {
         tasks[id] = task;
         return true;
@@ -69,7 +69,7 @@ bool CommandManager::updateTaskById(std::shared_ptr<Task> task, long id) {
 }
 
 
-bool CommandManager::deleteTaskById(long id) {
+bool CommandManager::deleteTaskById(int id) {
     if (id >= 0 && id < tasks.size()) {
         tasks[id] = nullptr;
         if (tasks[tasks.size() - 1] != nullptr) {

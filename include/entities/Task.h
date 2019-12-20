@@ -9,16 +9,16 @@
 
 class Task : public Entity {
 private:
-    long creatorId;
-    long projectId;
+    int creatorId;
+    int projectId;
     std::string name;
     std::string description;
 public:
     Task() : creatorId(-1), projectId(-1) {}
-    void setCreatorId(long creatorId);
-    long getCreatorId() const;
-    void setProjectId(long projectId);
-    long getProjectId() const;
+    void setCreatorId(int creatorId);
+    int getCreatorId() const;
+    void setProjectId(int projectId);
+    int getProjectId() const;
     void setName(std::string name);
     std::string getName() const;
     void setDescription(std::string description);

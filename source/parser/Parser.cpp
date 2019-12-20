@@ -1,9 +1,9 @@
-//
-// Created by kotik on 25.11.2019.
-//
-
-#include "gui/Parser.h"
+#include "parser/Parser.h"
 #include "entities/Request.h"
+
+
+
+
 
 void Parser::parseProject(std::string command, std::shared_ptr<Request> request, std::shared_ptr<ParseError> parseError) {
 
@@ -32,7 +32,7 @@ void Parser::parseTask(std::string command, std::shared_ptr<Request> request, st
         request->findBy = requestFindBy::NAME;
     }
     else if (second == "new" && StrFunc::isEmpty(third)) {
-        request->mode = requestMode::SAVE;
+        request->mode = requestMode::NEW;
     }
     else if (second == "delete-by-id" && !StrFunc::isEmpty(third) && StrFunc::isEmpty(fourth)) {
         try {
@@ -95,7 +95,7 @@ void Parser::parseUser(std::string command, std::shared_ptr<Request> request, st
         request->findBy = requestFindBy::NAME;
     }
     else if (second == "new" && StrFunc::isEmpty(third)) {
-        request->mode = requestMode::SAVE;
+        request->mode = requestMode::NEW;
     }
     else if (second == "delete-by-id" && !StrFunc::isEmpty(third) && StrFunc::isEmpty(fourth)) {
         try {
@@ -137,12 +137,12 @@ void Parser::parseUser(std::string command, std::shared_ptr<Request> request, st
         parseError->errorBody = "invalid command";
     }
 }
-void Parser::parse(std::string command, std::shared_ptr<Request> request, std::shared_ptr<ParseError> parseError) {
+void Parser::newparse(std::string command, std::shared_ptr<Request> request, std::shared_ptr<ParseError> parseError) {
     std::string first = StrFunc::getWordByPos(command, 0);
     std::string second = StrFunc::getWordByPos(command, 1);
     if (first == "quit") parseError->isQuit = true;
     else if (first == "project" && !StrFunc::isEmpty(second) ) {
-//        request->code = requestCode::PROJECT;
+        // TODO add project parsing
     }
     else if (first == "task" && !StrFunc::isEmpty(second)) {
         request->code = requestCode::TASK;
@@ -163,4 +163,9 @@ void Parser::parse(std::string command, std::shared_ptr<Request> request, std::s
         parseError->isError = true;
         parseError->errorBody = "invalid command";
     }
+}
+
+void Parser::parse(std::string command, std::shared_ptr<Request> request, std::shared_ptr<ParseError> parseError) {
+    BaseHandler baseHandler;
+    baseHandler.parse(command, request, parseError);
 }

@@ -45,7 +45,7 @@ std::string Display::getText() {
     std::string str;
     do {
         getline(std::cin, str);
-    } while (!StrFunc::isEmpty(str));
+    } while (StrFunc::isEmpty(str));
     return str;
 }
 

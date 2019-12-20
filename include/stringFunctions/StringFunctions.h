@@ -12,10 +12,10 @@ public:
     static void clearStartSpaces(std::string &command);
     static void clearEndSpaces(std::string &command);
     static void clearSpacesBoth(std::string &command);
+    static void deleteFirstWord(std::string &command);
     static std::string getWordByPos(const std::string &command, int pos);
     static std::string getWordWithQuotes(const std::string &command, char quote = '\"');
     static std::string randWord(size_t minLen, size_t maxLen);
-    static std::string randPhrase(size_t minWordAmount, size_t maxWordAmount, size_t minWordLen, size_t maxWordLen, size_t maxFullLen);
 };
 
 

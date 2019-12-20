@@ -4,18 +4,10 @@
 #include <iostream>
 
 #include "entities/Request.h"
+#include "ParseError.h"
+#include "ParseHandler.h"
 #include "stringFunctions/StringFunctions.h"
 
-
-class ParseError {
-public:
-    ParseError() : isQuit(false), quitBody(""), isError(false), errorBody("") {}
-
-    bool isQuit;
-    std::string quitBody;
-    bool isError;
-    std::string errorBody;
-};
 
 
 
@@ -27,6 +19,7 @@ private:
 public:
 
     void parse(std::string command, std::shared_ptr<Request> request, std::shared_ptr<ParseError> parseError);
+    void newparse(std::string command, std::shared_ptr<Request> request, std::shared_ptr<ParseError> parseError);
 };
 
 
