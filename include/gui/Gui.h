@@ -19,7 +19,7 @@
 class Gui {
 private:
     std::unique_ptr<Parser> parser;
-    Display * display;
+    std::unique_ptr<Display> display;
     std::unique_ptr<ServiceConnector> serviceConnector;
     std::unique_ptr<State> state;
 

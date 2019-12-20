@@ -13,22 +13,12 @@
 
 class Display {
 private:
-    static Display * p_instance;
-    Display();
-    Display(const Display& other) = delete;
-    Display& operator=(const Display&) = delete;
+
 public:
-
-    static Display * instance() {
-        if(!p_instance) {
-            p_instance = new Display();
-        }
-        return p_instance;
-    }
-
-
     std::string getCommandFromUser();
     std::string getText();
+    std::string getPassword();
+    char getChar();
     long getLong();
     void printText(std::string body);
     void printError(std::string body);

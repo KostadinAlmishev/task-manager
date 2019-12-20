@@ -5,12 +5,13 @@
 #include "entities/Task.h"
 #include "entities/User.h"
 
+#include <iostream>
+#include <termios.h>
+#include <unistd.h>
 
-Display * Display::p_instance = NULL;
 
-Display::Display() {
 
-}
+
 
 std::string Display::getCommandFromUser() {
     std::string str;
@@ -108,11 +109,57 @@ void Display::getPasswordAndName(std::shared_ptr<User> user) {
     printText("\n   Sign in\n");
     printText("User name: ");
     user->setName(getText());
-    printText("Password: ");
-    std::string str = getText();
-    printText("Password again: ");
-    if (getText() == str) user->setPassword(str);
+
+    bool isEqual = false;
+    while (!isEqual){
+        printText("Password: ");
+        std::string pas1 = getPassword();
+        printText("Password again: ");
+        std::string pas2 = getPassword();
+        if (pas1 != pas2) std::cout << "Passwords are not equal, try again" << std::endl;
+        else isEqual = true;
+    }
+
     user->setStatus("user");
+}
+
+std::string Display::getPassword() {
+    const char BACKSPACE=127;
+    const char RETURN=10;
+
+    bool show_asterisk = true;
+
+    std::string password;
+    unsigned char ch=0;
+
+
+    while((ch = getChar()) != RETURN) {
+        if(ch == BACKSPACE) {
+            if(password.length() != 0) {
+                if(show_asterisk)
+                    std::cout << "\b \b";
+                password.resize(password.length() - 1);
+            }
+        }
+        else {
+            password+=ch;
+            if(show_asterisk) std::cout <<'*';
+        }
+    }
+    std::cout << std::endl;
+    return password;
+}
+
+char Display::getChar() {
+    struct termios oldattr, newattr;
+    int ch;
+    tcgetattr( STDIN_FILENO, &oldattr );
+    newattr = oldattr;
+    newattr.c_lflag &= ~( ICANON | ECHO );
+    tcsetattr( STDIN_FILENO, TCSANOW, &newattr );
+    ch = getchar();
+    tcsetattr( STDIN_FILENO, TCSANOW, &oldattr );
+    return ch;
 }
 
 

@@ -12,7 +12,7 @@
 
 Gui::Gui() {
     parser = std::make_unique<Parser>();
-    display = Display::instance();
+    display = std::make_unique<Display>();
     serviceConnector = std::make_unique<ServiceConnector>();
     state = std::make_unique<State>();
 }

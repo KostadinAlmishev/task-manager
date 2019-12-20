@@ -13,13 +13,8 @@
 
 class Parser {
 private:
-    void parseProject(std::string command, std::shared_ptr<Request> request, std::shared_ptr<ParseError> parseError);
-    void parseTask(std::string command, std::shared_ptr<Request> request, std::shared_ptr<ParseError> parseError);
-    void parseUser(std::string command, std::shared_ptr<Request> request, std::shared_ptr<ParseError> parseError);
 public:
-
     void parse(std::string command, std::shared_ptr<Request> request, std::shared_ptr<ParseError> parseError);
-    void newparse(std::string command, std::shared_ptr<Request> request, std::shared_ptr<ParseError> parseError);
 };
 
 
