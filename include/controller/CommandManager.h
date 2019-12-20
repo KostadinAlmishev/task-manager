@@ -1,42 +1,48 @@
 #ifndef TASK_MANAGER_COMMANDMANAGER_H
 #define TASK_MANAGER_COMMANDMANAGER_H
 
-
-
-#include <iostream>
 #include <memory>
-#include <vector>
 
 #include "entities/Entity.h"
 #include "entities/Project.h"
 #include "entities/Task.h"
 #include "entities/User.h"
+#include "managers/DbManager.h"
+#include "database/factories/DbCommandFactory.h"
 
-
-
-
+template<typename Connection, typename ResultSet, typename DbCallback, typename HistoryCallback>
 class CommandManager {
-private:
-    std::vector<std::shared_ptr<Task>> tasks;
-    std::vector<std::shared_ptr<User>> users;
-public:
-    CommandManager();
+ private:
+  DbConfig _dbConfig;
+  std::unique_ptr<DbConnector<Connection, ResultSet, DbCallback>> _dbConnector;
+  std::unique_ptr<DbCommandFactory<Connection, ResultSet, DbCallback>> _userDbCommandFactory;
+  std::unique_ptr<DbCommandFactory<Connection, ResultSet, DbCallback>> _taskDbCommandFactory;
+  std::unique_ptr<DbCommandFactory<Connection, ResultSet, DbCallback>> _projectDbCommandFactory;
+  std::unique_ptr<DbManager<Connection, ResultSet, DbCallback>> _dbManager;
+  std::unique_ptr<NotificationManager> _notificationManager;
+  std::unique_ptr<HistoryManager<HistoryCallback>> _historyManager;
 
-    void saveOrUpdateProject(Project);
-    std::vector<Project> findAllProjects();
-    Project findById(long id);
-    void deleteProjectById(long id);
+ public:
+  explicit CommandManager(std::string);
 
-    bool addUser(std::shared_ptr<User> user);
-    std::shared_ptr<User> getUserByName(std::string name);
-    bool updateUserByName(std::shared_ptr<User>, std::string name);
-    bool deleteUserByName(std::string name);
+  void addSubscriber(std::shared_ptr<Subscriber>);
+  void removeSubscriber(std::shared_ptr<Subscriber>);
 
-    bool addTask(std::shared_ptr<Task> task);
-    std::shared_ptr<Task> getTaskById(long id);
-    bool updateTaskById(std::shared_ptr<Task>, long id);
-    bool deleteTaskById(long id);
+  bool addUser(std::shared_ptr<User>, std::shared_ptr<User> user);
+  std::shared_ptr<User> getUserByName(std::string name);
+  std::shared_ptr<User> getUserById(int id);
+  bool updateUserByName(std::shared_ptr<User> user, std::string name);
+  bool deleteUserByName(std::string name);
+  bool deleteUserById(int id);
+
+  bool addProject(std::shared_ptr<Task> task);
+  std::shared_ptr<Task> getProjectById(int id);
+  bool updateProjectById(std::shared_ptr<Task> task, int id);
+  bool deleteProjectById(int id);
+
+  bool addTask(std::shared_ptr<Task> task);
+  std::shared_ptr<Task> getTaskById(int id);
+  bool updateTaskById(std::shared_ptr<Task> task, int id);
+  bool deleteTaskById(int id);
 };
-
-
 #endif //TASK_MANAGER_COMMANDMANAGER_H
