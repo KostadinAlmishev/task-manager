@@ -1,9 +1,10 @@
 #include <memory>
 
-#include "controller/Controller.h"
+
 #include "controller/CommandManager.h"
-#include "entities/Request.h"
-#include "entities/Response.h"
+#include "controller/Controller.h"
+#include "entities/Entity.h"
+
 
 Controller::Controller() {
     commandManager = std::make_shared<CommandManager>();
@@ -13,6 +14,7 @@ Controller::Controller() {
 void Controller::checkRequest(std::shared_ptr<Request> request, std::shared_ptr<Response> response) {
     switch (request->mode) {
         case requestMode::GET:
+            response->mode = responseMode::PRINT;
             getEntity(request, response);
             break;
         case requestMode::SAVE:
@@ -21,17 +23,16 @@ void Controller::checkRequest(std::shared_ptr<Request> request, std::shared_ptr<
         case requestMode::DELETE:
             deleteEntity(request, response);
             break;
-        case requestMode::UPDADE:
+        case requestMode::UPDATE:
             updateEntity(request, response);
             break;
         case requestMode::AUTHORIZATION:
             checkAuthorization(request, response);
             break;
         case requestMode::DEAUTHORIZATION:
-
+            checkDeauthorization(request, response);
             break;
     }
-
 }
 
 
@@ -195,7 +196,10 @@ void Controller::deleteEntity(std::shared_ptr<Request> request, std::shared_ptr<
 }
 
 void Controller::checkAuthorization(std::shared_ptr<Request> request, std::shared_ptr<Response> response) {
-
+    response->mode = responseMode::SUCCESSFULL_AUTHORIZATION;
 }
 
+void Controller::checkDeauthorization(std::shared_ptr<Request> request, std::shared_ptr<Response> response) {
+    response->mode = responseMode::SUCCESSFULL_DEAUTHORIZATION;
+}
 

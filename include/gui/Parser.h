@@ -4,6 +4,8 @@
 #include <iostream>
 
 #include "entities/Request.h"
+#include "stringFunctions/StringFunctions.h"
+
 
 class ParseError {
 public:
@@ -22,11 +24,7 @@ private:
     void parseProject(std::string command, std::shared_ptr<Request> request, std::shared_ptr<ParseError> parseError);
     void parseTask(std::string command, std::shared_ptr<Request> request, std::shared_ptr<ParseError> parseError);
     void parseUser(std::string command, std::shared_ptr<Request> request, std::shared_ptr<ParseError> parseError);
-    void parseGroup(std::string command, std::shared_ptr<Request> request, std::shared_ptr<ParseError> parseError);
 public:
-    void clearStartSpaces(std::string &command) const;
-    void clearEndSpaces(std::string &command) const;
-    std::string getWordByPos(const std::string &command, int pos) const;
 
     void parse(std::string command, std::shared_ptr<Request> request, std::shared_ptr<ParseError> parseError);
 };

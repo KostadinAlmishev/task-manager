@@ -1,11 +1,12 @@
-#include <memory>
 #include <iostream>
+#include <memory>
 
 #include "controller/CommandManager.h"
 #include "entities/Entity.h"
+#include "entities/Project.h"
 #include "entities/Task.h"
 #include "entities/User.h"
-#include "entities/Project.h"
+
 
 
 CommandManager::CommandManager() {

@@ -4,8 +4,8 @@
 #include <iostream>
 #include <memory>
 
-#include "entities/Request.h"
 #include "controller/Controller.h"
+#include "entities/Request.h"
 #include "entities/Response.h"
 
 class ServiceConnector {

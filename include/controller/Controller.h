@@ -1,13 +1,20 @@
 #ifndef TASK_MANAGER_CONTROLLER_H
 #define TASK_MANAGER_CONTROLLER_H
 
-#include <vector>
 #include <memory>
+#include <vector>
 
+#include "CommandManager.h"
 #include "entities/Entity.h"
+#include "entities/Project.h"
 #include "entities/Request.h"
 #include "entities/Response.h"
-#include "CommandManager.h"
+#include "entities/Task.h"
+#include "entities/User.h"
+
+
+
+
 
 class Controller {
 private:
@@ -22,6 +29,7 @@ public:
     void updateEntity(std::shared_ptr<Request> request, std::shared_ptr<Response> response);
     void deleteEntity(std::shared_ptr<Request> request, std::shared_ptr<Response> response);
     void checkAuthorization(std::shared_ptr<Request> request, std::shared_ptr<Response> response);
+    void checkDeauthorization(std::shared_ptr<Request> request, std::shared_ptr<Response> response);
 };
 
 

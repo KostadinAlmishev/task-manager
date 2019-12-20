@@ -1,27 +1,24 @@
-//
-// Created by kotik on 06.12.2019.
-//
-
 #ifndef TASK_MANAGER_COMMANDMANAGER_H
 #define TASK_MANAGER_COMMANDMANAGER_H
 
 
 
-#include <memory>
 #include <iostream>
+#include <memory>
 #include <vector>
 
 #include "entities/Entity.h"
+#include "entities/Project.h"
 #include "entities/Task.h"
 #include "entities/User.h"
-#include "entities/Project.h"
+
+
+
 
 class CommandManager {
 private:
-    // Dummy objects
     std::vector<std::shared_ptr<Task>> tasks;
     std::vector<std::shared_ptr<User>> users;
-    //
 public:
     CommandManager();
 

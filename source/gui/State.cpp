@@ -3,9 +3,9 @@
 
 #include "gui/State.h"
 #include "entities/Entity.h"
+#include "entities/Project.h"
 #include "entities/Task.h"
 #include "entities/User.h"
-#include "entities/Project.h"
 
 
 State::State() : _isAuthorized(false) {

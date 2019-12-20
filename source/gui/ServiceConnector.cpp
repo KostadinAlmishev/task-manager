@@ -4,7 +4,6 @@
 #include "gui/ServiceConnector.h"
 #include "entities/Request.h"
 #include "entities/Response.h"
-#include "controller/Controller.h"
 
 ServiceConnector::ServiceConnector() {
     controller = std::make_shared<Controller>();
