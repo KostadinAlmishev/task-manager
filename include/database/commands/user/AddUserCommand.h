@@ -16,14 +16,13 @@
  * @tparam Connection - тип подключения в зависимости от БД, например, для PostgreSql будет PGconn
  * @tparam ResultSet - тип возвращаемого значения после выполнения запроса, например, для PostgreSql будет PGresult
  */
-template<typename Connection, typename ResultSet>
-class AddUserCommand : public DbCommand<Connection, ResultSet> {
+template<typename Connection, typename ResultSet, typename Callback>
+class AddUserCommand : public DbCommand<Connection, ResultSet, Callback> {
  private:
-  std::shared_ptr<User> _user;
-  std::shared_ptr<User> _backUp;
+  std::shared_ptr<Entity> _user;
 
  public:
-  AddUserCommand(DbConnector<Connection, ResultSet> &, std::shared_ptr<User>);
+  AddUserCommand(DbConnector<Connection, ResultSet, Callback> &, std::shared_ptr<Entity>);
 
   void saveBackUp() override;
   void undo() const override;
@@ -32,35 +31,38 @@ class AddUserCommand : public DbCommand<Connection, ResultSet> {
   ~AddUserCommand() = default;
 };
 
-template<typename Connection, typename ResultSet>
-AddUserCommand<Connection, ResultSet>::AddUserCommand(DbConnector<Connection, ResultSet> &dbConnector, std::shared_ptr<User> user)
-    : DbCommand<Connection, ResultSet>(dbConnector), _user(std::move(user)) {}
+template<typename Connection, typename ResultSet, typename Callback>
+AddUserCommand<Connection, ResultSet, Callback>::AddUserCommand(DbConnector<Connection,
+                                                                            ResultSet,
+                                                                            Callback> &dbConnector,
+                                                                std::shared_ptr<Entity> user)
+    : DbCommand<Connection, ResultSet, Callback>(dbConnector), _user(std::move(user)) {}
 
-template<typename Connection, typename ResultSet>
-void AddUserCommand<Connection, ResultSet>::saveBackUp() {
-  this->_backUp = _user;
+template<typename Connection, typename ResultSet, typename Callback>
+void AddUserCommand<Connection, ResultSet, Callback>::saveBackUp() {}
+
+template<typename Connection, typename ResultSet, typename Callback>
+void AddUserCommand<Connection, ResultSet, Callback>::undo() const {
+  std::vector<Descriptor> descriptors = _user->createDescriptors();
+  std::string sql =
+      "delete from \"" + this->_dbConnector.getDbName() + "\".\"USERS\" where \""
+          + descriptors[1].field + "\" = \'"
+          + descriptors[1].value
+          + "\';";
+  this->executeQuery(sql);
 }
 
-template<typename Connection, typename ResultSet>
-void AddUserCommand<Connection, ResultSet>::undo() const {
+template<typename Connection, typename ResultSet, typename Callback>
+void AddUserCommand<Connection, ResultSet, Callback>::execute() const {
+  std::vector<Descriptor> descriptors = _user->createDescriptors();
   std::string sql =
-      "delete from \"" + this->_dbConnector.getDbName() + "\".\"USERS\" where \"NAME\" = \'" + _backUp->getName() + "\';";
-  auto dbConnection = this->_dbConnector.getConnection();
-  auto connection = dbConnection->connect();
-  dbConnection->execute(*connection, sql);
-  dbConnection->free(std::move(connection));
-}
-
-template<typename Connection, typename ResultSet>
-void AddUserCommand<Connection, ResultSet>::execute() const {
-  std::string sql =
-      "insert into \"" + this->_dbConnector.getDbName() + "\".\"USERS\" VALUES ("
-        + _user->getName() + ","
-        + _user->getPassword() + ","
-        + _user->getEmail() + ");";
-  auto dbConnection = this->_dbConnector.getConnection();
-  auto connection = dbConnection->connect();
-  dbConnection->execute(*connection, sql);
-  dbConnection->free(std::move(connection));
+      "insert into \"" + this->_dbConnector.getDbName() + "\".\"USERS\" ("
+          + descriptors[1].field + ", "
+          + descriptors[2].field + ", "
+          + descriptors[3].field + ") VALUES (\'"
+          + descriptors[1].value + "\',\'"
+          + descriptors[2].value + "\',\'"
+          + descriptors[3].value + "\');";
+  this->executeQuery(sql);
 }
 #endif //TASKMANAGER_INCLUDE_DATABASE_COMMANDS_ADDUSERCOMMAND_H_

@@ -10,21 +10,20 @@
 #include <utility>
 
 #include "database/commands/DbCommand.h"
-#include <entities/User.h>
+#include "entities/User.h"
 
 /**
  * @tparam Connection - тип подключения в зависимости от БД, например, для PostgreSql будет PGconn
  * @tparam ResultSet - тип возвращаемого значения после выполнения запроса, например, для PostgreSql будет PGresult
  */
-template<typename Connection, typename ResultSet>
-class ModifyUserCommand : public DbCommand<Connection, ResultSet> {
+template<typename Connection, typename ResultSet, typename Callback>
+class ModifyUserCommand : public DbCommand<Connection, ResultSet, Callback> {
  private:
-  std::shared_ptr<User> _user;
-  std::shared_ptr<User> _backUp;
-  std::function<User(ResultSet)> _parseCallback;
+  std::shared_ptr<Entity> _user;
+  std::unique_ptr<User> _backUp;
 
  public:
-  ModifyUserCommand(DbConnector<Connection, ResultSet> &, std::shared_ptr<User>, std::function<User(ResultSet)>);
+  ModifyUserCommand(DbConnector<Connection, ResultSet, Callback> &, std::shared_ptr<Entity>);
 
   void saveBackUp() override;
   void undo() const override;
@@ -33,49 +32,55 @@ class ModifyUserCommand : public DbCommand<Connection, ResultSet> {
   ~ModifyUserCommand() = default;
 };
 
-template<typename Connection, typename ResultSet>
-ModifyUserCommand<Connection, ResultSet>::ModifyUserCommand(DbConnector<Connection, ResultSet> &dbConnector,
-                                                            std::shared_ptr<User> user,
-                                                            std::function<User(ResultSet)> parseCallback)
-    : DbCommand<Connection, ResultSet>(dbConnector), _user(std::move(user)), _parseCallback(std::move(parseCallback)) {}
+template<typename Connection, typename ResultSet, typename Callback>
+ModifyUserCommand<Connection, ResultSet, Callback>::ModifyUserCommand(DbConnector<Connection,
+                                                                                  ResultSet,
+                                                                                  Callback> &dbConnector,
+                                                                      std::shared_ptr<Entity> user)
+    : DbCommand<Connection, ResultSet, Callback>(dbConnector), _user(std::move(user)) {}
 
-template<typename Connection, typename ResultSet>
-void ModifyUserCommand<Connection, ResultSet>::saveBackUp() {
+template<typename Connection, typename ResultSet, typename Callback>
+void ModifyUserCommand<Connection, ResultSet, Callback>::saveBackUp() {
+  std::vector<Descriptor> descriptors = _user->createDescriptors();
   std::string sql =
-      "select * from \"" + this->_dbConnector.getDbName() + "\".\"USERS\" where \"NAME\" = \'" + _user->getName()
+      "select * from \"" + this->_dbConnector.getDbName() + "\".\"USERS\" where "
+          + descriptors[1].field + " = \'"
+          + descriptors[1].value
           + "\';";
-  auto dbConnection = this->_dbConnector.getConnection();
-  auto connection = dbConnection->connect();
-  auto result = dbConnection->execute(*connection, sql);
-  this->_backUp = _parseCallback(result);
-  dbConnection->free(connection);
+  auto result = this->executeQuery(sql);
+  _backUp = std::move(Callback::parseToUser(result));
 }
 
-template<typename Connection, typename ResultSet>
-void ModifyUserCommand<Connection, ResultSet>::undo() const {
+template<typename Connection, typename ResultSet, typename Callback>
+void ModifyUserCommand<Connection, ResultSet, Callback>::undo() const {
+  std::vector<Descriptor> descriptors = _backUp->createDescriptors();
   std::string sql =
-      "update \"" + this->_dbConnector.getDbName() + "\".\"USERS\" set \"NAME\" = \'"
-          + _backUp->getName() + "\', \"PASSWORD\" = \'"
-          + _backUp->getPassword() + "\', \"EMAIL\" = \'"
-          + _backUp->getEmail() + "\';";
-  auto dbConnection = this->_dbConnector.getConnection();
-  auto connection = dbConnection->connect();
-  dbConnection->execute(*connection, sql);
-  dbConnection->free(std::move(connection));
+      "update \"" + this->_dbConnector.getDbName() + "\".\"USERS\" set "
+          + descriptors[1].field + " = \'"
+          + descriptors[1].value + "\', "
+          + descriptors[2].field + " = \'"
+          + descriptors[2].value + "\', "
+          + descriptors[3].field + " = \'"
+          + descriptors[3].value + "\' where "
+          + descriptors[0].field + " = \'"
+          + descriptors[0].value + "\';";
+  this->executeQuery(sql);
 }
 
-template<typename Connection, typename ResultSet>
-void ModifyUserCommand<Connection, ResultSet>::execute() const {
+template<typename Connection, typename ResultSet, typename Callback>
+void ModifyUserCommand<Connection, ResultSet, Callback>::execute() const {
+  std::vector<Descriptor> descriptors = _user->createDescriptors();
   std::string sql =
-      "update \"" + this->_dbConnector.getDbName() + "\".\"USERS\" set \"NAME\" = \'"
-          + _user->getName() + "\', \"PASSWORD\" = \'"
-          + _user->getPassword() + "\', \"EMAIL\" = \'"
-          + _user->getEmail() + "\';";
-  auto dbConnection = this->_dbConnector.getConnection();
-  auto connection = dbConnection->connect();
-  dbConnection->execute(*connection, sql);
-  dbConnection->free(std::move(connection));
+      "update \"" + this->_dbConnector.getDbName() + "\".\"USERS\" set "
+          + descriptors[1].field + " = \'"
+          + descriptors[1].value + "\', "
+          + descriptors[2].field + " = \'"
+          + descriptors[2].value + "\', "
+          + descriptors[3].field + " = \'"
+          + descriptors[3].value + "\' where "
+          + descriptors[0].field + " = \'"
+          + descriptors[0].value + "\';";
+  this->executeQuery(sql);
 }
-
 
 #endif //TASKMANAGER_INCLUDE_DATABASE_COMMANDS_MODIFYUSERCOMMAND_H_

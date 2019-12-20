@@ -9,21 +9,22 @@
 #include <utility>
 
 #include "database/commands/DbCommand.h"
-#include <entities/User.h>
+#include "entities/User.h"
 
 /**
  * @tparam Connection - тип подключения в зависимости от БД, например, для PostgreSql будет PGconn
  * @tparam ResultSet - тип возвращаемого значения после выполнения запроса, например, для PostgreSql будет PGresult
  */
-template<typename Connection, typename ResultSet>
-class GetUserByNameCommand : public DbCommand<Connection, ResultSet> {
+template<typename Connection, typename ResultSet, typename Callback>
+class GetUserByNameCommand : public DbCommand<Connection, ResultSet, Callback> {
  private:
   std::string _name;
-  std::shared_ptr<User> _user;
-  std::function<User(ResultSet)> _parseCallback;
+  std::shared_ptr<Entity> &_user;
 
  public:
-  GetUserByNameCommand(std::string, std::shared_ptr<User>, std::function<User(ResultSet)>);
+  GetUserByNameCommand(DbConnector<Connection, ResultSet, Callback> &,
+                       std::string,
+                       std::shared_ptr<Entity> &);
 
   void saveBackUp() override;
   void undo() const override;
@@ -32,29 +33,29 @@ class GetUserByNameCommand : public DbCommand<Connection, ResultSet> {
   ~GetUserByNameCommand() = default;
 };
 
-template<typename Connection, typename ResultSet>
-GetUserByNameCommand<Connection, ResultSet>::GetUserByNameCommand(std::string name,
-                                                              std::shared_ptr<User> user,
-                                                              std::function<User(ResultSet)> parseCallback)
-    : _name(name), _user(std::move(user)), _parseCallback(std::move(parseCallback)) {}
+template<typename Connection, typename ResultSet, typename Callback>
+GetUserByNameCommand<Connection, ResultSet, Callback>::GetUserByNameCommand(DbConnector<Connection,
+                                                                                        ResultSet,
+                                                                                        Callback> &dbConnector,
+                                                                            std::string name,
+                                                                            std::shared_ptr<Entity> &user)
+    : DbCommand<Connection, ResultSet, Callback>(dbConnector),
+      _name(std::move(name)),
+      _user(user) {}
 
-template<typename Connection, typename ResultSet>
-void GetUserByNameCommand<Connection, ResultSet>::saveBackUp() {}
+template<typename Connection, typename ResultSet, typename Callback>
+void GetUserByNameCommand<Connection, ResultSet, Callback>::saveBackUp() {}
 
-template<typename Connection, typename ResultSet>
-void GetUserByNameCommand<Connection, ResultSet>::undo() const {}
+template<typename Connection, typename ResultSet, typename Callback>
+void GetUserByNameCommand<Connection, ResultSet, Callback>::undo() const {}
 
-template<typename Connection, typename ResultSet>
-void GetUserByNameCommand<Connection, ResultSet>::execute() const {
+template<typename Connection, typename ResultSet, typename Callback>
+void GetUserByNameCommand<Connection, ResultSet, Callback>::execute() const {
   std::string sql =
-      "select * from \"" + this->_dbConnector.getDbName() + "\".\"USERS\" where \"NAME\" = \'" + _name
+      "select * from \"" + this->_dbConnector.getDbName() + "\".\"USERS\" where NAME = \'" + _name
           + "\';";
-  auto dbConnection = this->_dbConnector.getConnection();
-  auto connection = dbConnection->connect();
-  auto result = dbConnection->execute(*connection, sql);
-  this->_backUp = _parseCallback(result);
-  dbConnection->free(connection);
+  auto result = this->executeQuery(sql);
+  _user = std::move(Callback::parseToUser(result));
 }
-
 
 #endif //TASKMANAGER_INCLUDE_DATABASE_COMMANDS_USER_GETUSERBYNAMECOMMAND_H_

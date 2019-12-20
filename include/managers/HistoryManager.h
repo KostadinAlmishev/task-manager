@@ -11,15 +11,21 @@
 
 #include "entities/Entity.h"
 
+template <typename Callback>
 class HistoryManager {
- private:
-  std::function<void(std::shared_ptr<Entity>)> _wrightCallback;
-  std::function<std::shared_ptr<Entity>()> _readCallback;
  public:
-  HistoryManager(std::function<void(std::shared_ptr<Entity>)> wright_callback,
-                 std::function<std::shared_ptr<Entity>()> read_callback);
   virtual void push(std::shared_ptr<Entity>) const;
   virtual std::shared_ptr<Entity> pop() const;
   virtual ~HistoryManager() = default;
 };
+
+template <typename Callback>
+void HistoryManager<Callback>::push(std::shared_ptr<Entity> entity) const {
+  Callback::push(std::move(entity));
+}
+
+template <typename Callback>
+std::shared_ptr<Entity> HistoryManager<Callback>::pop() const {
+  return Callback::pop();
+}
 #endif //TASKMANAGER_INCLUDE_DATABASE_COMMANDHISTORY_H_
