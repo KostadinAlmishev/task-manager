@@ -1,5 +1,7 @@
 
 #include "services/UserService.h"
+#include "privilege/Privilege.h"
+
 
 validResponse UserService::Login(Entity &usr, std::string password) {
     validResponse response(usr);
@@ -23,8 +25,16 @@ validResponse UserService::Login(Entity &usr, std::string password) {
     return response;
 }
 
-validResponse UserService::ChangePassword(Entity &usr, std::string currentPassword, std::string newPassword) {
+validResponse UserService::ChangePassword(User &usr, std::string currentPassword, std::string newPassword) {
     validResponse response(usr);
+    if(Login(usr, currentPassword).Valid){
+        Logout(usr);
+        usr.setPassword(passwordEncoder.Encode(newPassword));
+        response.Valid = true;
+    }else{
+        response.Valid= false;
+        response.ResponseERROR = "wrong old password";
+    }
 
     return response;
 }
@@ -33,14 +43,21 @@ const std::set<User, UserService::UserFunctor> & UserService::GetLoggedIn() {
     return loginUsers;
 }
 
-validResponse UserService::CheckPriveleges(Entity &usr, std::string command) {
-    validResponse responce(usr);
-    responce.request = command;
+validResponse UserService::CheckPriveleges(User &usr, std::string command) {
+    validResponse response(usr);
+    response.request = command;
+    if(loginUsers.find(usr) == loginUsers.end()){
+        response.Valid = false;
+        response.ResponseERROR = "user not logged in";
+    }
+    else if(Privelege::check(usr.getStatus(), command) ){
+        response.Valid =true;
+    }else{
+        response.Valid = false;
+        response.ResponseERROR = usr.getName() + " don't have permission";
+    }
 
-    //заглушка
-    responce.Valid = true;
-    //заглушка
-    return responce;
+    return response;
 }
 
 validResponse UserService::Logout(Entity &usr) {
@@ -57,4 +74,21 @@ validResponse UserService::Logout(Entity &usr) {
     }
 
     return response;
+}
+
+validResponse UserService::SetNewUserPassword(User &usr, std::string password) {
+    validResponse response(usr);
+    response.request = "change password of user " + usr.getName();
+
+
+    if(usr.getPassword() != "") {
+        response.ResponseERROR = "not empty password";
+        response.Valid = false;
+    }else{
+      response.Valid = true;
+      usr.setPassword( passwordEncoder.Encode(password) );
+    }
+
+
+    return  response;
 }

@@ -1,11 +1,7 @@
-//
-// Created by kotik on 24.11.2019.
-//
 
 #ifndef TASK_MANAGER_REQUEST_H
 #define TASK_MANAGER_REQUEST_H
 
-#include <vector>
 #include <memory>
 
 #include "Entity.h"

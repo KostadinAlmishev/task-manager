@@ -10,6 +10,7 @@ class User : public Entity {
   std::string _name;
   std::string _password;
   std::string _email;
+  std::string _status;
  public:
   User() = default;
   User(const User &user) = default;
@@ -21,6 +22,9 @@ class User : public Entity {
   std::string getEmail() const;
   std::string toString() const override;
   std::vector<Descriptor> createDescriptors() const override;
-};
+  void setStatus(std::string status);
+  std::string getStatus() const;
 
+  bool operator==(const User& right){return this->getName() == right.getName();}
+};
 #endif //TASK_MANAGER_USER_H

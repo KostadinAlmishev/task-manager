@@ -14,6 +14,7 @@
 
 class UserService{
 private:
+    PasswordEncoder passwordEncoder;
     class UserFunctor{
     public:
         bool operator()( User left,  User right){
@@ -28,8 +29,10 @@ public:
      validResponse Logout(Entity & usr);
 
      const std::set<User,   UserFunctor> & GetLoggedIn();
-     validResponse CheckPriveleges(Entity &usr, std::string command);
-     validResponse ChangePassword(Entity & usr, std::string currentPassword, std::string newPassword );
+     validResponse CheckPriveleges(User &usr, std::string command);
+     validResponse ChangePassword(User & usr, std::string currentPassword, std::string newPassword );
+     validResponse SetNewUserPassword(User& usr, std::string password);
+
 };
 
 
