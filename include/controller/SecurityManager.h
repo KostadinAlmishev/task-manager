@@ -9,10 +9,12 @@
 #include "entities/Request.h"
 #include "entities/Response.h"
 #include "entities/User.h"
+#include "services/UserService.h"
+#include "services/validResponse.h"
 
 class SecurityManager {
 private:
-    std::vector<std::shared_ptr<User>> users;
+    UserService userService;
 public:
     void login(std::shared_ptr<User> user, std::string password, std::shared_ptr<Response> response);
     void logout(std::shared_ptr<User> user, std::shared_ptr<Response> response);

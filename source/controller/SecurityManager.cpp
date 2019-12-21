@@ -1,33 +1,23 @@
 #include "controller/SecurityManager.h"
 
 void SecurityManager::login(std::shared_ptr<User> user, std::string password, std::shared_ptr<Response> response) {
-    if (user->getPassword() == password) {
-        users.push_back(user);
-    }
-    else {
+    validResponse vresponse = userService.Login(*user, password);
+    if (!vresponse.Valid) {
         response->isError = true;
-        response->errorBody = "There is no user with such password or name";
+        response->errorBody = vresponse.ResponseERROR;
     }
 }
 
 void SecurityManager::logout(std::shared_ptr<User> user, std::shared_ptr<Response> response) {
-    if (isUserAuthorized(user)) {
-        int i = 0;
-        while (users[i]->getName() != user->getName()) i++;
-        users[i] = nullptr;
-        if (users[users.size() - 1] != nullptr) {
-            users[i] = users[users.size() - 1];
-            users[i]->setId(i);
-        }
-        users.resize(users.size() - 1);
+    validResponse vresponse = userService.Logout(*user);
+    if (!vresponse.Valid) {
+        response->isError = true;
+        response->errorBody = vresponse.ResponseERROR;
     }
 }
 
 bool SecurityManager::isUserAuthorized(std::shared_ptr<User> user) {
-    for (auto it : users) {
-        if (it->getName() == user->getName()) return true;
-    }
-    return false;
+    return true;
 }
 
 bool SecurityManager::checkPriveleges(std::string userName, std::string command) {
