@@ -10,16 +10,14 @@
 #include "entities/Request.h"
 
 
-template <typename TParser, typename TDisplay, typename TServiceConnector, typename TState>
-Gui<TParser, TDisplay, TServiceConnector, TState>::Gui() {
-    parser = std::make_unique<TParser>();
-    display = TDisplay::instance();
-    serviceConnector = std::make_unique<TServiceConnector>();
-    state = std::make_unique<TState>();
+Gui::Gui() {
+    parser = std::make_unique<Parser>();
+    display = std::make_unique<Display>();
+    serviceConnector = std::make_unique<ServiceConnector>();
+    state = std::make_unique<State>();
 }
 
-template <typename TParser, typename TDisplay, typename TServiceConnector, typename TState>
-bool Gui<TParser, TDisplay, TServiceConnector, TState>::runGui() {
+bool Gui::runGui() {
     while (true) {
         std::string command = state->isAuthorized() ? readCommand() : "sign-in";
         auto request = std::make_shared<Request>();
@@ -43,23 +41,21 @@ bool Gui<TParser, TDisplay, TServiceConnector, TState>::runGui() {
 }
 
 
-template <typename TParser, typename TDisplay, typename TServiceConnector, typename TState>
-std::string Gui<TParser, TDisplay, TServiceConnector, TState>::readCommand() const {
+std::string Gui::readCommand() const {
     return display->getCommandFromUser();
 }
 
-template <typename TParser, typename TDisplay, typename TServiceConnector, typename TState>
-void Gui<TParser, TDisplay, TServiceConnector, TState>::sendCommand(std::shared_ptr<Request> request, std::shared_ptr<Response> response) {
+void Gui::sendCommand(std::shared_ptr<Request> request, std::shared_ptr<Response> response) {
     serviceConnector->sendCommand(request, response);
 }
 
-template <typename TParser, typename TDisplay, typename TServiceConnector, typename TState>
-void Gui<TParser, TDisplay, TServiceConnector, TState>::modifyRequest(std::shared_ptr<Request> request, std::unique_ptr<TState> &state) {
+void Gui::modifyRequest(std::shared_ptr<Request> request, std::unique_ptr<State> &state) {
+    if (state->isAuthorized()) request->currentUser = state->getCurrentUser();
     switch (request->mode) {
         case requestMode::UPDATE:
             getInformation(request);
             break;
-        case requestMode::SAVE:
+        case requestMode::NEW:
             getInformation(request);
             break;
         case requestMode::AUTHORIZATION:
@@ -68,8 +64,7 @@ void Gui<TParser, TDisplay, TServiceConnector, TState>::modifyRequest(std::share
     }
 }
 
-template <typename TParser, typename TDisplay, typename TServiceConnector, typename TState>
-void Gui<TParser, TDisplay, TServiceConnector, TState>::readResponse(std::shared_ptr<Response> response, std::unique_ptr<TState> &state) {
+void Gui::readResponse(std::shared_ptr<Response> response, std::unique_ptr<State> &state) {
     if (response->isError) {
         display->printError(response->errorBody);
     }
@@ -100,8 +95,7 @@ void Gui<TParser, TDisplay, TServiceConnector, TState>::readResponse(std::shared
     }
 }
 
-template <typename TParser, typename TDisplay, typename TServiceConnector, typename TState>
-void Gui<TParser, TDisplay, TServiceConnector, TState>::getInformation(std::shared_ptr<Request> request) {
+void Gui::getInformation(std::shared_ptr<Request> request) {
     switch (request->code) {
         case requestCode::TASK:
             switch (request->mode) {
@@ -109,7 +103,7 @@ void Gui<TParser, TDisplay, TServiceConnector, TState>::getInformation(std::shar
                     display->getInformationTaskUpdate(request->task);
                     break;
                 }
-                case requestMode::SAVE:
+                case requestMode::NEW:
                     display->getInformationTaskSave(request->task);
                     break;
             }
@@ -120,7 +114,7 @@ void Gui<TParser, TDisplay, TServiceConnector, TState>::getInformation(std::shar
                     display->getInformationProjectUpdate(request->project);
                     break;
                 }
-                case requestMode::SAVE:
+                case requestMode::NEW:
                     display->getInformationProjectSave(request->project);
                     break;
             }
@@ -131,7 +125,7 @@ void Gui<TParser, TDisplay, TServiceConnector, TState>::getInformation(std::shar
                     display->getInformationUserUpdate(request->user);
                     break;
                 }
-                case requestMode::SAVE:
+                case requestMode::NEW:
                     display->getInformationUserSave(request->user);
                     break;
             }

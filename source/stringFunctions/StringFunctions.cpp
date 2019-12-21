@@ -94,9 +94,19 @@ std::string StrFunc::randWord(size_t minLen, size_t maxLen) {
     return str;
 }
 
-std::string StrFunc::randPhrase(size_t minWordAmount, size_t maxWordAmount, size_t minWordLen, size_t maxWordLen,
-                                size_t maxFullLen) {
-    return std::string();
+
+
+void StrFunc::deleteFirstWord(std::string &command) {
+    clearStartSpaces(command);
+    std::string str = getWordByPos(command, 0);
+    auto it = command.begin();
+    if (*(it) == '\"') it += 2;
+    for (int i = 0; i < str.size(); i++) it++;
+    std::cout << "1: " << command << std::endl;
+    std::string newCommand(it, command.end());
+    std::cout << "2: " << newCommand << std::endl;
+    clearStartSpaces(newCommand);
+    command = newCommand;
 }
 
 

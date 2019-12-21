@@ -13,7 +13,7 @@
 
 enum class requestMode {
     _EMPTY,
-    SAVE,
+    NEW,
     UPDATE,
     DELETE,
     GET,
@@ -43,7 +43,14 @@ public:
 
     requestMode mode;
     requestCode code;
+
     requestFindBy findBy;
+    std::string fbName;
+    int fbId;
+
+    std::string commandName;
+
+    std::shared_ptr<User> currentUser;
 
     std::shared_ptr<Project> project;
     std::shared_ptr<User> user;
