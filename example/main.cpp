@@ -5,6 +5,7 @@
 #include "gui/Gui.h"
 
 int main() {
-
+  Gui gui;
+  gui.runGui();
   return 0;
 }

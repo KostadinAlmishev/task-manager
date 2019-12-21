@@ -5,25 +5,19 @@
 #include <vector>
 
 #include "CommandManager.h"
+#include "CurlCallbacks.h"
 #include "entities/Entity.h"
 #include "entities/Project.h"
 #include "entities/Request.h"
 #include "entities/Response.h"
 #include "entities/Task.h"
 #include "entities/User.h"
-#include "SecurityManager.h"
 #include "PgCallbacks.h"
-#include "CurlCallbacks.h"
-
-
-
-
+#include "SecurityManager.h"
 
 class Controller {
 private:
-
-//
-    std::shared_ptr<CommandManager<PGconn, PGresult, PgCallbacks, CurlCallbacks>> commandManager;
+    std::shared_ptr<CommandManager<PGconn, PGresult, PgCallbacks>> commandManager;
     std::shared_ptr<SecurityManager> securityManager;
 
     void getEntity(std::shared_ptr<Request> request, std::shared_ptr<Response> response);
