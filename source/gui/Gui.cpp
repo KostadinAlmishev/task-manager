@@ -50,6 +50,7 @@ void Gui::sendCommand(std::shared_ptr<Request> request, std::shared_ptr<Response
 }
 
 void Gui::modifyRequest(std::shared_ptr<Request> request, std::unique_ptr<State> &state) {
+    if (state->isAuthorized()) request->currentUser = state->getCurrentUser();
     switch (request->mode) {
         case requestMode::UPDATE:
             getInformation(request);

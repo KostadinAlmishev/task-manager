@@ -20,7 +20,7 @@ public:
     void authorize(std::shared_ptr<User> user);
     void deauthorize();
     bool isAuthorized();
-    std::string getUserName();
+    std::shared_ptr<User> getCurrentUser();
 };
 
 

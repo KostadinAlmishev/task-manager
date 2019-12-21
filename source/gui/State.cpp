@@ -23,7 +23,7 @@ void State::deauthorize() {
 bool State::isAuthorized() {
     return _isAuthorized;
 }
-std::string State::getUserName() {
-    return user->getName();
+std::shared_ptr<User> State::getCurrentUser() {
+    return user;
 }
 

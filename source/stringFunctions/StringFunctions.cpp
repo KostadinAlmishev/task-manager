@@ -98,9 +98,13 @@ std::string StrFunc::randWord(size_t minLen, size_t maxLen) {
 
 void StrFunc::deleteFirstWord(std::string &command) {
     clearStartSpaces(command);
+    std::string str = getWordByPos(command, 0);
     auto it = command.begin();
-    while (*it != ' ' && it != command.end()) it++;
+    if (*(it) == '\"') it += 2;
+    for (int i = 0; i < str.size(); i++) it++;
+    std::cout << "1: " << command << std::endl;
     std::string newCommand(it, command.end());
+    std::cout << "2: " << newCommand << std::endl;
     clearStartSpaces(newCommand);
     command = newCommand;
 }

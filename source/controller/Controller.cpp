@@ -5,6 +5,9 @@
 #include "controller/Controller.h"
 #include "entities/Entity.h"
 
+#define PR(a) std::cout << #a << " = " << a << std::endl;
+
+const int ID_NOT_FOUNDED_ENTITY = -1;
 
 Controller::Controller() {
     commandManager = std::make_shared<CommandManager>();
@@ -12,7 +15,13 @@ Controller::Controller() {
 }
 
 
+
+
+
+
 void Controller::checkRequest(std::shared_ptr<Request> request, std::shared_ptr<Response> response) {
+
+    checkPrivelegies(request, response);
     switch (request->mode) {
         case requestMode::GET:
             response->mode = responseMode::PRINT;
@@ -28,10 +37,10 @@ void Controller::checkRequest(std::shared_ptr<Request> request, std::shared_ptr<
             updateEntity(request, response);
             break;
         case requestMode::AUTHORIZATION:
-            checkAuthorization(request, response);
+            Authorization(request, response);
             break;
         case requestMode::DEAUTHORIZATION:
-            checkDeauthorization(request, response);
+            Deauthorization(request, response);
             break;
     }
 }
@@ -48,7 +57,7 @@ void Controller::getEntity(std::shared_ptr<Request> request, std::shared_ptr<Res
                 }
                 case requestFindBy::NAME:
                     auto user = commandManager->getUserByName(request->fbName);
-                    if (user->getId() != -1) {
+                    if (user->getId() != ID_NOT_FOUNDED_ENTITY) {
                         response->user = user;
                         response->code = responseCode::USER;
                     }
@@ -64,7 +73,7 @@ void Controller::getEntity(std::shared_ptr<Request> request, std::shared_ptr<Res
             switch (request->findBy) {
                 case requestFindBy::ID:{
                     auto task = commandManager->getTaskById(request->fbId);
-                    if (task->getId() != -1) {
+                    if (task->getId() != ID_NOT_FOUNDED_ENTITY) {
                         response->task = task;
                         response->code = responseCode::TASK;
                     }
@@ -75,7 +84,15 @@ void Controller::getEntity(std::shared_ptr<Request> request, std::shared_ptr<Res
                     break;
                 }
                 case requestFindBy::NAME:
-
+                    auto task = commandManager->getTaskById(request->fbId);
+                    if (task->getId() != ID_NOT_FOUNDED_ENTITY) {
+                        response->task = task;
+                        response->code = responseCode::TASK;
+                    }
+                    else {
+                        response->isError = true;
+                        response->errorBody = "there is no task with such name";
+                    }
                     break;
             }
             break;
@@ -196,11 +213,29 @@ void Controller::deleteEntity(std::shared_ptr<Request> request, std::shared_ptr<
     }
 }
 
-void Controller::checkAuthorization(std::shared_ptr<Request> request, std::shared_ptr<Response> response) {
-    response->mode = responseMode::SUCCESSFULL_AUTHORIZATION;
+void Controller::Authorization(std::shared_ptr<Request> request, std::shared_ptr<Response> response) {
+    std::string userName = request->user->getName();
+    std::string userPas = request->user->getPassword();
+    std::shared_ptr<User> userFromDB = commandManager->getUserByName(userName);
+    if (userFromDB->getId() != ID_NOT_FOUNDED_ENTITY) {
+        securityManager->login(userFromDB, userPas, response);
+        if (!response->isError) response->mode = responseMode::SUCCESSFULL_AUTHORIZATION;
+    }
+    else {
+        response->isError = true;
+        response->errorBody = "There is no user with such password or name";
+    }
 }
 
-void Controller::checkDeauthorization(std::shared_ptr<Request> request, std::shared_ptr<Response> response) {
+void Controller::Deauthorization(std::shared_ptr<Request> request, std::shared_ptr<Response> response) {
     response->mode = responseMode::SUCCESSFULL_DEAUTHORIZATION;
+}
+
+void Controller::checkPrivelegies(std::shared_ptr<Request> request, std::shared_ptr<Response> response) {
+
+}
+
+void Controller::checkAuthorized(std::shared_ptr<Request> request, std::shared_ptr<Response> response) {
+    securityManager->isUserAuthorized(request->user);
 }
 

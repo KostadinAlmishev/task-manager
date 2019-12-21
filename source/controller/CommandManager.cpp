@@ -8,6 +8,7 @@
 #include "entities/User.h"
 
 
+#define PR(a) std::cout << #a << " = " << a << std::endl;
 
 CommandManager::CommandManager() {
     std::shared_ptr<Task> task(new Task);

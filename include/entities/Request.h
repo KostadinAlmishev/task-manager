@@ -49,6 +49,8 @@ public:
 
     std::string commandName;
 
+    std::shared_ptr<User> currentUser;
+
     std::shared_ptr<Project> project;
     std::shared_ptr<User> user;
     std::shared_ptr<Task> task;

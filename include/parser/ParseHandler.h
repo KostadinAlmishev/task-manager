@@ -17,7 +17,7 @@ protected:
     std::vector<std::shared_ptr<ParseHandler>> nextHandlers;
     virtual void initNextHandlers() = 0;
     virtual void checkNextHandlers(std::string command, std::shared_ptr<Request> request, std::shared_ptr<ParseError> parseError);
-    virtual void checkFinished(std::string command, std::shared_ptr<ParseError> parseError);
+    virtual void checkFinished(std::string command, std::shared_ptr<ParseError> parseError, int amountOfWords);
 public:
     virtual void parse(std::string command, std::shared_ptr<Request> request, std::shared_ptr<ParseError> parseError) = 0;
     virtual std::string getHandlerCommand();

@@ -105,22 +105,33 @@ void Display::getInformationProjectUpdate(std::shared_ptr<Project> project) {
 
 }
 
+
+void Display::getPasswordAndNameForNewUser(std::shared_ptr<User> user) {
+    printText("User name: ");
+    user->setName(getText());
+    std::string pas;
+    bool isEqual = false;
+    while (!isEqual) {
+        printText("Password: ");
+        pas = getPassword();
+        printText("Password again: ");
+        std::string pas2 = getPassword();
+        if (pas != pas2) std::cout << "Passwords are not equal, try again" << std::endl;
+        else isEqual = true;
+    }
+    user->setPassword(pas);
+    user->setStatus("user");
+}
+
+
 void Display::getPasswordAndName(std::shared_ptr<User> user) {
     printText("\n   Sign in\n");
     printText("User name: ");
     user->setName(getText());
-
-    bool isEqual = false;
-    while (!isEqual){
-        printText("Password: ");
-        std::string pas1 = getPassword();
-        printText("Password again: ");
-        std::string pas2 = getPassword();
-        if (pas1 != pas2) std::cout << "Passwords are not equal, try again" << std::endl;
-        else isEqual = true;
-    }
-
-    user->setStatus("user");
+    std::string pas;
+    printText("Password: ");
+    pas = getPassword();
+    user->setPassword(pas);
 }
 
 std::string Display::getPassword() {
@@ -161,5 +172,6 @@ char Display::getChar() {
     tcsetattr( STDIN_FILENO, TCSANOW, &oldattr );
     return ch;
 }
+
 
 

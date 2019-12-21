@@ -30,6 +30,7 @@ public:
     void getInformationUserUpdate(std::shared_ptr<User> user);
     void getInformationProjectSave(std::shared_ptr<Project> project);
     void getInformationProjectUpdate(std::shared_ptr<Project> project);
+    void getPasswordAndNameForNewUser(std::shared_ptr<User> user);
     void getPasswordAndName(std::shared_ptr<User> user);
 };
 

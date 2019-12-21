@@ -23,7 +23,10 @@ std::string ParseHandler::getHandlerCommand() {
     return command;
 }
 
-void ParseHandler::checkFinished(std::string command, std::shared_ptr<ParseError> parseError) {
+void ParseHandler::checkFinished(std::string command, std::shared_ptr<ParseError> parseError, int amountOfWords) {
+    for (int i = 0; i < amountOfWords; i++) {
+        StrFunc::deleteFirstWord(command);
+    }
     if (!StrFunc::isEmpty(command)) {
         parseError->isError = true;
         parseError->errorBody = "invalid command";
@@ -57,7 +60,7 @@ QuitHandler::QuitHandler() {
 void QuitHandler::parse(std::string command, std::shared_ptr<Request> request, std::shared_ptr<ParseError> parseError) {
     parseError->quitBody = "";
     parseError->isQuit = true;
-    checkFinished(command, parseError);
+    checkFinished(command, parseError, 0);
 }
 
 
@@ -70,7 +73,7 @@ void
 SignInHandler::parse(std::string command, std::shared_ptr<Request> request, std::shared_ptr<ParseError> parseError) {
     request->user = std::make_shared<User>();
     request->mode = requestMode::AUTHORIZATION;
-    checkFinished(command, parseError);
+    checkFinished(command, parseError, 0);
 }
 
 
@@ -82,7 +85,7 @@ SignOutHandler::SignOutHandler() {
 void
 SignOutHandler::parse(std::string command, std::shared_ptr<Request> request, std::shared_ptr<ParseError> parseError) {
     request->mode = requestMode::DEAUTHORIZATION;
-    checkFinished(command, parseError);
+    checkFinished(command, parseError, 0);
 }
 
 
@@ -163,7 +166,7 @@ NewHandler::NewHandler() {
 }
 void NewHandler::parse(std::string command, std::shared_ptr<Request> request, std::shared_ptr<ParseError> parseError) {
     request->mode = requestMode::NEW;
-    checkFinished(command, parseError);
+    checkFinished(command, parseError, 0);
 }
 
 
@@ -208,7 +211,7 @@ ByNameHandler::ByNameHandler() {
 void
 ByNameHandler::parse(std::string command, std::shared_ptr<Request> request, std::shared_ptr<ParseError> parseError) {
     std::string first = StrFunc::getWordByPos(command, 0);
-    checkFinished(command, parseError);
+    checkFinished(command, parseError, 1);
     request->fbName = first;
     request->findBy = requestFindBy::NAME;
 }
@@ -223,7 +226,7 @@ void ByIdHandler::parse(std::string command, std::shared_ptr<Request> request, s
     std::string first = StrFunc::getWordByPos(command, 0);
     try {
         request->fbId = std::stoi(first);
-        checkFinished(command, parseError);
+        checkFinished(command, parseError, 1);
         request->findBy = requestFindBy::ID;
     }
     catch (const std::exception &ex) {
