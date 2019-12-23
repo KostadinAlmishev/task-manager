@@ -24,7 +24,7 @@ class DbCommand : public IDbCommand {
 
   virtual ResultSet *executeQuery(std::string) const;
 
-  virtual ~DbCommand() = default;
+  ~DbCommand() override = default;
 };
 
 template<typename Connection, typename ResultSet, typename Callback>

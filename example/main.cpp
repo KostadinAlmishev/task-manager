@@ -28,7 +28,7 @@ void showDBExamples() {
   DbConnector<PGconn, PGresult, PgCallbacks> dbConnector(dbConfig);
   dbConnector.initializeConnectionPool();
   auto userDbCommandFactory = new UserDbCommandFactory<PGconn, PGresult, PgCallbacks>(dbConnector);
-  DbManager<PGconn, PGresult, PgCallbacks> dbManager;
+  DbManager dbManager;
 
   auto user = std::make_shared<User>();
   user->setName("test");
@@ -36,7 +36,7 @@ void showDBExamples() {
   user->setEmail("sayfer97@yandex.ru");
 
   //add
-  std::shared_ptr<DbCommand<PGconn, PGresult, PgCallbacks>> command = userDbCommandFactory->createAddCommand(user);
+  std::shared_ptr<IDbCommand> command = userDbCommandFactory->createAddCommand(user);
   dbManager.setCommand(command);
   dbManager.executeCommand();
 
@@ -99,7 +99,7 @@ void showHistoryExamples() {
   DbConnector<PGconn, PGresult, PgCallbacks> dbConnector(dbConfig);
   dbConnector.initializeConnectionPool();
   auto userDbCommandFactory = new UserDbCommandFactory<PGconn, PGresult, PgCallbacks>(dbConnector);
-  DbManager<PGconn, PGresult, PgCallbacks> dbManager;
+  DbManager dbManager;
   HistoryManager history;
 
   auto user = std::make_shared<User>();
@@ -107,7 +107,7 @@ void showHistoryExamples() {
   user->setPassword("test");
   user->setEmail("sayfer97@yandex.ru");
 
-  std::shared_ptr<DbCommand<PGconn, PGresult, PgCallbacks>> command = userDbCommandFactory->createAddCommand(user);
+  std::shared_ptr<IDbCommand> command = userDbCommandFactory->createAddCommand(user);
   dbManager.setCommand(command);
   history.push("qwerty", command);
   dbManager.executeCommand();

@@ -1,9 +1,9 @@
 //
 // Created by Konstantin Pronin on 30.11.2019.
 //
-#include "managers/HistoryManager.h"
-
 #include <utility>
+
+#include "managers/HistoryManager.h"
 
 void HistoryManager::push(std::string userName, std::shared_ptr<IDbCommand> command) {
   if (_userName != userName) {

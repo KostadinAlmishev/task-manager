@@ -17,13 +17,13 @@ template<typename Connection, typename ResultSet, typename Callback>
 class UserDbCommandFactory : public DbCommandFactory<Connection, ResultSet, Callback> {
  public:
   UserDbCommandFactory(DbConnector<Connection, ResultSet, Callback> &);
-  std::unique_ptr<DbCommand<Connection, ResultSet, Callback>> createAddCommand(std::shared_ptr<Entity>) const override;
-  std::unique_ptr<DbCommand<Connection, ResultSet, Callback>> createDeleteCommand(std::shared_ptr<Entity>) const override;
-  std::unique_ptr<DbCommand<Connection, ResultSet, Callback>> createModifyCommand(std::shared_ptr<Entity>) const override;
-  std::unique_ptr<DbCommand<Connection, ResultSet, Callback>> createGetCommand(long,
+  std::unique_ptr<IDbCommand> createAddCommand(std::shared_ptr<Entity>) const override;
+  std::unique_ptr<IDbCommand> createDeleteCommand(std::shared_ptr<Entity>) const override;
+  std::unique_ptr<IDbCommand> createModifyCommand(std::shared_ptr<Entity>) const override;
+  std::unique_ptr<IDbCommand> createGetCommand(long,
                                                                                std::shared_ptr<Entity> &,
                                                                                long) const override;
-  std::unique_ptr<DbCommand<Connection, ResultSet, Callback>> createGetCommand(std::string,
+  std::unique_ptr<IDbCommand> createGetCommand(std::string,
                                                                                std::shared_ptr<Entity> &) const override;
   ~UserDbCommandFactory() override = default;
 };
@@ -35,28 +35,28 @@ UserDbCommandFactory<Connection, ResultSet, Callback>::UserDbCommandFactory(DbCo
     : DbCommandFactory<Connection, ResultSet, Callback>(dbConnector) {}
 
 template<typename Connection, typename ResultSet, typename Callback>
-std::unique_ptr<DbCommand<Connection, ResultSet, Callback>> UserDbCommandFactory<Connection,
+std::unique_ptr<IDbCommand> UserDbCommandFactory<Connection,
                                                                                  ResultSet, Callback>::createAddCommand(
     std::shared_ptr<Entity> user) const {
   return std::make_unique<AddUserCommand<Connection, ResultSet, Callback>>(this->_dbConnector, user);
 }
 
 template<typename Connection, typename ResultSet, typename Callback>
-std::unique_ptr<DbCommand<Connection, ResultSet, Callback>> UserDbCommandFactory<Connection,
+std::unique_ptr<IDbCommand> UserDbCommandFactory<Connection,
                                                                                  ResultSet,
                                                                                  Callback>::createDeleteCommand(std::shared_ptr<Entity> user) const {
   return std::make_unique<DeleteUserCommand<Connection, ResultSet, Callback>>(this->_dbConnector, user);
 }
 
 template<typename Connection, typename ResultSet, typename Callback>
-std::unique_ptr<DbCommand<Connection, ResultSet, Callback>> UserDbCommandFactory<Connection,
+std::unique_ptr<IDbCommand> UserDbCommandFactory<Connection,
                                                                                  ResultSet,
                                                                                  Callback>::createModifyCommand(std::shared_ptr<Entity> user) const {
   return std::make_unique<ModifyUserCommand<Connection, ResultSet, Callback>>(this->_dbConnector, user);
 }
 
 template<typename Connection, typename ResultSet, typename Callback>
-std::unique_ptr<DbCommand<Connection, ResultSet, Callback>> UserDbCommandFactory<Connection,
+std::unique_ptr<IDbCommand> UserDbCommandFactory<Connection,
                                                                                  ResultSet, Callback>::createGetCommand(
     long id,
     std::shared_ptr<Entity> &user,
@@ -65,7 +65,7 @@ std::unique_ptr<DbCommand<Connection, ResultSet, Callback>> UserDbCommandFactory
 }
 
 template<typename Connection, typename ResultSet, typename Callback>
-std::unique_ptr<DbCommand<Connection, ResultSet, Callback>> UserDbCommandFactory<Connection,
+std::unique_ptr<IDbCommand> UserDbCommandFactory<Connection,
                                                                                  ResultSet, Callback>::createGetCommand(
     std::string name,
     std::shared_ptr<Entity> &user) const {

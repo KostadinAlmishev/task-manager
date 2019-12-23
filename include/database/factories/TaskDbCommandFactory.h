@@ -17,18 +17,14 @@ template<typename Connection, typename ResultSet, typename Callback>
 class TaskDbCommandFactory : public DbCommandFactory<Connection, ResultSet, Callback> {
  public:
   TaskDbCommandFactory(DbConnector<Connection, ResultSet, Callback> &);
-  std::unique_ptr<DbCommand<Connection, ResultSet, Callback>> createAddCommand(std::shared_ptr<Entity>) const override;
-  std::unique_ptr<DbCommand<Connection,
-                            ResultSet,
-                            Callback>> createDeleteCommand(std::shared_ptr<Entity>) const override;
-  std::unique_ptr<DbCommand<Connection,
-                            ResultSet,
-                            Callback>> createModifyCommand(std::shared_ptr<Entity>) const override;
-  std::unique_ptr<DbCommand<Connection, ResultSet, Callback>> createGetCommand(long,
-                                                                               std::shared_ptr<Entity> &,
-                                                                               long) const override;
-  std::unique_ptr<DbCommand<Connection, ResultSet, Callback>> createGetCommand(std::string,
-                                                                               std::shared_ptr<Entity> &) const override;
+  std::unique_ptr<IDbCommand> createAddCommand(std::shared_ptr<Entity>) const override;
+  std::unique_ptr<IDbCommand> createDeleteCommand(std::shared_ptr<Entity>) const override;
+  std::unique_ptr<IDbCommand> createModifyCommand(std::shared_ptr<Entity>) const override;
+  std::unique_ptr<IDbCommand> createGetCommand(long,
+                                               std::shared_ptr<Entity> &,
+                                               long) const override;
+  std::unique_ptr<IDbCommand> createGetCommand(std::string,
+                                               std::shared_ptr<Entity> &) const override;
   ~TaskDbCommandFactory() override = default;
 };
 
@@ -39,31 +35,31 @@ TaskDbCommandFactory<Connection, ResultSet, Callback>::TaskDbCommandFactory(DbCo
     : DbCommandFactory<Connection, ResultSet, Callback>(dbConnector) {}
 
 template<typename Connection, typename ResultSet, typename Callback>
-std::unique_ptr<DbCommand<Connection, ResultSet, Callback>> TaskDbCommandFactory<Connection,
-                                                                                 ResultSet, Callback>::createAddCommand(
+std::unique_ptr<IDbCommand> TaskDbCommandFactory<Connection,
+                                                 ResultSet, Callback>::createAddCommand(
     std::shared_ptr<Entity> task) const {
   return std::make_unique<AddTaskCommand<Connection, ResultSet, Callback>>(this->_dbConnector, task);
 }
 
 template<typename Connection, typename ResultSet, typename Callback>
-std::unique_ptr<DbCommand<Connection, ResultSet, Callback>> TaskDbCommandFactory<Connection,
-                                                                                 ResultSet,
-                                                                                 Callback>::createDeleteCommand(std::shared_ptr<
+std::unique_ptr<IDbCommand> TaskDbCommandFactory<Connection,
+                                                 ResultSet,
+                                                 Callback>::createDeleteCommand(std::shared_ptr<
     Entity> task) const {
   return std::make_unique<DeleteTaskCommand<Connection, ResultSet, Callback>>(this->_dbConnector, task);
 }
 
 template<typename Connection, typename ResultSet, typename Callback>
-std::unique_ptr<DbCommand<Connection, ResultSet, Callback>> TaskDbCommandFactory<Connection,
-                                                                                 ResultSet,
-                                                                                 Callback>::createModifyCommand(std::shared_ptr<
+std::unique_ptr<IDbCommand> TaskDbCommandFactory<Connection,
+                                                 ResultSet,
+                                                 Callback>::createModifyCommand(std::shared_ptr<
     Entity> task) const {
   return std::make_unique<ModifyTaskCommand<Connection, ResultSet, Callback>>(this->_dbConnector, task);
 }
 
 template<typename Connection, typename ResultSet, typename Callback>
-std::unique_ptr<DbCommand<Connection, ResultSet, Callback>> TaskDbCommandFactory<Connection,
-                                                                                 ResultSet, Callback>::createGetCommand(
+std::unique_ptr<IDbCommand> TaskDbCommandFactory<Connection,
+                                                 ResultSet, Callback>::createGetCommand(
     long id,
     std::shared_ptr<Entity> &task,
     long) const {
@@ -71,8 +67,8 @@ std::unique_ptr<DbCommand<Connection, ResultSet, Callback>> TaskDbCommandFactory
 }
 
 template<typename Connection, typename ResultSet, typename Callback>
-std::unique_ptr<DbCommand<Connection, ResultSet, Callback>> TaskDbCommandFactory<Connection,
-                                                                                 ResultSet, Callback>::createGetCommand(
+std::unique_ptr<IDbCommand> TaskDbCommandFactory<Connection,
+                                                 ResultSet, Callback>::createGetCommand(
     std::string name,
     std::shared_ptr<Entity> &task) const {
   return std::make_unique<GetTaskByNameCommand<Connection, ResultSet, Callback>>(this->_dbConnector, name, task);

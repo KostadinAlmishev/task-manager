@@ -10,6 +10,7 @@ class IDbCommand {
   virtual void saveBackUp() = 0;
   virtual void undo() const = 0;
   virtual void execute() const = 0;
+  virtual ~IDbCommand() = default;
 };
 
 #endif //TASKMANAGER_INCLUDE_DATABASE_COMMANDS_IDBCOMMAND_H_
