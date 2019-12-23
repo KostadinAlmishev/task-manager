@@ -12,12 +12,12 @@
 #include "database/commands/IDbCommand.h"
 #include "entities/Entity.h"
 
-template<typename Connection, typename ResultSet, typename Callback>
+template<typename Callback>
 class DbCommandFactory {
  protected:
-  DbConnector<Connection, ResultSet, Callback> &_dbConnector;
+  DbConnector<Callback> &_dbConnector;
  public:
-  explicit DbCommandFactory(DbConnector<Connection, ResultSet, Callback> &dbConnector) : _dbConnector(dbConnector) {}
+  explicit DbCommandFactory(DbConnector<Callback> &dbConnector) : _dbConnector(dbConnector) {}
   virtual std::unique_ptr<IDbCommand> createAddCommand(std::shared_ptr<Entity>) const = 0;
   virtual std::unique_ptr<IDbCommand> createDeleteCommand(std::shared_ptr<Entity>) const = 0;
   virtual std::unique_ptr<IDbCommand> createModifyCommand(std::shared_ptr<Entity>) const = 0;

@@ -14,6 +14,8 @@
 
 class PgCallbacks {
  public:
+  using ResultSet = PGresult;
+  using Connection = PGconn;
   static PGconn *connect(const DbConfig &);
   static PGresult *execute(PGconn *conn, std::string);
   static void free(PGconn *);

@@ -25,9 +25,9 @@ void showDBExamples() {
   DbConfig dbConfig(*buffer);
   dbConfig.readConfigFromFile();
 
-  DbConnector<PGconn, PGresult, PgCallbacks> dbConnector(dbConfig);
+  DbConnector<PgCallbacks> dbConnector(dbConfig);
   dbConnector.initializeConnectionPool();
-  auto userDbCommandFactory = new UserDbCommandFactory<PGconn, PGresult, PgCallbacks>(dbConnector);
+  auto userDbCommandFactory = new UserDbCommandFactory<PgCallbacks>(dbConnector);
   DbManager dbManager;
 
   auto user = std::make_shared<User>();
@@ -86,6 +86,7 @@ void showEmailExamples() {
 }
 
 void showHistoryExamples() {
+  //example of undo
   std::ifstream dbProperties("../resources/dbProperties.txt");
 
   if (!dbProperties) {
@@ -96,9 +97,9 @@ void showHistoryExamples() {
   DbConfig dbConfig(*buffer);
   dbConfig.readConfigFromFile();
 
-  DbConnector<PGconn, PGresult, PgCallbacks> dbConnector(dbConfig);
+  DbConnector<PgCallbacks> dbConnector(dbConfig);
   dbConnector.initializeConnectionPool();
-  auto userDbCommandFactory = new UserDbCommandFactory<PGconn, PGresult, PgCallbacks>(dbConnector);
+  auto userDbCommandFactory = new UserDbCommandFactory<PgCallbacks>(dbConnector);
   DbManager dbManager;
   HistoryManager history;
 

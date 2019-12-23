@@ -9,30 +9,26 @@
 #include "database/connection/DbConnector.h"
 #include "entities/Entity.h"
 
-/**
- * @tparam Connection - тип подключения в зависимости от БД, например, для PostgreSql будет PGconn
- * @tparam ResultSet - тип возвращаемого значения после выполнения запроса, например, для PostgreSql будет PGresult
- */
-template<typename Connection, typename ResultSet, typename Callback>
+template<typename Callback>
 class DbCommand : public IDbCommand {
  protected:
-  DbConnector<Connection, ResultSet, Callback> &_dbConnector;
+  DbConnector<Callback> &_dbConnector;
 
  public:
-  explicit DbCommand(DbConnector<Connection, ResultSet, Callback> &);
-  DbCommand(const DbCommand<Connection, ResultSet, Callback> &) = default;
+  explicit DbCommand(DbConnector<Callback> &);
+  DbCommand(const DbCommand<Callback> &) = default;
 
-  virtual ResultSet *executeQuery(std::string) const;
+  virtual typename Callback::ResultSet *executeQuery(std::string) const;
 
   ~DbCommand() override = default;
 };
 
-template<typename Connection, typename ResultSet, typename Callback>
-DbCommand<Connection, ResultSet, Callback>::DbCommand(DbConnector<Connection, ResultSet, Callback> &dbConnector)
+template<typename Callback>
+DbCommand<Callback>::DbCommand(DbConnector<Callback> &dbConnector)
     : _dbConnector(dbConnector) {}
 
-template<typename Connection, typename ResultSet, typename Callback>
-ResultSet *DbCommand<Connection, ResultSet, Callback>::executeQuery(std::string sql) const {
+template<typename Callback>
+typename Callback::ResultSet *DbCommand<Callback>::executeQuery(std::string sql) const {
   auto dbConnection = _dbConnector.getConnection();
   auto connection = dbConnection->connect();
   auto result = dbConnection->execute(connection, sql);
