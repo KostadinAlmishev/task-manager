@@ -21,7 +21,7 @@ std::string Project::getDescription() const {
 }
 
 std::string Project::toString() const {
-  return "Name: " + name + " Description: " + description;
+  return "|Name=" + name + "|Description=" + description + "|\n";
 }
 
 

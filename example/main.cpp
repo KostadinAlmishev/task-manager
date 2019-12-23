@@ -85,8 +85,39 @@ void showEmailExamples() {
   notificationManager.notifyAll(*user, *user);
 }
 
+void showHistoryExamples() {
+  std::ifstream dbProperties("../resources/dbProperties.txt");
+
+  if (!dbProperties) {
+    return;
+  }
+  std::streambuf *buffer = dbProperties.rdbuf();
+
+  DbConfig dbConfig(*buffer);
+  dbConfig.readConfigFromFile();
+
+  DbConnector<PGconn, PGresult, PgCallbacks> dbConnector(dbConfig);
+  dbConnector.initializeConnectionPool();
+  auto userDbCommandFactory = new UserDbCommandFactory<PGconn, PGresult, PgCallbacks>(dbConnector);
+  DbManager<PGconn, PGresult, PgCallbacks> dbManager;
+  HistoryManager history;
+
+  auto user = std::make_shared<User>();
+  user->setName("test");
+  user->setPassword("test");
+  user->setEmail("sayfer97@yandex.ru");
+
+  std::shared_ptr<DbCommand<PGconn, PGresult, PgCallbacks>> command = userDbCommandFactory->createAddCommand(user);
+  dbManager.setCommand(command);
+  history.push("qwerty", command);
+  dbManager.executeCommand();
+
+  history.pop();
+}
+
 int main() {
   showDBExamples();
   showEmailExamples();
+  showHistoryExamples();
   return 0;
 }

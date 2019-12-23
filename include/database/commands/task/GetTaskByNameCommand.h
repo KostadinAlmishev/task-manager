@@ -52,7 +52,7 @@ void GetTaskByNameCommand<Connection, ResultSet, Callback>::undo() const {}
 template<typename Connection, typename ResultSet, typename Callback>
 void GetTaskByNameCommand<Connection, ResultSet, Callback>::execute() const {
   std::string sql =
-      "select * from \"" + this->_dbConnector.getDbName() + "\".\"TASKS\" where \"NAME\" = \'" + _name
+      "select * from \"" + this->_dbConnector.getDbName() + "\".\"TASKS\" where NAME = \'" + _name
           + "\';";
   auto result = this->executeQuery(sql);
   _task = std::move(Callback::parseToTask(result));

@@ -28,7 +28,7 @@ std::string User::getEmail() const {
   return _email;
 }
 std::string User::toString() const {
-  return "Name: " + _name + " Password: " + _password + " Email: " + _email;
+  return "|Name=" + _name + "|Password=" + _password + "|Email=" + _email + "|\n";
 }
 
 std::vector<Descriptor> User::createDescriptors() const {

@@ -45,8 +45,8 @@ template<typename Connection, typename ResultSet, typename Callback>
 void AddUserCommand<Connection, ResultSet, Callback>::undo() const {
   std::vector<Descriptor> descriptors = _user->createDescriptors();
   std::string sql =
-      "delete from \"" + this->_dbConnector.getDbName() + "\".\"USERS\" where \""
-          + descriptors[1].field + "\" = \'"
+      "delete from \"" + this->_dbConnector.getDbName() + "\".\"USERS\" where "
+          + descriptors[1].field + " = \'"
           + descriptors[1].value
           + "\';";
   this->executeQuery(sql);

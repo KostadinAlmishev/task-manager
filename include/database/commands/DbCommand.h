@@ -5,15 +5,16 @@
 #ifndef TASKMANAGER_INCLUDE_DATABASE_DBCOMMAND_H_
 #define TASKMANAGER_INCLUDE_DATABASE_DBCOMMAND_H_
 
-#include "entities/Entity.h"
+#include "database/commands/IDbCommand.h"
 #include "database/connection/DbConnector.h"
+#include "entities/Entity.h"
 
 /**
  * @tparam Connection - тип подключения в зависимости от БД, например, для PostgreSql будет PGconn
  * @tparam ResultSet - тип возвращаемого значения после выполнения запроса, например, для PostgreSql будет PGresult
  */
 template<typename Connection, typename ResultSet, typename Callback>
-class DbCommand : public Entity {
+class DbCommand : public IDbCommand {
  protected:
   DbConnector<Connection, ResultSet, Callback> &_dbConnector;
 
@@ -21,27 +22,14 @@ class DbCommand : public Entity {
   explicit DbCommand(DbConnector<Connection, ResultSet, Callback> &);
   DbCommand(const DbCommand<Connection, ResultSet, Callback> &) = default;
 
-  std::string toString() const override;
   virtual ResultSet *executeQuery(std::string) const;
 
-  //stub
-  std::vector<Descriptor> createDescriptors() const override {return std::vector<Descriptor>();};
-
-  virtual void saveBackUp() = 0;
-  virtual void undo() const = 0;
-  virtual void execute() const = 0;
-
-  ~DbCommand() override = default;
+  virtual ~DbCommand() = default;
 };
 
 template<typename Connection, typename ResultSet, typename Callback>
 DbCommand<Connection, ResultSet, Callback>::DbCommand(DbConnector<Connection, ResultSet, Callback> &dbConnector)
     : _dbConnector(dbConnector) {}
-
-template<typename Connection, typename ResultSet, typename Callback>
-std::string DbCommand<Connection, ResultSet, Callback>::toString() const {
-  return "DbCommand empty method";
-}
 
 template<typename Connection, typename ResultSet, typename Callback>
 ResultSet *DbCommand<Connection, ResultSet, Callback>::executeQuery(std::string sql) const {

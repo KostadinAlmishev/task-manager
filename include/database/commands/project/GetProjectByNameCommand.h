@@ -52,7 +52,7 @@ void GetProjectByNameCommand<Connection, ResultSet, Callback>::undo() const {}
 template<typename Connection, typename ResultSet, typename Callback>
 void GetProjectByNameCommand<Connection, ResultSet, Callback>::execute() const {
   std::string sql =
-      "select * from \"" + this->_dbConnector.getDbName() + "\".\"PROJECTS\" where \"NAME\" = \'" + _name
+      "select * from \"" + this->_dbConnector.getDbName() + "\".\"PROJECTS\" where NAME = \'" + _name
           + "\';";
   auto result = this->executeQuery(sql);
   _project = std::move(Callback::parseToProject(result));

@@ -5,27 +5,23 @@
 #ifndef TASKMANAGER_INCLUDE_DATABASE_COMMANDHISTORY_H_
 #define TASKMANAGER_INCLUDE_DATABASE_COMMANDHISTORY_H_
 
-#include <utility>
-#include <memory>
 #include <functional>
+#include <memory>
+#include <string>
+#include <vector>
+#include <utility>
 
-#include "entities/Entity.h"
+#include "database/commands/IDbCommand.h"
+#include "entities/User.h"
 
-template <typename Callback>
 class HistoryManager {
+ private:
+  std::string _userName;
+  std::vector<std::shared_ptr<IDbCommand>> _history;
  public:
-  virtual void push(std::shared_ptr<Entity>) const;
-  virtual std::shared_ptr<Entity> pop() const;
+  HistoryManager() = default;
+  virtual void push(std::string, std::shared_ptr<IDbCommand>);
+  virtual void pop();
   virtual ~HistoryManager() = default;
 };
-
-template <typename Callback>
-void HistoryManager<Callback>::push(std::shared_ptr<Entity> entity) const {
-  Callback::push(std::move(entity));
-}
-
-template <typename Callback>
-std::shared_ptr<Entity> HistoryManager<Callback>::pop() const {
-  return Callback::pop();
-}
 #endif //TASKMANAGER_INCLUDE_DATABASE_COMMANDHISTORY_H_

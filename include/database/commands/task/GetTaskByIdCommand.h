@@ -52,7 +52,7 @@ void GetTaskByIdCommand<Connection, ResultSet, Callback>::undo() const {}
 template<typename Connection, typename ResultSet, typename Callback>
 void GetTaskByIdCommand<Connection, ResultSet, Callback>::execute() const {
   std::string sql =
-      "select * from \"" + this->_dbConnector.getDbName() + "\".\"TASKS\" where \"ID\" = \'" + std::to_string(_id)
+      "select * from \"" + this->_dbConnector.getDbName() + "\".\"TASKS\" where ID = \'" + std::to_string(_id)
           + "\';";
   auto result = this->executeQuery(sql);
   _task = std::move(Callback::parseToTask(result));

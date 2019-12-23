@@ -45,8 +45,8 @@ template<typename Connection, typename ResultSet, typename Callback>
 void AddTaskCommand<Connection, ResultSet, Callback>::undo() const {
   std::vector<Descriptor> descriptors = _task->createDescriptors();
   std::string sql =
-      "delete from \"" + this->_dbConnector.getDbName() + "\".\"TASKS\" where \""
-          + descriptors[1].field + "\" = \'"
+      "delete from \"" + this->_dbConnector.getDbName() + "\".\"TASKS\" where "
+          + descriptors[1].field + " = \'"
           + descriptors[1].value
           + "\';";
   this->executeQuery(sql);
