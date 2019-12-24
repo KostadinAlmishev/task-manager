@@ -10,7 +10,7 @@
 const int ID_NOT_FOUNDED_ENTITY = -1;
 
 Controller::Controller() {
-    commandManager = std::make_shared<CommandManager<PGconn, PGresult, PgCallbacks>>("../resources/dbProperties.txt");
+    commandManager = std::make_shared<CommandManager>("../resources/dbProperties.txt");
     securityManager = std::make_shared<SecurityManager>();
 }
 

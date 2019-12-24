@@ -17,7 +17,7 @@
 
 class Controller {
 private:
-    std::shared_ptr<CommandManager<PGconn, PGresult, PgCallbacks>> commandManager;
+    std::shared_ptr<CommandManager> commandManager;
     std::shared_ptr<SecurityManager> securityManager;
 
     void getEntity(std::shared_ptr<Request> request, std::shared_ptr<Response> response);
