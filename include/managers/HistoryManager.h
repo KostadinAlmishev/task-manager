@@ -21,7 +21,7 @@ class HistoryManager {
  public:
   HistoryManager() = default;
   virtual void push(std::string, std::shared_ptr<IDbCommand>);
-  virtual void pop();
+  virtual void pop(std::string);
   virtual ~HistoryManager() = default;
 };
 #endif //TASKMANAGER_INCLUDE_DATABASE_COMMANDHISTORY_H_

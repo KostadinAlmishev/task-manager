@@ -13,7 +13,9 @@ void HistoryManager::push(std::string userName, std::shared_ptr<IDbCommand> comm
   _history.push_back(command);
 }
 
-void HistoryManager::pop() {
-  auto command = std::move(_history.back());
-  command->undo();
+void HistoryManager::pop(std::string userName) {
+  if (_userName == userName) {
+    auto command = std::move(_history.back());
+    command->undo();
+  }
 }
