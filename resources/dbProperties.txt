@@ -1,0 +1,6 @@
+host=localhost
+port=5432
+name=TASK_MANAGER
+user=postgres
+password=postgres
+pool=1
