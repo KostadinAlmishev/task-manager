@@ -47,12 +47,13 @@ void DeleteTaskCommand<Callback>::saveBackUp() {
 
 template<typename Callback>
 void DeleteTaskCommand<Callback>::undo() const {
+  std::vector<Descriptor> descriptors = _backUp->createDescriptors();
   std::string sql =
       "insert into \"" + this->_dbConnector.getDbName() + "\".\"TASKS\" VALUES ("
-          + _backUp->getName() + ","
-          + _backUp->getDescription() + ","
-          + _backUp->getProjectId() + ","
-          + _backUp->getCreatorId() + ");";
+          + descriptors[1].value + ","
+          + descriptors[2].value + ","
+          + descriptors[3].value + ","
+          + descriptors[4].value + ");";
   this->executeQuery(sql);
 }
 

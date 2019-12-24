@@ -12,7 +12,6 @@
 #include "PgCallbacks.h"
 #include "tracking/Email.h"
 
-
 void showDBExamples() {
   //example of execution db user commands
   std::ifstream dbProperties("../resources/dbProperties.txt");
@@ -73,7 +72,7 @@ void showEmailExamples() {
   std::string host = "smtp.yandex.ru";
   unsigned int port = 465;
   std::string login = "technopark-project-test@yandex.ru";
-  std::string password = "closed$PSWD";
+  std::string password = "";
   std::shared_ptr<Subscriber> email = std::make_shared<Email<CurlCallbacks>>(host, port, login, password);
   NotificationManager notificationManager;
   notificationManager.subscribe(email);
