@@ -8,19 +8,19 @@
 
 #include "database/config/DbConfig.h"
 
-Validator::Validator(std::shared_ptr<Validator> next) : _next(std::move(next)) {}
+ConfigValidator::ConfigValidator(std::shared_ptr<ConfigValidator> next) : _next(std::move(next)) {}
 
-HostValidator::HostValidator(std::shared_ptr<Validator> next) : Validator(std::move(next)) {}
+HostValidator::HostValidator(std::shared_ptr<ConfigValidator> next) : ConfigValidator(std::move(next)) {}
 
-PortValidator::PortValidator(std::shared_ptr<Validator> next) : Validator(std::move(next)) {}
+PortValidator::PortValidator(std::shared_ptr<ConfigValidator> next) : ConfigValidator(std::move(next)) {}
 
-DbNameValidator::DbNameValidator(std::shared_ptr<Validator> next) : Validator(std::move(next)) {}
+DbNameValidator::DbNameValidator(std::shared_ptr<ConfigValidator> next) : ConfigValidator(std::move(next)) {}
 
-UserValidator::UserValidator(std::shared_ptr<Validator> next) : Validator(std::move(next)) {}
+UserValidator::UserValidator(std::shared_ptr<ConfigValidator> next) : ConfigValidator(std::move(next)) {}
 
-PasswordValidator::PasswordValidator(std::shared_ptr<Validator> next) : Validator(std::move(next)) {}
+PasswordValidator::PasswordValidator(std::shared_ptr<ConfigValidator> next) : ConfigValidator(std::move(next)) {}
 
-PoolSizeValidator::PoolSizeValidator(std::shared_ptr<Validator> next) : Validator(std::move(next)) {}
+PoolSizeValidator::PoolSizeValidator(std::shared_ptr<ConfigValidator> next) : ConfigValidator(std::move(next)) {}
 
 void HostValidator::validate(const std::string &parameter, const std::string &value, DbConfig &config) const {
   if (parameter == std::string("host")) {

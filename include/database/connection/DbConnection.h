@@ -11,37 +11,33 @@
 
 #include "database/config/DbConfig.h"
 
-/**
- * @tparam Connection - тип подключения в зависимости от БД, например, для PostgreSql будет PGconn
- * @tparam ResultSet - тип возвращаемого значения после выполнения запроса, например, для PostgreSql будет PGresult
- */
-template<typename Connection, typename ResultSet, typename Callback>
+template<typename Callback>
 class DbConnection {
  private:
   const DbConfig &_dbConfig;
  public:
   explicit DbConnection(const DbConfig &);
-  virtual Connection *connect() const;
-  virtual ResultSet *execute(Connection *, const std::string &) const;
-  virtual void free(Connection *) const;
+  virtual typename Callback::Connection *connect() const;
+  virtual typename Callback::ResultSet *execute(typename Callback::Connection *, const std::string &) const;
+  virtual void free(typename Callback::Connection *) const;
 };
 
-template<typename Connection, typename ResultSet, typename Callback>
-DbConnection<Connection, ResultSet, Callback>::DbConnection(const DbConfig &dbConfig) : _dbConfig(dbConfig) {}
+template<typename Callback>
+DbConnection<Callback>::DbConnection(const DbConfig &dbConfig) : _dbConfig(dbConfig) {}
 
-template<typename Connection, typename ResultSet, typename Callback>
-Connection *DbConnection<Connection, ResultSet, Callback>::connect() const {
+template<typename Callback>
+typename Callback::Connection *DbConnection<Callback>::connect() const {
   return Callback::connect(_dbConfig);
 }
 
-template<typename Connection, typename ResultSet, typename Callback>
-ResultSet *DbConnection<Connection, ResultSet, Callback>::execute(Connection *connection,
+template<typename Callback>
+typename Callback::ResultSet *DbConnection<Callback>::execute(typename Callback::Connection *connection,
                                                                   const std::string &query) const {
   return Callback::execute(connection, query);
 }
 
-template<typename Connection, typename ResultSet, typename Callback>
-void DbConnection<Connection, ResultSet, Callback>::free(Connection *connection) const {
+template<typename Callback>
+void DbConnection<Callback>::free(typename Callback::Connection *connection) const {
   Callback::free(connection);
 }
 

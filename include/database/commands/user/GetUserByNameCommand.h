@@ -11,18 +11,14 @@
 #include "database/commands/DbCommand.h"
 #include "entities/User.h"
 
-/**
- * @tparam Connection - тип подключения в зависимости от БД, например, для PostgreSql будет PGconn
- * @tparam ResultSet - тип возвращаемого значения после выполнения запроса, например, для PostgreSql будет PGresult
- */
-template<typename Connection, typename ResultSet, typename Callback>
-class GetUserByNameCommand : public DbCommand<Connection, ResultSet, Callback> {
+template<typename Callback>
+class GetUserByNameCommand : public DbCommand<Callback> {
  private:
   std::string _name;
   std::shared_ptr<Entity> &_user;
 
  public:
-  GetUserByNameCommand(DbConnector<Connection, ResultSet, Callback> &,
+  GetUserByNameCommand(DbConnector<Callback> &,
                        std::string,
                        std::shared_ptr<Entity> &);
 
@@ -33,24 +29,22 @@ class GetUserByNameCommand : public DbCommand<Connection, ResultSet, Callback> {
   ~GetUserByNameCommand() = default;
 };
 
-template<typename Connection, typename ResultSet, typename Callback>
-GetUserByNameCommand<Connection, ResultSet, Callback>::GetUserByNameCommand(DbConnector<Connection,
-                                                                                        ResultSet,
-                                                                                        Callback> &dbConnector,
-                                                                            std::string name,
-                                                                            std::shared_ptr<Entity> &user)
-    : DbCommand<Connection, ResultSet, Callback>(dbConnector),
+template<typename Callback>
+GetUserByNameCommand<Callback>::GetUserByNameCommand(DbConnector<Callback> &dbConnector,
+                                                     std::string name,
+                                                     std::shared_ptr<Entity> &user)
+    : DbCommand<Callback>(dbConnector),
       _name(std::move(name)),
       _user(user) {}
 
-template<typename Connection, typename ResultSet, typename Callback>
-void GetUserByNameCommand<Connection, ResultSet, Callback>::saveBackUp() {}
+template<typename Callback>
+void GetUserByNameCommand<Callback>::saveBackUp() {}
 
-template<typename Connection, typename ResultSet, typename Callback>
-void GetUserByNameCommand<Connection, ResultSet, Callback>::undo() const {}
+template<typename Callback>
+void GetUserByNameCommand<Callback>::undo() const {}
 
-template<typename Connection, typename ResultSet, typename Callback>
-void GetUserByNameCommand<Connection, ResultSet, Callback>::execute() const {
+template<typename Callback>
+void GetUserByNameCommand<Callback>::execute() const {
   std::string sql =
       "select * from \"" + this->_dbConnector.getDbName() + "\".\"USERS\" where NAME = \'" + _name
           + "\';";

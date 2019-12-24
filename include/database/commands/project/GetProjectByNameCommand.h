@@ -11,18 +11,14 @@
 #include "database/commands/DbCommand.h"
 #include "entities/Project.h"
 
-/**
- * @tparam Connection - тип подключения в зависимости от БД, например, для PostgreSql будет PGconn
- * @tparam ResultSet - тип возвращаемого значения после выполнения запроса, например, для PostgreSql будет PGresult
- */
-template<typename Connection, typename ResultSet, typename Callback>
-class GetProjectByNameCommand : public DbCommand<Connection, ResultSet, Callback> {
+template<typename Callback>
+class GetProjectByNameCommand : public DbCommand<Callback> {
  private:
   std::string _name;
   std::shared_ptr<Entity> &_project;
 
  public:
-  GetProjectByNameCommand(DbConnector<Connection, ResultSet, Callback> &,
+  GetProjectByNameCommand(DbConnector<Callback> &,
                           std::string,
                           std::shared_ptr<Entity> &);
 
@@ -33,26 +29,24 @@ class GetProjectByNameCommand : public DbCommand<Connection, ResultSet, Callback
   ~GetProjectByNameCommand() = default;
 };
 
-template<typename Connection, typename ResultSet, typename Callback>
-GetProjectByNameCommand<Connection, ResultSet, Callback>::GetProjectByNameCommand(DbConnector<Connection,
-                                                                                              ResultSet,
-                                                                                              Callback> &dbConnector,
-                                                                                  std::string name,
-                                                                                  std::shared_ptr<Entity> &project)
-    : DbCommand<Connection, ResultSet, Callback>(dbConnector),
+template<typename Callback>
+GetProjectByNameCommand<Callback>::GetProjectByNameCommand(DbConnector<Callback> &dbConnector,
+                                                           std::string name,
+                                                           std::shared_ptr<Entity> &project)
+    : DbCommand<Callback>(dbConnector),
       _name(std::move(name)),
       _project(project) {}
 
-template<typename Connection, typename ResultSet, typename Callback>
-void GetProjectByNameCommand<Connection, ResultSet, Callback>::saveBackUp() {}
+template<typename Callback>
+void GetProjectByNameCommand<Callback>::saveBackUp() {}
 
-template<typename Connection, typename ResultSet, typename Callback>
-void GetProjectByNameCommand<Connection, ResultSet, Callback>::undo() const {}
+template<typename Callback>
+void GetProjectByNameCommand<Callback>::undo() const {}
 
-template<typename Connection, typename ResultSet, typename Callback>
-void GetProjectByNameCommand<Connection, ResultSet, Callback>::execute() const {
+template<typename Callback>
+void GetProjectByNameCommand<Callback>::execute() const {
   std::string sql =
-      "select * from \"" + this->_dbConnector.getDbName() + "\".\"PROJECTS\" where \"NAME\" = \'" + _name
+      "select * from \"" + this->_dbConnector.getDbName() + "\".\"PROJECTS\" where NAME = \'" + _name
           + "\';";
   auto result = this->executeQuery(sql);
   _project = std::move(Callback::parseToProject(result));

@@ -14,13 +14,15 @@
 
 class PgCallbacks {
  public:
-  static PGconn *connect(const DbConfig &);
-  static PGresult *execute(PGconn *conn, std::string);
-  static void free(PGconn *);
-  static void clearResult(PGresult *);
-  static std::unique_ptr<User> parseToUser(PGresult *);
-  static std::unique_ptr<Project> parseToProject(PGresult *);
-  static std::unique_ptr<Task> parseToTask(PGresult *);
+  using ResultSet = PGresult;
+  using Connection = PGconn;
+  static Connection *connect(const DbConfig &);
+  static ResultSet *execute(Connection *conn, std::string);
+  static void free(Connection *);
+  static void clearResult(ResultSet *);
+  static std::unique_ptr<User> parseToUser(ResultSet *);
+  static std::unique_ptr<Project> parseToProject(ResultSet *);
+  static std::unique_ptr<Task> parseToTask(ResultSet *);
 };
 
 #endif //TASKMANAGER_EXAMPLE_INCLUDE_PGCALLBACKS_H_

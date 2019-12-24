@@ -3,7 +3,7 @@
 //
 #include "PgCallbacks.h"
 
-PGconn *PgCallbacks::connect(const DbConfig &dbConfig) {
+PgCallbacks::Connection *PgCallbacks::connect(const DbConfig &dbConfig) {
   auto conn = PQsetdbLogin(dbConfig.getHost().c_str(),
                            dbConfig.getPort().c_str(),
                            nullptr,
@@ -20,7 +20,7 @@ PGconn *PgCallbacks::connect(const DbConfig &dbConfig) {
   return conn;
 }
 
-PGresult *PgCallbacks::execute(PGconn *conn, std::string query) {
+PgCallbacks::ResultSet *PgCallbacks::execute(Connection *conn, std::string query) {
   PQsendQuery(conn, query.c_str());
 
   while (auto result = PQgetResult(conn)) {
@@ -35,15 +35,15 @@ PGresult *PgCallbacks::execute(PGconn *conn, std::string query) {
   return nullptr;
 }
 
-void PgCallbacks::free(PGconn *conn) {
+void PgCallbacks::free(Connection *conn) {
   PQfinish(conn);
 }
 
-void PgCallbacks::clearResult(PGresult *result) {
+void PgCallbacks::clearResult(ResultSet *result) {
   PQclear(result);
 }
 
-std::unique_ptr<User> PgCallbacks::parseToUser(PGresult *result) {
+std::unique_ptr<User> PgCallbacks::parseToUser(ResultSet *result) {
   if (PQresultStatus(result) != PGRES_TUPLES_OK) {
     clearResult(result);
     throw std::runtime_error(PQresultErrorMessage(result));
@@ -70,7 +70,7 @@ std::unique_ptr<User> PgCallbacks::parseToUser(PGresult *result) {
   return user;
 }
 
-std::unique_ptr<Project> PgCallbacks::parseToProject(PGresult *result) {
+std::unique_ptr<Project> PgCallbacks::parseToProject(ResultSet *result) {
   if (PQresultStatus(result) != PGRES_TUPLES_OK) {
     clearResult(result);
     throw std::runtime_error(PQresultErrorMessage(result));
@@ -95,7 +95,7 @@ std::unique_ptr<Project> PgCallbacks::parseToProject(PGresult *result) {
   return project;
 }
 
-std::unique_ptr<Task> PgCallbacks::parseToTask(PGresult *result) {
+std::unique_ptr<Task> PgCallbacks::parseToTask(ResultSet *result) {
   if (PQresultStatus(result) != PGRES_TUPLES_OK) {
     clearResult(result);
     throw std::runtime_error(PQresultErrorMessage(result));

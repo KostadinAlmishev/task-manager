@@ -10,11 +10,11 @@
 #include <string>
 #include <iostream>
 
-#include "database/config/Validator.h"
+#include "database/config/ConfigValidator.h"
 
 class DbConfig {
  private:
-  std::unique_ptr<Validator> _validator;
+  std::unique_ptr<ConfigValidator> _validator;
   std::mutex _mutex;
   std::istream _confFile;
   std::string _host;

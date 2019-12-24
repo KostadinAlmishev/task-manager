@@ -9,19 +9,20 @@
 #include <string>
 
 #include "database/commands/DbCommand.h"
+#include "database/commands/IDbCommand.h"
 #include "entities/Entity.h"
 
-template<typename Connection, typename ResultSet, typename Callback>
+template<typename Callback>
 class DbCommandFactory {
  protected:
-  DbConnector<Connection, ResultSet, Callback> &_dbConnector;
+  DbConnector<Callback> &_dbConnector;
  public:
-  explicit DbCommandFactory(DbConnector<Connection, ResultSet, Callback> &dbConnector) : _dbConnector(dbConnector) {}
-  virtual std::unique_ptr<DbCommand<Connection, ResultSet, Callback>> createAddCommand(std::shared_ptr<Entity>) const = 0;
-  virtual std::unique_ptr<DbCommand<Connection, ResultSet, Callback>> createDeleteCommand(std::shared_ptr<Entity>) const = 0;
-  virtual std::unique_ptr<DbCommand<Connection, ResultSet, Callback>> createModifyCommand(std::shared_ptr<Entity>) const = 0;
-  virtual std::unique_ptr<DbCommand<Connection, ResultSet, Callback>> createGetCommand(long, std::shared_ptr<Entity> &, long) const = 0;
-  virtual std::unique_ptr<DbCommand<Connection, ResultSet, Callback>> createGetCommand(std::string, std::shared_ptr<Entity> &) const = 0;
+  explicit DbCommandFactory(DbConnector<Callback> &dbConnector) : _dbConnector(dbConnector) {}
+  virtual std::unique_ptr<IDbCommand> createAddCommand(std::shared_ptr<Entity>) const = 0;
+  virtual std::unique_ptr<IDbCommand> createDeleteCommand(std::shared_ptr<Entity>) const = 0;
+  virtual std::unique_ptr<IDbCommand> createModifyCommand(std::shared_ptr<Entity>) const = 0;
+  virtual std::unique_ptr<IDbCommand> createGetCommand(long, std::shared_ptr<Entity> &, long) const = 0;
+  virtual std::unique_ptr<IDbCommand> createGetCommand(std::string, std::shared_ptr<Entity> &) const = 0;
   virtual ~DbCommandFactory() = default;
 };
 

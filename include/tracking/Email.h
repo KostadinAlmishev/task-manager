@@ -6,6 +6,7 @@
 #define TASKMANAGER_INCLUDE_TRACKING_EMAIL_H_
 
 #include <memory>
+#include <utility>
 
 #include "tracking/Message.h"
 #include "tracking/Subscriber.h"
@@ -27,7 +28,7 @@ class Email : public Subscriber {
 
 template<typename Callback>
 Email<Callback>::Email(std::string server, unsigned int port, std::string user, std::string password) :
-    _server(server), _port(port), _user(user), _password(password) {}
+    _server(std::move(server)), _port(port), _user(std::move(user)), _password(std::move(password)) {}
 
 template<typename Callback>
 void Email<Callback>::update(const User &user, const Entity &current) {

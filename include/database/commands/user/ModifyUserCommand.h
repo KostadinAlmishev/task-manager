@@ -12,18 +12,14 @@
 #include "database/commands/DbCommand.h"
 #include "entities/User.h"
 
-/**
- * @tparam Connection - тип подключения в зависимости от БД, например, для PostgreSql будет PGconn
- * @tparam ResultSet - тип возвращаемого значения после выполнения запроса, например, для PostgreSql будет PGresult
- */
-template<typename Connection, typename ResultSet, typename Callback>
-class ModifyUserCommand : public DbCommand<Connection, ResultSet, Callback> {
+template<typename Callback>
+class ModifyUserCommand : public DbCommand<Callback> {
  private:
   std::shared_ptr<Entity> _user;
   std::unique_ptr<User> _backUp;
 
  public:
-  ModifyUserCommand(DbConnector<Connection, ResultSet, Callback> &, std::shared_ptr<Entity>);
+  ModifyUserCommand(DbConnector<Callback> &, std::shared_ptr<Entity>);
 
   void saveBackUp() override;
   void undo() const override;
@@ -32,15 +28,13 @@ class ModifyUserCommand : public DbCommand<Connection, ResultSet, Callback> {
   ~ModifyUserCommand() = default;
 };
 
-template<typename Connection, typename ResultSet, typename Callback>
-ModifyUserCommand<Connection, ResultSet, Callback>::ModifyUserCommand(DbConnector<Connection,
-                                                                                  ResultSet,
-                                                                                  Callback> &dbConnector,
-                                                                      std::shared_ptr<Entity> user)
-    : DbCommand<Connection, ResultSet, Callback>(dbConnector), _user(std::move(user)) {}
+template<typename Callback>
+ModifyUserCommand<Callback>::ModifyUserCommand(DbConnector<Callback> &dbConnector,
+                                               std::shared_ptr<Entity> user)
+    : DbCommand<Callback>(dbConnector), _user(std::move(user)) {}
 
-template<typename Connection, typename ResultSet, typename Callback>
-void ModifyUserCommand<Connection, ResultSet, Callback>::saveBackUp() {
+template<typename Callback>
+void ModifyUserCommand<Callback>::saveBackUp() {
   std::vector<Descriptor> descriptors = _user->createDescriptors();
   std::string sql =
       "select * from \"" + this->_dbConnector.getDbName() + "\".\"USERS\" where "
@@ -51,8 +45,8 @@ void ModifyUserCommand<Connection, ResultSet, Callback>::saveBackUp() {
   _backUp = std::move(Callback::parseToUser(result));
 }
 
-template<typename Connection, typename ResultSet, typename Callback>
-void ModifyUserCommand<Connection, ResultSet, Callback>::undo() const {
+template<typename Callback>
+void ModifyUserCommand<Callback>::undo() const {
   std::vector<Descriptor> descriptors = _backUp->createDescriptors();
   std::string sql =
       "update \"" + this->_dbConnector.getDbName() + "\".\"USERS\" set "
@@ -67,8 +61,8 @@ void ModifyUserCommand<Connection, ResultSet, Callback>::undo() const {
   this->executeQuery(sql);
 }
 
-template<typename Connection, typename ResultSet, typename Callback>
-void ModifyUserCommand<Connection, ResultSet, Callback>::execute() const {
+template<typename Callback>
+void ModifyUserCommand<Callback>::execute() const {
   std::vector<Descriptor> descriptors = _user->createDescriptors();
   std::string sql =
       "update \"" + this->_dbConnector.getDbName() + "\".\"USERS\" set "

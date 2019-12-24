@@ -12,17 +12,13 @@
 #include "database/commands/DbCommand.h"
 #include "entities/Task.h"
 
-/**
- * @tparam Connection - тип подключения в зависимости от БД, например, для PostgreSql будет PGconn
- * @tparam ResultSet - тип возвращаемого значения после выполнения запроса, например, для PostgreSql будет PGresult
- */
-template<typename Connection, typename ResultSet, typename Callback>
-class AddTaskCommand : public DbCommand<Connection, ResultSet, Callback> {
+template<typename Callback>
+class AddTaskCommand : public DbCommand<Callback> {
  private:
   std::shared_ptr<Entity> _task;
 
  public:
-  AddTaskCommand(DbConnector<Connection, ResultSet, Callback> &, std::shared_ptr<Entity>);
+  AddTaskCommand(DbConnector<Callback> &, std::shared_ptr<Entity>);
 
   void saveBackUp() override;
   void undo() const override;
@@ -31,29 +27,27 @@ class AddTaskCommand : public DbCommand<Connection, ResultSet, Callback> {
   ~AddTaskCommand() = default;
 };
 
-template<typename Connection, typename ResultSet, typename Callback>
-AddTaskCommand<Connection, ResultSet, Callback>::AddTaskCommand(DbConnector<Connection,
-                                                                            ResultSet,
-                                                                            Callback> &dbConnector,
-                                                                std::shared_ptr<Entity> task)
-    : DbCommand<Connection, ResultSet, Callback>(dbConnector), _task(std::move(task)) {}
+template<typename Callback>
+AddTaskCommand<Callback>::AddTaskCommand(DbConnector<Callback> &dbConnector,
+                                         std::shared_ptr<Entity> task)
+    : DbCommand<Callback>(dbConnector), _task(std::move(task)) {}
 
-template<typename Connection, typename ResultSet, typename Callback>
-void AddTaskCommand<Connection, ResultSet, Callback>::saveBackUp() {}
+template<typename Callback>
+void AddTaskCommand<Callback>::saveBackUp() {}
 
-template<typename Connection, typename ResultSet, typename Callback>
-void AddTaskCommand<Connection, ResultSet, Callback>::undo() const {
+template<typename Callback>
+void AddTaskCommand<Callback>::undo() const {
   std::vector<Descriptor> descriptors = _task->createDescriptors();
   std::string sql =
-      "delete from \"" + this->_dbConnector.getDbName() + "\".\"TASKS\" where \""
-          + descriptors[1].field + "\" = \'"
+      "delete from \"" + this->_dbConnector.getDbName() + "\".\"TASKS\" where "
+          + descriptors[1].field + " = \'"
           + descriptors[1].value
           + "\';";
   this->executeQuery(sql);
 }
 
-template<typename Connection, typename ResultSet, typename Callback>
-void AddTaskCommand<Connection, ResultSet, Callback>::execute() const {
+template<typename Callback>
+void AddTaskCommand<Callback>::execute() const {
   std::vector<Descriptor> descriptors = _task->createDescriptors();
   std::string sql =
       "insert into \"" + this->_dbConnector.getDbName() + "\".\"TASKS\" ("
