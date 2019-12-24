@@ -48,10 +48,11 @@ void DeleteProjectCommand<Callback>::saveBackUp() {
 
 template<typename Callback>
 void DeleteProjectCommand<Callback>::undo() const {
+  std::vector<Descriptor> descriptors = _backUp->createDescriptors();
   std::string sql =
       "insert into \"" + this->_dbConnector.getDbName() + "\".\"PROJECTS\" VALUES ("
-          + _backUp->getName() + ","
-          + _backUp->getDescription() + ");";
+          + descriptors[1].value + ","
+          + descriptors[2].value + ");";
   this->executeQuery(sql);
 }
 

@@ -47,11 +47,12 @@ void DeleteUserCommand<Callback>::saveBackUp() {
 
 template<typename Callback>
 void DeleteUserCommand<Callback>::undo() const {
+  std::vector<Descriptor> descriptors = _backUp->createDescriptors();
   std::string sql =
       "insert into \"" + this->_dbConnector.getDbName() + "\".\"USERS\" VALUES ("
-          + _backUp->getName() + ","
-          + _backUp->getPassword() + ","
-          + _backUp->getEmail() + ");";
+          + descriptors[1].value + ","
+          + descriptors[2].value + ","
+          + descriptors[3].value + ");";
   this->executeQuery(sql);
 }
 
