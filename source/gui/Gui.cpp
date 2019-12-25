@@ -8,7 +8,8 @@
 #include "gui/State.h"
 #include "entities/Response.h"
 #include "entities/Request.h"
-
+#include "parsers/Parser.h"
+#include "parsers/ParseError.h"
 
 Gui::Gui() {
     parser = std::make_unique<Parser>();
@@ -50,7 +51,8 @@ void Gui::sendCommand(std::shared_ptr<Request> request, std::shared_ptr<Response
 }
 
 void Gui::modifyRequest(std::shared_ptr<Request> request, std::unique_ptr<State> &state) {
-    if (state->isAuthorized()) request->currentUser = state->getCurrentUser();
+    if (state->isAuthorized())
+      request->currentUser = state->getCurrentUser();
     switch (request->mode) {
         case requestMode::UPDATE:
             getInformation(request);
@@ -85,7 +87,7 @@ void Gui::readResponse(std::shared_ptr<Response> response, std::unique_ptr<State
                         display->printUser(response->user);
                         break;
                     case responseCode::PROJECT:
-
+                        display->printProject(response->project);
                         break;
                 }
                 break;

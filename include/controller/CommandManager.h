@@ -35,20 +35,20 @@ class CommandManager {
   void addUser(std::shared_ptr<User>, std::shared_ptr<User>);
   std::shared_ptr<Entity> getUserByName(std::string);
   std::shared_ptr<Entity> getUserById(int);
-  void updateUser(std::shared_ptr<User>, std::shared_ptr<User>);
-  void deleteUser(std::shared_ptr<User>, std::shared_ptr<User>);
+  void updateUser(std::shared_ptr<User>, std::shared_ptr<Entity>);
+  void deleteUser(std::shared_ptr<User>, std::shared_ptr<Entity>);
 
   void addTask(std::shared_ptr<User>, std::shared_ptr<Task> addedTask);
   std::shared_ptr<Entity> getTaskByName(std::string);
   std::shared_ptr<Entity> getTaskById(int);
-  void updateTask(std::shared_ptr<User>, std::shared_ptr<Task>);
-  void deleteTask(std::shared_ptr<User>, std::shared_ptr<Task>);
+  void updateTask(std::shared_ptr<User>, std::shared_ptr<Entity>);
+  void deleteTask(std::shared_ptr<User>, std::shared_ptr<Entity>);
 
   void addProject(std::shared_ptr<User>, std::shared_ptr<Project>);
   std::shared_ptr<Entity> getProjectByName(std::string);
   std::shared_ptr<Entity> getProjectById(int);
-  void updateProject(std::shared_ptr<User>, std::shared_ptr<Project>);
-  void deleteProject(std::shared_ptr<User>, std::shared_ptr<Project>);
+  void updateProject(std::shared_ptr<User>, std::shared_ptr<Entity>);
+  void deleteProject(std::shared_ptr<User>, std::shared_ptr<Entity>);
 
   void undo(std::string);
 };

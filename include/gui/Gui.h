@@ -14,7 +14,7 @@
 #include "gui/Gui.h"
 #include "gui/ServiceConnector.h"
 #include "gui/State.h"
-#include "parser/Parser.h"
+#include "parsers/Parser.h"
 
 class Gui {
 private:

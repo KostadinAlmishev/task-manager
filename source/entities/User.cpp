@@ -8,15 +8,17 @@
 void User::setName(std::string name) {
   _name = std::move(name);
 }
+
 void User::setPassword(std::string password) {
   _password = std::move(password);
+}
 
 void User::setStatus(std::string status) {
-    this->status = status;
+    _status = status;
 }
 
 std::string User::getStatus() const {
-    return status;
+    return _status;
 }
 
 void User::setEmail(std::string email) {

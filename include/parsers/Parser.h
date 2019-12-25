@@ -8,9 +8,6 @@
 #include "ParseHandler.h"
 #include "stringFunctions/StringFunctions.h"
 
-
-
-
 class Parser {
 private:
 public:

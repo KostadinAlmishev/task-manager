@@ -30,11 +30,16 @@ DbCommand<Callback>::DbCommand(DbConnector<Callback> &dbConnector)
 template<typename Callback>
 typename Callback::ResultSet *DbCommand<Callback>::executeQuery(std::string sql) const {
   auto dbConnection = _dbConnector.getConnection();
-  auto connection = dbConnection->connect();
-  auto result = dbConnection->execute(connection, sql);
-  dbConnection->free(connection);
-  _dbConnector.releaseConnection(std::move(dbConnection));
-  return result;
+  try {
+    auto connection = dbConnection->connect();
+    auto result = dbConnection->execute(connection, sql);
+    dbConnection->free(connection);
+    _dbConnector.releaseConnection(std::move(dbConnection));
+    return result;
+  } catch (std::exception &ex) {
+    _dbConnector.releaseConnection(std::move(dbConnection));
+    throw ex;
+  }
 }
 
 #endif //TASKMANAGER_INCLUDE_DATABASE_DBCOMMAND_H_

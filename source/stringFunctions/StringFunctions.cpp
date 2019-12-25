@@ -102,9 +102,7 @@ void StrFunc::deleteFirstWord(std::string &command) {
     auto it = command.begin();
     if (*(it) == '\"') it += 2;
     for (int i = 0; i < str.size(); i++) it++;
-    std::cout << "1: " << command << std::endl;
     std::string newCommand(it, command.end());
-    std::cout << "2: " << newCommand << std::endl;
     clearStartSpaces(newCommand);
     command = newCommand;
 }

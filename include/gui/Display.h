@@ -24,6 +24,7 @@ public:
     void printError(std::string body);
     void printTask(std::shared_ptr<Task> task);
     void printUser(std::shared_ptr<User> user);
+    void printProject(std::shared_ptr<Project> project);
     void getInformationTaskSave(std::shared_ptr<Task> task);
     void getInformationTaskUpdate(std::shared_ptr<Task> task);
     void getInformationUserSave(std::shared_ptr<User> user);

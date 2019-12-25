@@ -8,6 +8,7 @@ CommandManager::CommandManager(const std::string& dbConfigPath) {
   _dbConfig = std::make_unique<DbConfig>(*buffer);
   _dbConfig->readConfigFromFile();
   _dbConnector = std::make_unique<DbConnector<PgCallbacks>>(*_dbConfig);
+  _dbConnector->initializeConnectionPool();
   _userDbCommandFactory = std::make_unique<UserDbCommandFactory<PgCallbacks>>(*_dbConnector);
   _taskDbCommandFactory = std::make_unique<TaskDbCommandFactory<PgCallbacks>>(*_dbConnector);
   _projectDbCommandFactory = std::make_unique<ProjectDbCommandFactory<PgCallbacks>>(*_dbConnector);
@@ -48,7 +49,7 @@ std::shared_ptr<Entity> CommandManager::getUserById(int id) {
   return user;
 }
 
-void CommandManager::updateUser(std::shared_ptr<User> currentUser, std::shared_ptr<User> updatedUser) {
+void CommandManager::updateUser(std::shared_ptr<User> currentUser, std::shared_ptr<Entity> updatedUser) {
   std::shared_ptr<IDbCommand> command = _userDbCommandFactory->createModifyCommand(updatedUser);
   _dbManager->setCommand(command);
   _dbManager->executeCommand();
@@ -56,7 +57,7 @@ void CommandManager::updateUser(std::shared_ptr<User> currentUser, std::shared_p
   _historyManager->push(currentUser->getName(), command);
 }
 
-void CommandManager::deleteUser(std::shared_ptr<User> currentUser, std::shared_ptr<User> deletedUser) {
+void CommandManager::deleteUser(std::shared_ptr<User> currentUser, std::shared_ptr<Entity> deletedUser) {
   std::shared_ptr<IDbCommand> command = _userDbCommandFactory->createDeleteCommand(deletedUser);
   _dbManager->setCommand(command);
   _dbManager->executeCommand();
@@ -65,6 +66,7 @@ void CommandManager::deleteUser(std::shared_ptr<User> currentUser, std::shared_p
 }
 
 void CommandManager::addTask(std::shared_ptr<User> currentUser, std::shared_ptr<Task> addedTask) {
+  addedTask->setCreatorId(currentUser->getId());
   std::shared_ptr<IDbCommand> command = _taskDbCommandFactory->createAddCommand(addedTask);
   _dbManager->setCommand(command);
   _dbManager->executeCommand();
@@ -88,7 +90,7 @@ std::shared_ptr<Entity> CommandManager::getTaskById(int id) {
   return task;
 }
 
-void CommandManager::updateTask(std::shared_ptr<User> currentUser, std::shared_ptr<Task> updatedTask) {
+void CommandManager::updateTask(std::shared_ptr<User> currentUser, std::shared_ptr<Entity> updatedTask) {
   std::shared_ptr<IDbCommand> command = _taskDbCommandFactory->createModifyCommand(updatedTask);
   _dbManager->setCommand(command);
   _dbManager->executeCommand();
@@ -96,7 +98,7 @@ void CommandManager::updateTask(std::shared_ptr<User> currentUser, std::shared_p
   _historyManager->push(currentUser->getName(), command);
 }
 
-void CommandManager::deleteTask(std::shared_ptr<User> currentUser, std::shared_ptr<Task> deletedTask) {
+void CommandManager::deleteTask(std::shared_ptr<User> currentUser, std::shared_ptr<Entity> deletedTask) {
   std::shared_ptr<IDbCommand> command = _taskDbCommandFactory->createDeleteCommand(deletedTask);
   _dbManager->setCommand(command);
   _dbManager->executeCommand();
@@ -128,7 +130,7 @@ std::shared_ptr<Entity> CommandManager::getProjectById(int id) {
   return project;
 }
 
-void CommandManager::updateProject(std::shared_ptr<User> currentUser, std::shared_ptr<Project> updatedProject) {
+void CommandManager::updateProject(std::shared_ptr<User> currentUser, std::shared_ptr<Entity> updatedProject) {
   std::shared_ptr<IDbCommand> command = _projectDbCommandFactory->createModifyCommand(updatedProject);
   _dbManager->setCommand(command);
   _dbManager->executeCommand();
@@ -136,7 +138,7 @@ void CommandManager::updateProject(std::shared_ptr<User> currentUser, std::share
   _historyManager->push(currentUser->getName(), command);
 }
 
-void CommandManager::deleteProject(std::shared_ptr<User> currentUser, std::shared_ptr<Project> deletedProject) {
+void CommandManager::deleteProject(std::shared_ptr<User> currentUser, std::shared_ptr<Entity> deletedProject) {
   std::shared_ptr<IDbCommand> command = _projectDbCommandFactory->createDeleteCommand(deletedProject);
   _dbManager->setCommand(command);
   _dbManager->executeCommand();
