@@ -61,7 +61,9 @@ void Gui::modifyRequest(std::shared_ptr<Request> request, std::unique_ptr<State>
             getInformation(request);
             break;
         case requestMode::AUTHORIZATION:
-            display->getPasswordAndName(request->user);
+            if (!state->isAuthorized()) {
+              display->getPasswordAndName(request->user);
+            }
             break;
     }
 }

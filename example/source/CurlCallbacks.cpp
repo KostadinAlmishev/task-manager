@@ -19,6 +19,8 @@ bool CurlCallbacks::send(std::unique_ptr<Message> &&msg) {
   initPayloadData(msg->getTo(), msg->getFrom(), msg->getSubject(), msg->getBody());
 
   if (curl) {
+    curl_easy_setopt(curl, CURLOPT_WRITEDATA, NULL);
+    curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, write_data);
     curl_easy_setopt(curl, CURLOPT_URL, _server.c_str());
     curl_easy_setopt(curl, CURLOPT_USERNAME, _login.c_str());
     curl_easy_setopt(curl, CURLOPT_PASSWORD, _password.c_str());
@@ -38,7 +40,7 @@ bool CurlCallbacks::send(std::unique_ptr<Message> &&msg) {
 
     curl_slist_free_all(recipients);
     curl_easy_cleanup(curl);
-
+    _payloadData.clear();
     return result == CURLE_OK;
   }
 
@@ -73,5 +75,9 @@ void CurlCallbacks::initPayloadData(std::string to, std::string from, std::strin
   _payloadData.push_back("\r\n");
   _payloadData.push_back("#" + body);
   _payloadData.push_back("");
+}
+
+size_t CurlCallbacks::write_data(void *buffer, size_t size, size_t nmemb, void *userp) {
+  return size * nmemb;
 }
 

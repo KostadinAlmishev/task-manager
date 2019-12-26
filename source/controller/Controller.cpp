@@ -4,6 +4,7 @@
 #include "controller/Controller.h"
 #include "entities/Entity.h"
 #include "tracking/Email.h"
+#include "CurlCallbacks.h"
 
 const int ID_NOT_FOUNDED_ENTITY = -1;
 
@@ -19,7 +20,6 @@ Controller::Controller() {
 }
 
 void Controller::checkRequest(std::shared_ptr<Request> request, std::shared_ptr<Response> response) {
-  checkPrivelegies(request, response);
   switch (request->mode) {
     case requestMode::GET:response->mode = responseMode::PRINT;
       getEntity(request, response);
@@ -127,6 +127,8 @@ void Controller::addEntity(std::shared_ptr<Request> request, std::shared_ptr<Res
   switch (request->code) {
     case requestCode::USER: {
       try {
+        std::string pass = request->user->getPassword();
+        securityManager->changePassword(request->user, pass);
         commandManager->addUser(request->currentUser, request->user);
       } catch (...) {
         response->isError = true;
@@ -173,6 +175,8 @@ void Controller::updateEntity(std::shared_ptr<Request> request, std::shared_ptr<
             request->user->setPassword(user->getPassword());
           if (request->user->getEmail().empty())
             request->user->setEmail(user->getEmail());
+
+          securityManager->changePassword(request->user, request->user->getPassword());
 
           try {
             commandManager->updateUser(request->currentUser, request->user);
@@ -303,17 +307,20 @@ void Controller::deleteEntity(std::shared_ptr<Request> request, std::shared_ptr<
 }
 
 void Controller::Authorization(std::shared_ptr<Request> request, std::shared_ptr<Response> response) {
+  if (request->currentUser != nullptr) {
+    response->isError = true;
+    response->errorBody = "You are already logged in";
+    return;
+  }
   std::string userName = request->user->getName();
   std::string userPas = request->user->getPassword();
   std::shared_ptr<User> userFromDB = std::dynamic_pointer_cast<User>(commandManager->getUserByName(userName));
-  if (userFromDB->getId() != ID_NOT_FOUNDED_ENTITY) {
-    securityManager->login(userFromDB, userPas, response);
-    if (!response->isError)
+  if (userFromDB->getId() != ID_NOT_FOUNDED_ENTITY && securityManager->login(userFromDB, userPas)) {
       response->mode = responseMode::SUCCESSFULL_AUTHORIZATION;
       response->user = userFromDB;
   } else {
     response->isError = true;
-    response->errorBody = "There is no user with such password or name";
+    response->errorBody = "Wrong user name or password";
   }
 }
 
@@ -321,9 +328,4 @@ void Controller::Deauthorization(std::shared_ptr<Request> request, std::shared_p
   response->mode = responseMode::SUCCESSFULL_DEAUTHORIZATION;
 }
 
-void Controller::checkPrivelegies(std::shared_ptr<Request> request, std::shared_ptr<Response> response) {}
-
-void Controller::checkAuthorized(std::shared_ptr<Request> request, std::shared_ptr<Response> response) {
-  securityManager->isUserAuthorized(request->user);
-}
 

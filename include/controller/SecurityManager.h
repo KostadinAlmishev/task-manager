@@ -16,13 +16,9 @@ class SecurityManager {
 private:
     UserService userService;
 public:
-    void login(std::shared_ptr<User> user, std::string password, std::shared_ptr<Response> response);
-    void logout(std::shared_ptr<User> user, std::shared_ptr<Response> response);
-
-    bool isUserAuthorized(std::shared_ptr<User> user);
-    bool checkPriveleges(std::string userName, std::string command);
-    void changePassword(std::shared_ptr<User> user, std::string currentPassword, std::string newPassword);
-    void setNewUserPassword(std::shared_ptr<User> user, std::string password);
+    bool login(std::shared_ptr<User> user, std::string password);
+    bool logout(std::shared_ptr<User> user, std::shared_ptr<Response> response);
+    void changePassword(std::shared_ptr<User> user, std::string newPassword);
 };
 
 

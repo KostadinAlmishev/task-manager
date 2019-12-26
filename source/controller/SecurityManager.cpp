@@ -1,26 +1,11 @@
 #include "controller/SecurityManager.h"
 
-void SecurityManager::login(std::shared_ptr<User> user, std::string password, std::shared_ptr<Response> response) {
-    validResponse vresponse = userService.Login(*user, password);
-    if (!vresponse.Valid) {
-        response->isError = true;
-        response->errorBody = vresponse.ResponseERROR;
-    }
+bool SecurityManager::login(std::shared_ptr<User> user, std::string password) {
+  return user->getPassword() == password;
 }
 
-void SecurityManager::logout(std::shared_ptr<User> user, std::shared_ptr<Response> response) {
-    validResponse vresponse = userService.Logout(*user);
-    if (!vresponse.Valid) {
-        response->isError = true;
-        response->errorBody = vresponse.ResponseERROR;
-    }
-}
+bool SecurityManager::logout(std::shared_ptr<User> user, std::shared_ptr<Response> response) {}
 
-bool SecurityManager::isUserAuthorized(std::shared_ptr<User> user) {
-    return true;
+void SecurityManager::changePassword(std::shared_ptr<User> user, std::string newPassword) {
+  user->setPassword(newPassword);
 }
-
-bool SecurityManager::checkPriveleges(std::string userName, std::string command) {
-    return true;
-}
-

@@ -27,9 +27,6 @@ private:
 
     void Authorization(std::shared_ptr<Request> request, std::shared_ptr<Response> response);
     void Deauthorization(std::shared_ptr<Request> request, std::shared_ptr<Response> response);
-    void checkPrivelegies(std::shared_ptr<Request> request, std::shared_ptr<Response> response);
-    void checkAuthorized(std::shared_ptr<Request> request, std::shared_ptr<Response> response);
-
 public:
     Controller();
     void checkRequest(std::shared_ptr<Request> request, std::shared_ptr<Response> response);

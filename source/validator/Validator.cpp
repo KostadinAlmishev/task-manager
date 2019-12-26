@@ -5,7 +5,6 @@
 #include "entities/User.h"
 
 bool Validator::CheckValidation(std::string inputPassword, std::string EncodedPassword) {
-  return true;
   std::string tmp = passwordEncoder.Encode(inputPassword);
   auto tmp2 = passwordEncoder.Decode(tmp);
   if (!inputPassword.compare(tmp2)) {
@@ -15,7 +14,7 @@ bool Validator::CheckValidation(std::string inputPassword, std::string EncodedPa
 
   auto decoded = passwordEncoder.Decode(EncodedPassword);
 
-  return decoded.compare(inputPassword);
+  return !decoded.compare(inputPassword);
 }
 
 std::string

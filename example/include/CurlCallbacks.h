@@ -26,6 +26,7 @@ class CurlCallbacks {
   CurlCallbacks(std::string, unsigned int, std::string, std::string);
   bool send(std::unique_ptr<Message> &&msg);
   static size_t read_callback(void *ptr, size_t size, size_t nmemb, void *userp);
+  static size_t write_data(void *buffer, size_t size, size_t nmemb, void *userp);
 };
 
 #endif //TASKMANAGER_EXAMPLE_INCLUDE_CURLCALLBACKS_H_
