@@ -35,6 +35,7 @@ void ParseHandler::checkFinished(std::string command, std::shared_ptr<ParseError
 }
 
 void BaseHandler::initNextHandlers() {
+  nextHandlers.push_back(std::make_shared<UndoHandler>());
   nextHandlers.push_back(std::make_shared<TaskHandler>());
   nextHandlers.push_back(std::make_shared<UserHandler>());
   nextHandlers.push_back(std::make_shared<ProjectHandler>());
@@ -221,3 +222,13 @@ void ByIdHandler::parse(std::string command, std::shared_ptr<Request> request, s
     parseError->errorBody = "invalid ID";
   }
 }
+
+
+void UndoHandler::initNextHandlers() {}
+UndoHandler::UndoHandler() {
+  command="undo";
+}
+void UndoHandler::parse(std::string command, std::shared_ptr<Request> request, std::shared_ptr<ParseError> parseError) {
+  request->mode = requestMode::UNDO;
+}
+

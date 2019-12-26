@@ -19,6 +19,7 @@ enum class requestMode {
     GET,
     AUTHORIZATION,
     DEAUTHORIZATION,
+    UNDO,
 };
 
 enum class requestCode {

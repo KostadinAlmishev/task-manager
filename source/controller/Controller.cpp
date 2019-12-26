@@ -3,11 +3,18 @@
 #include "controller/CommandManager.h"
 #include "controller/Controller.h"
 #include "entities/Entity.h"
+#include "tracking/Email.h"
 
 const int ID_NOT_FOUNDED_ENTITY = -1;
 
 Controller::Controller() {
+  std::string host = "smtp.yandex.ru";
+  unsigned int port = 465;
+  std::string login = "";
+  std::string password = "";
+  std::shared_ptr<Subscriber> email = std::make_shared<Email<CurlCallbacks>>(host, port, login, password);
   commandManager = std::make_shared<CommandManager>("../resources/dbProperties.txt");
+  commandManager->addSubscriber(email);
   securityManager = std::make_shared<SecurityManager>();
 }
 
@@ -26,6 +33,8 @@ void Controller::checkRequest(std::shared_ptr<Request> request, std::shared_ptr<
     case requestMode::AUTHORIZATION:Authorization(request, response);
       break;
     case requestMode::DEAUTHORIZATION:Deauthorization(request, response);
+      break;
+    case requestMode::UNDO:commandManager->undo(request->currentUser->getName());
       break;
   }
 }

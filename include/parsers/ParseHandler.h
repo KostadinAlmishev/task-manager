@@ -33,6 +33,14 @@ public:
 
 // ---- Handlers for first word ---- //
 
+class UndoHandler : public ParseHandler {
+ protected:
+  virtual void initNextHandlers() override;
+ public:
+  UndoHandler();
+  virtual void parse(std::string command, std::shared_ptr<Request> request, std::shared_ptr<ParseError> parseError) override;
+};
+
 class TaskHandler : public ParseHandler {
 protected:
     virtual void initNextHandlers() override;
